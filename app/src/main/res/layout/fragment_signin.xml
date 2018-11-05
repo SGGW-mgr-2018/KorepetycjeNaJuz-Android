@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.LoginFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/fragment_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_signin"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"/>
+
+        <Button
+            android:id="@+id/f_login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_fb_login"
+            android:textAllCaps="false"
+            android:layout_below="@id/fragment_label"
+            android:layout_centerHorizontal="true"/>
+
+        <LinearLayout
+            android:id="@+id/spacer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/f_login_button"
+            android:layout_centerHorizontal="true">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/colorFullBlack"
+                android:layout_marginStart="64dp"
+                android:layout_weight="2"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:text="@string/label_or"
+                android:layout_weight="3"/>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_gravity="center_vertical"
+                android:background="@color/colorFullBlack"
+                android:layout_marginEnd="64dp"
+                android:layout_weight="2"/>
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/name_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:hint="@string/hint_name"
+            android:inputType="text"
+            android:autofillHints="name"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/spacer"
+            android:layout_marginTop="32dp"/>
+
+        <EditText
+            android:id="@+id/sname_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:hint="@string/hint_sname"
+            android:inputType="textPassword"
+            android:autofillHints="surname"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/name_edit"/>
+
+        <EditText
+            android:id="@+id/email_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:hint="@string/hint_pass"
+            android:inputType="textPassword"
+            android:autofillHints="password"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/sname_edit"/>
+
+        <EditText
+            android:id="@+id/password_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="64dp"
+            android:layout_marginEnd="64dp"
+            android:hint="@string/hint_pass"
+            android:inputType="textPassword"
+            android:autofillHints="password"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/email_edit"/>
+        
+        <TextView
+            android:id="@+id/reg_claim_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/info_register_claim"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/password_edit"/>
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_signin"
+            android:textAllCaps="false"
+            android:layout_below="@id/reg_claim_text"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
+</FrameLayout>

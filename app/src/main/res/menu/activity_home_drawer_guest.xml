@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:title="@string/menu_tag_home"
+            android:icon="@drawable/ic_home_black"/>
+        <item
+            android:id="@+id/nav_log_sign"
+            android:title="@string/menu_tag_log_sign"
+            android:icon="@drawable/ic_person_black"/>
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_settings_black"
+            android:title="@string/menu_tag_settings" />
+
+    </group>
+
+    <item android:title="Action">
+        <menu>
+            <item
+                android:id="@+id/nav_find_lesson"
+                android:title="@string/menu_tag_find_lesson"
+                android:icon="@drawable/ic_search_black"/>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_add_circle_outline_black"
+                android:title="@string/menu_tag_create_lesson" />
+        </menu>
+    </item>
+
+</menu>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">KNJ</string>
+    <string name="navigation_drawer_open">Otwórz nawigację</string>
+    <string name="navigation_drawer_close">Zamknij nawigację</string>
+    <string name="action_settings">Ustawienia</string>
+    <string name="menu_tag_home">Mapa</string>
+    <string name="menu_tag_log_sign">Zaloguj się</string>
+    <string name="menu_tag_settings">Ustawienia</string>
+    <string name="menu_tag_user_info">Twoje konto</string>
+    <string name="menu_tag_history">Historia</string>
+    <string name="menu_tag_calendar">Kalendarz</string>
+    <string name="menu_title_actions">Akcje</string>
+    <string name="menu_tag_create_lesson">Utwórz lekcje</string>
+    <string name="label_login">Logowanie</string>
+    <string name="label_or">lub</string>
+    <string name="hint_email">Adres e-mail</string>
+    <string name="hint_pass">Hasło</string>
+    <string name="button_login">Zaloguj się</string>
+    <string name="button_fb_login">Zaloguj przez Facebooka</string>
+    <string name="button_forgot_pass">Zapomniałeś hasła?</string>
+    <string name="label_signin">Rejestracja</string>
+    <string name="hint_name">Imię</string>
+    <string name="hint_sname">Nazwisko</string>
+    <string name="info_register_claim">Rejestrując się w aplikacji akceptujesz regulamin i politykę prywatności</string>
+    <string name="button_signin">Załóż nowe konto</string>
+    <string name="menu_tag_logout">Wyloguj się</string>
+    <string name="menu_tag_find_lesson">Znajdź lekcje</string>
+    <string name="label_settings">Ustawienia</string>
+    <string name="label_calendar">Kalendarz</string>
+    <string name="label_history">Historia</string>
+    <string name="label_account">Twoje konto</string>
+    <string name="label_name">Imię</string>
+    <string name="label_sname">Nazwisko</string>
+    <string name="label_email">Adres e-mail</string>
+    <string name="label_phone_no">Numer telefonu</string>
+    <string name="label_about_me">O mnie</string>
+</resources>

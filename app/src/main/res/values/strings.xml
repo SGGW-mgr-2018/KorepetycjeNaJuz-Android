@@ -1,0 +1,52 @@
+<resources>
+    <string name="app_name">KNJ</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title" translatable="false">Sierotka Marysia</string>
+    <string name="nav_header_subtitle" translatable="false">wilk@czerwonykapturek.com</string>
+    <string name="nav_header_desc" translatable="false">Navigation header</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_maps" translatable="false">Map</string>
+
+    <!-- Menu tags -->
+    <string name="menu_tag_home">Home</string>
+    <string name="menu_tag_log_sign">Sign in / Sign up</string>
+    <string name="menu_tag_settings">Settings</string>
+    <string name="menu_tag_user_info">Your account</string>
+    <string name="menu_tag_history">History</string>
+    <string name="menu_tag_calendar">Calendar</string>
+    <string name="menu_title_actions">Actions</string>
+    <string name="menu_tag_create_lesson">Create lesson</string>
+    <string name="menu_tag_logout">Logout</string>
+    <string name="menu_tag_find_lesson">Find lesson</string>
+
+    <!-- Labels -->
+    <string name="label_login">Log in</string>
+    <string name="label_signin">Sign in</string>
+    <string name="label_or">or</string>
+    <string name="label_settings">Settings</string>
+    <string name="label_calendar">Calendar</string>
+    <string name="label_history">History</string>
+    <string name="label_account">Your Account</string>
+    <string name="label_name">Name</string>
+    <string name="label_sname">Surname</string>
+    <string name="label_email">Email</string>
+    <string name="label_phone_no">Phone number</string>
+    <string name="label_about_me">About me</string>
+
+    <!-- Hints -->
+    <string name="hint_email">Your e-mail</string>
+    <string name="hint_pass">Your password</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_sname">Surname</string>
+
+    <!-- Button labels -->
+    <string name="button_login">Login</string>
+    <string name="button_fb_login">Login with Facebook</string>
+    <string name="button_forgot_pass">Forgot password?</string>
+    <string name="button_signin">Sign in</string>
+
+    <!-- Info -->
+    <string name="info_register_claim">Reg claim</string>
+
+</resources>
