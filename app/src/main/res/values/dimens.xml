@@ -7,4 +7,10 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="container_frame">16dp</dimen>
     <dimen name="edit_side_margin">64dp</dimen>
+
+    <dimen name="title_to_content_space">16dp</dimen>
+    <dimen name="default_text_size">16sp</dimen>
+    <dimen name="label_to_value_space">4dp</dimen>
+    <dimen name="label_to_edit_space">1dp</dimen>
+    <dimen name="field_to_field_space">12dp</dimen>
 </resources>

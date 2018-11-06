@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.AccountFragment">
+    tools:context=".Fragments.EditAccountFragment">
 
     <TextView
         android:id="@+id/fragment_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="@string/label_account"
+        android:text="@string/label_edit_account"
         android:textSize="32sp"
         android:textStyle="bold"
         android:layout_marginBottom="@dimen/title_to_content_space"/>
@@ -99,31 +99,31 @@
         android:text="@string/label_phone_no"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="@dimen/label_to_value_space"
+        android:layout_marginBottom="@dimen/label_to_edit_space"
         android:textSize="@dimen/default_text_size"/>
-    <TextView
-        android:id="@+id/phone_no_value"
+    <EditText
+        android:id="@+id/phone_no_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/phone_no_label"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="@dimen/field_to_field_space"
-        android:text="534 214 123"
+        android:inputType="phone"
         android:textStyle="bold"
         android:textSize="@dimen/default_text_size"/>
     <TextView
         android:id="@+id/about_me_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/phone_no_value"
+        android:layout_below="@id/phone_no_edit"
         android:text="@string/label_about_me"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="@dimen/label_to_value_space"
+        android:layout_marginBottom="@dimen/label_to_edit_space"
         android:textSize="@dimen/default_text_size"/>
-    <TextView
-        android:id="@+id/about_me_value"
+    <EditText
+        android:id="@+id/about_me_edit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/about_me_label"
@@ -131,7 +131,28 @@
         android:layout_marginEnd="16dp"
         android:textStyle="bold"
         android:textSize="@dimen/default_text_size"
-        android:text="Lubię krasnoludki i duże lustra ale najbardziej to lubie jabłka. Czasem chodzę na spacery."/>
+        android:inputType="text"
+        android:layout_marginBottom="@dimen/field_to_field_space" />
 
+    <TextView
+        android:id="@+id/password_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/about_me_edit"
+        android:text="@string/label_password"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="@dimen/label_to_edit_space"
+        android:textSize="@dimen/default_text_size"/>
+    <EditText
+        android:id="@+id/password_edit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/password_label"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textStyle="bold"
+        android:textSize="@dimen/default_text_size"
+        android:inputType="textPassword"/>
 
 </RelativeLayout>

@@ -35,4 +35,6 @@
     <string name="label_email">Adres e-mail</string>
     <string name="label_phone_no">Numer telefonu</string>
     <string name="label_about_me">O mnie</string>
+    <string name="label_password">Hasło</string>
+    <string name="label_edit_account">Edytuj swoje dane</string>
 </resources>

@@ -33,6 +33,8 @@
     <string name="label_email">Email</string>
     <string name="label_phone_no">Phone number</string>
     <string name="label_about_me">About me</string>
+    <string name="label_password">Password</string>
+    <string name="label_edit_account">Edit your account</string>
 
     <!-- Hints -->
     <string name="hint_email">Your e-mail</string>
