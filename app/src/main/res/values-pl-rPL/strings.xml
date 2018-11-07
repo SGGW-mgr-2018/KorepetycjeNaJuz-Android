@@ -37,4 +37,7 @@
     <string name="label_about_me">O mnie</string>
     <string name="label_password">Hasło</string>
     <string name="label_edit_account">Edytuj swoje dane</string>
+    <string name="menu_tag_notif">Powiadomienia</string>
+    <string name="label_notifs">Powiadomienia</string>
+    <string name="title_activity_maps">Mapa</string>
 </resources>

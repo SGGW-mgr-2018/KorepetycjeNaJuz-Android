@@ -13,6 +13,10 @@
             android:title="@string/menu_tag_user_info"
             android:icon="@drawable/ic_person_black"/>
         <item
+            android:id="@+id/nav_notif"
+            android:icon="@drawable/ic_notifications_black"
+            android:title="@string/menu_tag_notif"/>
+        <item
             android:id="@+id/nav_calendar"
             android:icon="@drawable/ic_today_black"
             android:title="@string/menu_tag_calendar" />
