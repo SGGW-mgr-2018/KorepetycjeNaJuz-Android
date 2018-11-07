@@ -46,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/name_label"
-                android:text="Sierotka"
+                android:text=""
                 android:layout_marginBottom="@dimen/field_to_field_space"
                 android:textStyle="bold"
                 android:textSize="@dimen/default_text_size"/>
@@ -63,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sname_label"
-                android:text="Marysia"
+                android:text=""
                 android:textStyle="bold"
                 android:textSize="@dimen/default_text_size"/>
         </RelativeLayout>
@@ -88,50 +88,134 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="@dimen/field_to_field_space"
-        android:text="wilk@czerwonykapturek.pl"
+        android:text=""
         android:textStyle="bold"
         android:textSize="@dimen/default_text_size"/>
-    <TextView
-        android:id="@+id/phone_no_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/email_value"
-        android:text="@string/label_phone_no"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="@dimen/label_to_value_space"
-        android:textSize="@dimen/default_text_size"/>
-    <TextView
-        android:id="@+id/phone_no_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/phone_no_label"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="@dimen/field_to_field_space"
-        android:text="534 214 123"
-        android:textStyle="bold"
-        android:textSize="@dimen/default_text_size"/>
-    <TextView
-        android:id="@+id/about_me_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/phone_no_value"
-        android:text="@string/label_about_me"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="@dimen/label_to_value_space"
-        android:textSize="@dimen/default_text_size"/>
-    <TextView
-        android:id="@+id/about_me_value"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/about_me_label"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:textStyle="bold"
-        android:textSize="@dimen/default_text_size"
-        android:text="Lubię krasnoludki i duże lustra ale najbardziej to lubie jabłka. Czasem chodzę na spacery."/>
 
+    <LinearLayout
+        android:id="@+id/show_data_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/email_value"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_phone_no"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="@dimen/label_to_value_space"
+            android:textSize="@dimen/default_text_size"/>
+        <TextView
+            android:id="@+id/phone_no_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="@dimen/field_to_field_space"
+            android:text=""
+            android:textStyle="bold"
+            android:textSize="@dimen/default_text_size"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_about_me"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="@dimen/label_to_value_space"
+            android:textSize="@dimen/default_text_size"/>
+        <TextView
+            android:id="@+id/about_me_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textStyle="bold"
+            android:textSize="@dimen/default_text_size"
+            android:text=""/>
+
+        <Button
+            android:id="@+id/change_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/edit_side_margin"
+            android:layout_marginEnd="@dimen/edit_side_margin"
+            android:layout_marginTop="@dimen/field_to_field_space"
+            android:text="@string/button_change_account"
+            android:textAllCaps="false"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/edit_data_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@id/email_value"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_phone_no"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="@dimen/label_to_edit_space"
+            android:textSize="@dimen/default_text_size"/>
+        <EditText
+            android:id="@+id/phone_no_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="@dimen/field_to_field_space"
+            android:inputType="phone"
+            android:textStyle="bold"
+            android:textSize="@dimen/default_text_size"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_about_me"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="@dimen/label_to_edit_space"
+            android:textSize="@dimen/default_text_size"/>
+        <EditText
+            android:id="@+id/about_me_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textStyle="bold"
+            android:textSize="@dimen/default_text_size"
+            android:inputType="textMultiLine"
+            android:layout_marginBottom="@dimen/field_to_field_space" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_password"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="@dimen/label_to_edit_space"
+            android:textSize="@dimen/default_text_size"/>
+        <EditText
+            android:id="@+id/password_edit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textStyle="bold"
+            android:textSize="@dimen/default_text_size"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/button_save"
+            android:textAllCaps="false"
+            android:layout_marginEnd="@dimen/edit_side_margin"
+            android:layout_marginStart="@dimen/edit_side_margin"/>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -38,13 +38,22 @@ import pl.dawidkulpa.knj.Fragments.CalendarFragment;
 import pl.dawidkulpa.knj.Fragments.HistoryFragment;
 import pl.dawidkulpa.knj.Fragments.LoginFragment;
 import pl.dawidkulpa.knj.Fragments.MapFragment;
+import pl.dawidkulpa.knj.Fragments.NotifFragment;
 import pl.dawidkulpa.knj.Fragments.SettingsFragment;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        OnMapReadyCallback, LoginFragment.OnLoginListener {
+        OnMapReadyCallback, LoginFragment.OnLoginListener,
+        AccountFragment.OnSaveListener {
 
     private static final int PERMISSIONS_REQUEST_ALL=1;
+    private static final int MAP_FRAGMENT_ID=0;
+    private static final int LOGIN_FRAGMENT_ID=1;
+    private static final int ACCOUNT_FRAGMENT_ID=2;
+    private static final int CALENDAR_FRAGMENT_ID=3;
+    private static final int HISTORY_FRAGMENT_ID=4;
+    private static final int SETTINGS_FRAGMENT_ID=5;
+    private static final int NOTIF_FRAGMENT_ID=6;
 
     private FragmentManager fragmentManager;
     private ArrayList<Fragment> appFragments;
@@ -96,6 +105,7 @@ public class HomeActivity extends AppCompatActivity
         appFragments.add(CalendarFragment.newInstance());
         appFragments.add(HistoryFragment.newInstance());
         appFragments.add(SettingsFragment.newInstance());
+        appFragments.add(NotifFragment.newInstance());
 
         switchFragment(0);
 
@@ -111,6 +121,14 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void switchFragment(int id){
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        if(id!=MAP_FRAGMENT_ID){
+            fab.hide();
+        } else {
+            fab.show();
+        }
+
         FragmentTransaction transaction= fragmentManager.beginTransaction();
 
         transaction.replace(R.id.main_container, appFragments.get(id));
@@ -193,6 +211,9 @@ public class HomeActivity extends AppCompatActivity
             case R.id.nav_settings:
                 switchFragment(5);
                 break;
+            case R.id.nav_notif:
+                switchFragment(6);
+                break;
             case R.id.nav_find_lesson:
                 onFindLessonClick();
                 break;
@@ -242,31 +263,47 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
-    @Override
-    public void onLoginAcquired(User user) {
-        logedInUser= user;
-
-        Log.e("HomeActivity", "Login aquire");
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.getMenu().clear();
-        navigationView.inflateMenu(R.menu.activity_home_drawer_user);
-        switchFragment(0);
-    }
-
-    public void onLogoutClick(){
-        logedInUser=null;
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.getMenu().clear();
-        navigationView.inflateMenu(R.menu.activity_home_drawer_guest);
-        switchFragment(0);
-    }
-
     public void onFindLessonClick(){
 
     }
 
     public void onCreateLessonClick(){
 
+    }
+
+    public void onLogoutClick(){
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        logedInUser=null;
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
+        navigationView.inflateMenu(R.menu.activity_home_drawer_guest);
+        switchFragment(0);
+
+        fab.hide();
+        Snackbar.make(fab, R.string.info_successful_logout, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    @Override
+    public void onLoginAcquired(User user) {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        logedInUser= user;
+
+        Log.e("HomeActivity", "Login aquire");
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.getMenu().clear();
+        navigationView.inflateMenu(R.menu.activity_home_drawer_user);
+        switchFragment(MAP_FRAGMENT_ID);
+
+        fab.show();
+        Snackbar.make(fab, R.string.info_successful_login, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+
+        ((AccountFragment)appFragments.get(ACCOUNT_FRAGMENT_ID)).setUser(logedInUser);
+    }
+
+    @Override
+    public void onDataSaveSuccessful(User user) {
     }
 }

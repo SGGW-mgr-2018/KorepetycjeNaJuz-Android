@@ -40,4 +40,10 @@
     <string name="menu_tag_notif">Powiadomienia</string>
     <string name="label_notifs">Powiadomienia</string>
     <string name="title_activity_maps">Mapa</string>
+    <string name="button_change_account">Edytuj dane</string>
+    <string name="button_save">Zatwierdź zmiany</string>
+    <string name="info_successful_login">Udane logowanie</string>
+    <string name="info_failed_login">Błąd logowania</string>
+    <string name="info_successful_logout">Wylogowano</string>
+    <string name="info_failed_logout">Błąd wylogowania</string>
 </resources>

@@ -10,7 +10,7 @@
 
     <!-- Menu tags -->
     <string name="menu_tag_home">Home</string>
-    <string name="menu_tag_log_sign">Sign in / Sign up</string>
+    <string name="menu_tag_log_sign">Log in</string>
     <string name="menu_tag_settings">Settings</string>
     <string name="menu_tag_user_info">Your account</string>
     <string name="menu_tag_history">History</string>
@@ -49,8 +49,14 @@
     <string name="button_fb_login">Login with Facebook</string>
     <string name="button_forgot_pass">Forgot password?</string>
     <string name="button_signin">Sign in</string>
+    <string name="button_change_account">Change account data</string>
+    <string name="button_save">Save</string>
 
     <!-- Info -->
     <string name="info_register_claim">Reg claim</string>
+    <string name="info_successful_login">Successful login</string>
+    <string name="info_failed_login">Login failed</string>
+    <string name="info_successful_logout">Successful logout</string>
+    <string name="info_failed_logout">Logout failed</string>
 
 </resources>

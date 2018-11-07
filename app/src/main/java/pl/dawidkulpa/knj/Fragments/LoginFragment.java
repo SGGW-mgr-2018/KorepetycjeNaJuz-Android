@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import pl.dawidkulpa.knj.R;
 import pl.dawidkulpa.knj.User;
@@ -65,7 +66,19 @@ public class LoginFragment extends Fragment {
     }
 
     public void onLoginClick(View v){
-        onLoginListener.onLoginAcquired(new User());
+        EditText emailEdit= getView().findViewById(R.id.email_edit);
+        EditText passEdit= getView().findViewById(R.id.password_edit);
+
+        User user= new User();
+        user.setEmail(emailEdit.getText().toString());
+        user.setPassword(passEdit.getText().toString());
+
+        user.setName("Sierotka");
+        user.setSname("Marysia");
+        user.setPhoneNo("534 214 123");
+        user.setAboutMe("Lubię krasnoludki i duże lustra ale najbardziej to lubie jabłka. Czasem chodzę na spacery.");
+
+        onLoginListener.onLoginAcquired(user);
     }
 
 
