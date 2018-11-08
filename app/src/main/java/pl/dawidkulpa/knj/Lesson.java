@@ -1,41 +1,41 @@
 package pl.dawidkulpa.knj;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
+import java.sql.Time;
 
 public class Lesson {
-    private Marker googleMarker;
-    private GoogleMap map;
-    private Context context;
+    User coach;
 
-    private double lat;
-    private double lng;
+    String subject;
+    int level;
+    Time startTime;
+    int lenMin;
 
-    public Lesson(double lat, double lng){
-        this.lat= lat;
-        this.lng= lng;
+    public Lesson(){
+        startTime= new Time(65700000);
+        lenMin=90;
     }
 
-    public void register(Context context, GoogleMap map){
-        BitmapDrawable bitmapdraw= (BitmapDrawable)context.getResources().getDrawable(R.drawable.pin);
-        Bitmap icon = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), 200, 200, false);
-
-
-        googleMarker= map.addMarker(new MarkerOptions()
-                .position(new LatLng(lat, lng))
-                .anchor(0.5f, 1.0f)
-                .icon(BitmapDescriptorFactory.fromBitmap(icon)));
-
-
-        this.map= map;
-        this.context= context;
+    public Lesson(String subject, int level, Time startTime, int lenMin) {
+        this.subject = subject;
+        this.level = level;
+        this.startTime = startTime;
+        this.lenMin = lenMin;
     }
 
+    public String getSubject() {
+        return subject;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public Time getStartTime() {
+        return startTime;
+    }
+
+    public int getLenMin() {
+        return lenMin;
+    }
 }

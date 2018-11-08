@@ -59,7 +59,7 @@ public class HomeActivity extends AppCompatActivity
     private ArrayList<Fragment> appFragments;
 
     private User logedInUser;
-    private ArrayList<Lesson> lessons;
+    private ArrayList<LessonMapMarker> onMapLessons;
 
     private GoogleMap map;
     private FusedLocationProviderClient fusedLocationClient;
@@ -116,7 +116,7 @@ public class HomeActivity extends AppCompatActivity
         }
 
         fusedLocationClient= LocationServices.getFusedLocationProviderClient(this);
-        lessons= new ArrayList<>();
+        onMapLessons= new ArrayList<>();
 
     }
 
@@ -254,12 +254,12 @@ public class HomeActivity extends AppCompatActivity
             Log.e("Exception", se.getMessage());
         }
 
-        lessons.add(new Lesson(52.215518, 21.100844));
-        lessons.add(new Lesson(52.226711, 21.085355));
-        lessons.add(new Lesson(52.221301, 21.110810));
-        lessons.get(0).register(this, map);
-        lessons.get(1).register(this, map);
-        lessons.get(2).register(this, map);
+        onMapLessons.add(new LessonMapMarker(52.215518, 21.100844));
+        onMapLessons.add(new LessonMapMarker(52.226711, 21.085355));
+        onMapLessons.add(new LessonMapMarker(52.221301, 21.110810));
+        onMapLessons.get(0).register(this, map);
+        onMapLessons.get(1).register(this, map);
+        onMapLessons.get(2).register(this, map);
 
     }
 
