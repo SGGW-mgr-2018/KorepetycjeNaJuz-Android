@@ -9,6 +9,7 @@ public class User {
     private String phoneNo;
     private String aboutMe;
     private String password;
+    private String loginToken;
 
 
     public String getName() {
@@ -30,6 +31,8 @@ public class User {
     public String getAboutMe() {
         return aboutMe;
     }
+    public String getPassword(){return password;}
+    public String getLoginToken(){return loginToken;}
 
     public void setName(String name) {
         this.name = name;
@@ -53,5 +56,9 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setLoginToken(String loginToken){
+        this.loginToken= loginToken;
     }
 }

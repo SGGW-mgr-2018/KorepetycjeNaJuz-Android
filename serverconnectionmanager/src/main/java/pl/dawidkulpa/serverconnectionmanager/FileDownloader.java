@@ -58,7 +58,7 @@ public class FileDownloader extends AsyncTask<String, Integer, FileDownloader.Co
     }
 
     public void start(String adr, String writeDir){
-        this.execute(writeDir, adr, postData.build());
+        this.execute(writeDir, adr, postData.build(Query.BuildType.Pairs));
     }
 
     @Override

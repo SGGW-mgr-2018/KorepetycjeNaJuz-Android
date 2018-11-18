@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.LoginFragment">
+    tools:context=".Fragments.LoginFragment"
+    android:background="@color/colorBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,7 +25,9 @@
             android:text="@string/button_fb_login"
             android:textAllCaps="false"
             android:layout_below="@id/fragment_label"
-            android:layout_centerHorizontal="true"/>
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ripple_default_round"
+            android:textColor="@color/colorTextButton"/>
 
         <LinearLayout
             android:id="@+id/spacer"
@@ -118,7 +121,9 @@
             android:text="@string/button_signin"
             android:textAllCaps="false"
             android:layout_below="@id/reg_claim_text"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ripple_default_round"
+            android:textColor="@color/colorTextButton"/>
 
     </RelativeLayout>
 

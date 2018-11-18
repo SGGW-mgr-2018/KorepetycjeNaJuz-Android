@@ -1,8 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#acacac</color>
-    <color name="colorPrimaryDark">#7b7b7b</color>
-    <color name="colorAccent">#202020</color>
+
+    <color name="colorBackground">#f4f2fd</color>
+
+    <color name="colorPrimary">#f4f2fd</color>
+    <color name="colorPrimaryDark">#353535</color>
+    <color name="colorAccent">#e34196</color>
     <color name="colorFullBlack">#000000</color>
     <color name="colorFullTransparent">#00000000</color>
+
+    <color name="colorTextButton">#ffffff</color>
+    <color name="colorTextLabels">#715aff</color>
+
+    <color name="colorButtonBackground">@color/colorAccent</color>
 </resources>

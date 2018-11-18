@@ -290,7 +290,6 @@ public class HomeActivity extends AppCompatActivity
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         logedInUser= user;
 
-        Log.e("HomeActivity", "Login aquire");
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.getMenu().clear();
         navigationView.inflateMenu(R.menu.activity_home_drawer_user);

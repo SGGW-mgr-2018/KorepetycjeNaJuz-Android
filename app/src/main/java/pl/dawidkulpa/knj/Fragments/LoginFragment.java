@@ -3,17 +3,23 @@ package pl.dawidkulpa.knj.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import org.json.JSONObject;
+
 import pl.dawidkulpa.knj.R;
 import pl.dawidkulpa.knj.User;
+import pl.dawidkulpa.serverconnectionmanager.Query;
+import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
 
 public class LoginFragment extends Fragment {
 
     private OnLoginListener onLoginListener;
+    private User user;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -69,18 +75,39 @@ public class LoginFragment extends Fragment {
         EditText emailEdit= getView().findViewById(R.id.email_edit);
         EditText passEdit= getView().findViewById(R.id.password_edit);
 
-        User user= new User();
+        user= new User();
         user.setEmail(emailEdit.getText().toString());
         user.setPassword(passEdit.getText().toString());
+
+        ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
+            @Override
+            public void onFinish(int rCode, JSONObject jObject) {
+                onLoginFinished(rCode, jObject);
+            }
+        }, Query.BuildType.JSONPatch);
+
+        Query userLoginDto= new Query();
+        userLoginDto.addPair("username", user.getEmail());
+        userLoginDto.addPair("password", user.getPassword());
+
+        scm.addPOSTPair("", userLoginDto);
+        scm.start("https://korepetycjenajuzapi.azurewebsites.net/api/Authorization/Login");
+        getView().findViewById(R.id.progressbar).setVisibility(View.VISIBLE);
 
         user.setName("Sierotka");
         user.setSname("Marysia");
         user.setPhoneNo("534 214 123");
         user.setAboutMe("Lubię krasnoludki i duże lustra ale najbardziej to lubie jabłka. Czasem chodzę na spacery.");
-
-        onLoginListener.onLoginAcquired(user);
     }
 
+    private void onLoginFinished(int rCode, JSONObject jObj){
+        getView().findViewById(R.id.progressbar).setVisibility(View.INVISIBLE);
+        Log.e("API response code", String.valueOf(rCode));
+        if(rCode==200){
+            user.setLoginToken("zamienic_na_prawidlowy");
+            onLoginListener.onLoginAcquired(user);
+        }
+    }
 
     public interface OnLoginListener {
         void onLoginAcquired(User user);

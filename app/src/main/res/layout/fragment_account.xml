@@ -3,17 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.AccountFragment">
-
-    <TextView
-        android:id="@+id/fragment_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="@string/label_account"
-        android:textSize="32sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="@dimen/title_to_content_space"/>
+    tools:context=".Fragments.AccountFragment"
+    android:background="@color/colorBackground">
 
     <LinearLayout
         android:id="@+id/img_box"
@@ -22,6 +13,7 @@
         android:orientation="horizontal"
         android:layout_below="@id/fragment_label"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp">
         <ImageView
             android:layout_width="match_parent"
@@ -142,7 +134,9 @@
             android:layout_marginEnd="@dimen/edit_side_margin"
             android:layout_marginTop="@dimen/field_to_field_space"
             android:text="@string/button_change_account"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:background="@drawable/ripple_default_round"
+            android:textColor="@color/colorTextButton"/>
     </LinearLayout>
 
 
@@ -215,7 +209,9 @@
             android:text="@string/button_save"
             android:textAllCaps="false"
             android:layout_marginEnd="@dimen/edit_side_margin"
-            android:layout_marginStart="@dimen/edit_side_margin"/>
+            android:layout_marginStart="@dimen/edit_side_margin"
+            android:background="@drawable/ripple_default_round"
+            android:textColor="@color/colorTextButton"/>
     </LinearLayout>
 
 </RelativeLayout>

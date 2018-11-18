@@ -15,25 +15,11 @@ import java.net.URL;
 
 
 public class JSONParser {
-    public static JSONObject getJSONFrmUrl(String urlAddress, String query){
-        InputStream is;
+    public static JSONObject getJSONFrmUrl(InputStream is){
         JSONObject jObject=null;
         String json;
-        URL url;
-        HttpURLConnection httpURLConnection;
 
         try{
-            url= new URL(urlAddress);
-            httpURLConnection= (HttpURLConnection) url.openConnection();
-            httpURLConnection.setRequestMethod("POST");
-            httpURLConnection.setDoOutput(true);
-
-            PrintWriter urlOut= new PrintWriter(httpURLConnection.getOutputStream());
-            urlOut.print(query);
-            urlOut.close();
-
-            httpURLConnection.connect();
-            is= httpURLConnection.getInputStream();
             BufferedReader reader= new BufferedReader(new InputStreamReader(is));
             StringBuilder sb= new StringBuilder();
             String line;
@@ -42,10 +28,8 @@ public class JSONParser {
                 Log.d("JSONParser", "line: "+line);
                 sb.append(line+"n");
             }
-            is.close();
-            httpURLConnection.disconnect();
-            json=sb.toString();
 
+            json=sb.toString();
             jObject=new JSONObject(json);
 
         } catch (JSONException me){
@@ -55,7 +39,7 @@ public class JSONParser {
                 Log.e("JSONParser", "nom");
         } catch (IOException ioe){
             if(ioe.getMessage()!=null){
-                Log.e("IO", ioe.getLocalizedMessage());
+                Log.e("IOE", ioe.getLocalizedMessage());
             } else
                 Log.e("IO", "nom");
         }
