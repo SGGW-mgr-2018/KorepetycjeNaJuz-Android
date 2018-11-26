@@ -30,7 +30,7 @@
         android:autofillHints="emailAddress"
         android:hint="@string/hint_email"
         android:inputType="textEmailAddress"
-        android:text="korki@najuz.com"/>
+        android:text="wilk@czerwonykapturek.com"/>
 
     <EditText
         android:id="@+id/password_edit"
@@ -43,7 +43,7 @@
         android:autofillHints="password"
         android:hint="@string/hint_pass"
         android:inputType="textPassword"
-        android:text="Knj1234!"/>
+        android:text="KupaSlonia1!"/>
 
     <Button
         android:id="@+id/login_button"
@@ -56,7 +56,6 @@
         android:layout_centerHorizontal="true"
         android:text="@string/button_login"
         android:textAllCaps="false"
-        android:onClick="onLoginClick"
         android:background="@drawable/ripple_default_round"
         android:textColor="@color/colorTextButton"/>
 

@@ -10,7 +10,6 @@
 
     <!-- Menu tags -->
     <string name="menu_tag_home">Home</string>
-    <string name="menu_tag_log_sign">Log in</string>
     <string name="menu_tag_settings">Settings</string>
     <string name="menu_tag_user_info">Your account</string>
     <string name="menu_tag_history">History</string>
@@ -20,6 +19,8 @@
     <string name="menu_tag_create_lesson">Create lesson</string>
     <string name="menu_tag_logout">Logout</string>
     <string name="menu_tag_find_lesson">Find lesson</string>
+    <string name="menu_tag_login">Log in</string>
+    <string name="menu_tag_signin">Sign in</string>
 
     <!-- Labels -->
     <string name="label_login">Log in</string>
@@ -29,8 +30,8 @@
     <string name="label_calendar">Calendar</string>
     <string name="label_history">History</string>
     <string name="label_account">Your Account</string>
-    <string name="label_name">Name</string>
-    <string name="label_sname">Surname</string>
+    <string name="label_name">First Name</string>
+    <string name="label_sname">Last Name</string>
     <string name="label_email">Email</string>
     <string name="label_phone_no">Phone number</string>
     <string name="label_about_me">About me</string>
@@ -41,8 +42,8 @@
     <!-- Hints -->
     <string name="hint_email">Your e-mail</string>
     <string name="hint_pass">Your password</string>
-    <string name="hint_name">Name</string>
-    <string name="hint_sname">Surname</string>
+    <string name="hint_name">First Name</string>
+    <string name="hint_sname">Last Name</string>
 
     <!-- Button labels -->
     <string name="button_login">Login</string>
@@ -58,5 +59,7 @@
     <string name="info_failed_login">Login failed</string>
     <string name="info_successful_logout">Successful logout</string>
     <string name="info_failed_logout">Logout failed</string>
+    <string name="info_success_signin">Successful sign in. Look at your email account :)</string>
+    <string name="info_failed_signin">Sign in failed</string>
 
 </resources>

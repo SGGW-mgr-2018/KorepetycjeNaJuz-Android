@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import pl.dawidkulpa.knj.R;
@@ -102,10 +104,17 @@ public class LoginFragment extends Fragment {
 
     private void onLoginFinished(int rCode, JSONObject jObj){
         getView().findViewById(R.id.progressbar).setVisibility(View.INVISIBLE);
-        Log.e("API response code", String.valueOf(rCode));
         if(rCode==200){
-            user.setLoginToken("zamienic_na_prawidlowy");
-            onLoginListener.onLoginAcquired(user);
+            try {
+                user.setLoginToken(jObj.getString("token"));
+                onLoginListener.onLoginAcquired(user);
+            } catch (JSONException je){
+                Log.e("LoginFragment", je.getMessage());
+            }
+        } else if(rCode==400){
+            Toast.makeText(getContext(),R.string.info_failed_login,Toast.LENGTH_SHORT).show();
+        } else if(rCode==403){
+            Toast.makeText(getContext(),R.string.info_failed_login,Toast.LENGTH_SHORT).show();
         }
     }
 

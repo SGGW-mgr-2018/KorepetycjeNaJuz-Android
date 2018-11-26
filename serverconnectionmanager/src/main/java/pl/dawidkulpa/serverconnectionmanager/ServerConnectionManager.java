@@ -116,6 +116,9 @@ public class ServerConnectionManager extends AsyncTask<String, Integer, Integer>
     @Override
     protected void onPostExecute(Integer rCode) {
         super.onPostExecute(rCode);
+
+        Log.e("scm rCode", String.valueOf(rCode));
+
         if(onFinishListener !=null){
             onFinishListener.onFinish(rCode, jObj);
         }

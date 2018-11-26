@@ -5,7 +5,6 @@
     <string name="navigation_drawer_close">Zamknij nawigację</string>
     <string name="action_settings">Ustawienia</string>
     <string name="menu_tag_home">Mapa</string>
-    <string name="menu_tag_log_sign">Zaloguj się</string>
     <string name="menu_tag_settings">Ustawienia</string>
     <string name="menu_tag_user_info">Twoje konto</string>
     <string name="menu_tag_history">Historia</string>
@@ -46,4 +45,8 @@
     <string name="info_failed_login">Błąd logowania</string>
     <string name="info_successful_logout">Wylogowano</string>
     <string name="info_failed_logout">Błąd wylogowania</string>
+    <string name="menu_tag_login">Zaloguj się</string>
+    <string name="menu_tag_signin">Zarejestruj się</string>
+    <string name="info_success_signin">Pomyślnie utworzono konto. Teraz zajrzyj na swojego maila :)</string>
+    <string name="info_failed_signin">Błąd rejestracji</string>
 </resources>

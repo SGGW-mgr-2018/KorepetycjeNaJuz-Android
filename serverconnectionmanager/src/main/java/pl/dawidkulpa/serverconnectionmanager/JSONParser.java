@@ -30,6 +30,7 @@ public class JSONParser {
             }
 
             json=sb.toString();
+            //Log.e("JSON", json);
             jObject=new JSONObject(json);
 
         } catch (JSONException me){

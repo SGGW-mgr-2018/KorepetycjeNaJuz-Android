@@ -26,7 +26,7 @@ public class LessonMapMarker {
     }
 
     public void register(Context context, GoogleMap map){
-        BitmapDrawable bitmapdraw= (BitmapDrawable)context.getResources().getDrawable(R.drawable.pin);
+        BitmapDrawable bitmapdraw= (BitmapDrawable)context.getResources().getDrawable(R.drawable.pin2);
         Bitmap icon = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), 200, 200, false);
 
 

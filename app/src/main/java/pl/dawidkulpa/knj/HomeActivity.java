@@ -40,6 +40,7 @@ import pl.dawidkulpa.knj.Fragments.LoginFragment;
 import pl.dawidkulpa.knj.Fragments.MapFragment;
 import pl.dawidkulpa.knj.Fragments.NotifFragment;
 import pl.dawidkulpa.knj.Fragments.SettingsFragment;
+import pl.dawidkulpa.knj.Fragments.SigninFragment;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -54,6 +55,7 @@ public class HomeActivity extends AppCompatActivity
     private static final int HISTORY_FRAGMENT_ID=4;
     private static final int SETTINGS_FRAGMENT_ID=5;
     private static final int NOTIF_FRAGMENT_ID=6;
+    private static final int SIGNIN_FRAGMENT_ID=7;
 
     private FragmentManager fragmentManager;
     private ArrayList<Fragment> appFragments;
@@ -106,6 +108,7 @@ public class HomeActivity extends AppCompatActivity
         appFragments.add(HistoryFragment.newInstance());
         appFragments.add(SettingsFragment.newInstance());
         appFragments.add(NotifFragment.newInstance());
+        appFragments.add(SigninFragment.newInstance());
 
         switchFragment(0);
 
@@ -194,25 +197,28 @@ public class HomeActivity extends AppCompatActivity
 
         switch (id) {
             case R.id.nav_home:
-                switchFragment(0);
+                switchFragment(MAP_FRAGMENT_ID);
                 break;
-            case R.id.nav_log_sign:
-                switchFragment(1);
+            case R.id.nav_login:
+                switchFragment(LOGIN_FRAGMENT_ID);
                 break;
             case R.id.nav_your_accont:
-                switchFragment(2);
+                switchFragment(ACCOUNT_FRAGMENT_ID);
                 break;
             case R.id.nav_calendar:
-                switchFragment(3);
+                switchFragment(CALENDAR_FRAGMENT_ID);
                 break;
             case R.id.nav_history:
-                switchFragment(4);
+                switchFragment(HISTORY_FRAGMENT_ID);
                 break;
             case R.id.nav_settings:
-                switchFragment(5);
+                switchFragment(SETTINGS_FRAGMENT_ID);
                 break;
             case R.id.nav_notif:
-                switchFragment(6);
+                switchFragment(NOTIF_FRAGMENT_ID);
+                break;
+            case  R.id.nav_signin:
+                switchFragment(SIGNIN_FRAGMENT_ID);
                 break;
             case R.id.nav_find_lesson:
                 onFindLessonClick();

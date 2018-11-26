@@ -9,9 +9,15 @@
             android:title="@string/menu_tag_home"
             android:icon="@drawable/ic_home_black"/>
         <item
-            android:id="@+id/nav_log_sign"
-            android:title="@string/menu_tag_log_sign"
+            android:id="@+id/nav_login"
+            android:title="@string/menu_tag_login"
             android:icon="@drawable/ic_person_black"/>
+
+        <item
+            android:id="@+id/nav_signin"
+            android:title="@string/menu_tag_signin"
+            android:icon="@drawable/ic_person_add_black"/>
+
         <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings_black"
