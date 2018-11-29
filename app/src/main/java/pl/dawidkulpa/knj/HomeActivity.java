@@ -1,6 +1,7 @@
 package pl.dawidkulpa.knj;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -11,7 +12,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +25,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.FacebookSdk;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,9 +33,18 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import pl.dawidkulpa.knj.Fragments.AccountFragment;
 import pl.dawidkulpa.knj.Fragments.CalendarFragment;
@@ -41,11 +54,13 @@ import pl.dawidkulpa.knj.Fragments.MapFragment;
 import pl.dawidkulpa.knj.Fragments.NotifFragment;
 import pl.dawidkulpa.knj.Fragments.SettingsFragment;
 import pl.dawidkulpa.knj.Fragments.SigninFragment;
+import pl.dawidkulpa.serverconnectionmanager.Query;
+import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         OnMapReadyCallback, LoginFragment.OnLoginListener,
-        AccountFragment.OnSaveListener {
+        AccountFragment.OnSaveListener, SigninFragment.OnSignInListener {
 
     private static final int PERMISSIONS_REQUEST_ALL=1;
     private static final int MAP_FRAGMENT_ID=0;
@@ -67,6 +82,17 @@ public class HomeActivity extends AppCompatActivity
     private FusedLocationProviderClient fusedLocationClient;
 
 
+    //MAP filters
+    private int radiusFilter;
+    private LatLng mapCenter;
+    private Date today;
+    private int timeFilter;
+    private Date dateToFilter;
+    private int subjectFilter;
+    private int levelFilter;
+    private int coachIdFilter;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,13 +100,14 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //FacebookSdk.sdkInitialize(getApplicationContext());
+
         //Prepare FAB
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                openFilterDialog();
             }
         });
 
@@ -120,6 +147,13 @@ public class HomeActivity extends AppCompatActivity
 
         fusedLocationClient= LocationServices.getFusedLocationProviderClient(this);
         onMapLessons= new ArrayList<>();
+
+        subjectFilter=-1;
+        levelFilter=-1;
+        coachIdFilter=-1;
+    }
+
+    private void setSubjectsBox(){
 
     }
 
@@ -260,13 +294,26 @@ public class HomeActivity extends AppCompatActivity
             Log.e("Exception", se.getMessage());
         }
 
-        onMapLessons.add(new LessonMapMarker(52.215518, 21.100844));
-        onMapLessons.add(new LessonMapMarker(52.226711, 21.085355));
-        onMapLessons.add(new LessonMapMarker(52.221301, 21.110810));
-        onMapLessons.get(0).register(this, map);
-        onMapLessons.get(1).register(this, map);
-        onMapLessons.get(2).register(this, map);
+        map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
+            @Override
+            public void onCameraIdle() {
+                double latLength=0;
+                LatLngBounds latLngBounds;
+                mapCenter= map.getCameraPosition().target;
+                latLngBounds= map.getProjection().getVisibleRegion().latLngBounds;
+                latLength= latLngBounds.northeast.latitude-latLngBounds.southwest.latitude;
+                latLength= Math.abs(latLength);
+                radiusFilter= (int)((latLength*110.574)/5);
 
+                startMapRefresh();
+            }
+        });
+
+
+        mapCenter=map.getCameraPosition().target;
+        radiusFilter=50;
+
+        startMapRefresh();
     }
 
     public void onFindLessonClick(){
@@ -286,7 +333,6 @@ public class HomeActivity extends AppCompatActivity
         navigationView.inflateMenu(R.menu.activity_home_drawer_guest);
         switchFragment(0);
 
-        fab.hide();
         Snackbar.make(fab, R.string.info_successful_logout, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
@@ -301,7 +347,6 @@ public class HomeActivity extends AppCompatActivity
         navigationView.inflateMenu(R.menu.activity_home_drawer_user);
         switchFragment(MAP_FRAGMENT_ID);
 
-        fab.show();
         Snackbar.make(fab, R.string.info_successful_login, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
 
@@ -309,6 +354,125 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
+    public void onSignInSuccess() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        switchFragment(MAP_FRAGMENT_ID);
+        Snackbar.make(fab, R.string.info_success_signin, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    @Override
     public void onDataSaveSuccessful(User user) {
     }
+
+    private void openFilterDialog(){
+        AlertDialog.Builder adbuilder= new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+
+        adbuilder.setTitle("Filtry");
+        adbuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        adbuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+
+        adbuilder.setView(inflater.inflate(R.layout.dialog_filters, null));
+
+        adbuilder.create().show();
+    }
+
+    private void startMapRefresh(){
+        today= Calendar.getInstance().getTime();
+        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.US);
+
+        Calendar c=Calendar.getInstance();
+        c.setTime(today);
+        c.add(Calendar.DAY_OF_MONTH, timeFilter);
+        dateToFilter= c.getTime();
+
+        ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
+            @Override
+            public void onFinish(int respCode, JSONObject jObject) {
+                refreshMap(respCode, jObject);
+            }
+        }, Query.BuildType.Pairs);
+
+        //Testowe
+        //scm.addPOSTPair("Latitude", "52.327286");
+        //scm.addPOSTPair("Longitude", "21.103956");
+        //scm.addPOSTPair("Radius", "100");
+        scm.addPOSTPair("DateFrom", "2018-11-23T14:00:00");
+        scm.addPOSTPair("DateTo", "2018-11-23T16:00:00");
+
+        //Prawidlowe
+        scm.addPOSTPair("Latitude", String.valueOf(mapCenter.latitude));
+        scm.addPOSTPair("Longitude", String.valueOf(mapCenter.longitude));
+        scm.addPOSTPair("Radius", String.valueOf(radiusFilter));
+        //scm.addPOSTPair("DateFrom", sdf.format(today));
+        //scm.addPOSTPair("DateTo", sdf.format(dateToFilter));
+
+        if(subjectFilter>=0)
+            scm.addPOSTPair("SubjectId", String.valueOf(subjectFilter));
+        if(levelFilter>=0)
+            scm.addPOSTPair("LevelId", String.valueOf(levelFilter));
+        if(coachIdFilter>=0)
+            scm.addPOSTPair("CoachId", String.valueOf(coachIdFilter));
+
+        scm.setMethod(ServerConnectionManager.METHOD_GET);
+
+        scm.start("https://korepetycjenajuzapi.azurewebsites.net/api/CoachLesson/CoachLessonsByFilters");
+    }
+
+    private void refreshMap(int rCode, JSONObject jObj){
+        if(rCode==200){
+            boolean[] occurMap= new boolean[onMapLessons.size()];
+
+            try {
+                JSONArray lessonsArray = jObj.getJSONArray("array");
+
+                //Update or add lesson marker
+                for(int i=0; i<lessonsArray.length(); i++){
+                    boolean occured=false;
+                    JSONObject lessonJObj= lessonsArray.getJSONObject(i);
+
+                    //Search for occurrence
+                    for(int j=0; i<onMapLessons.size(); j++){
+                        if(onMapLessons.get(j).equals(lessonJObj)){
+                            occurMap[j]=true;
+                            occured= true;
+                            onMapLessons.get(j).update(lessonJObj);
+                            break;
+                        }
+                    }
+
+                    //If absent -> add
+                    if(!occured){
+                        onMapLessons.add(LessonMapMarker.create(lessonJObj));
+                        onMapLessons.get(onMapLessons.size()-1).register(this, map);
+                    }
+                }
+            } catch (JSONException jsonE){
+                Log.e("Refresh Map", jsonE.getMessage());
+            }
+
+            //Remove absent elements
+            for(int i=0; i<occurMap.length; i++){
+                if(!occurMap[i]){
+                    onMapLessons.get(i).unregister();
+                    onMapLessons.remove(i);
+                }
+            }
+        }
+
+        Log.e("Home Activity", "Map refreshed");
+    }
+
+
 }

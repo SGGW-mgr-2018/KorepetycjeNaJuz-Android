@@ -10,15 +10,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import pl.dawidkulpa.knj.R;
-import pl.dawidkulpa.knj.User;
 import pl.dawidkulpa.serverconnectionmanager.Query;
 import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
 
 public class SigninFragment extends Fragment {
+
+    private OnSignInListener onSignInListener;
 
     public SigninFragment() {
         // Required empty public constructor
@@ -55,12 +55,12 @@ public class SigninFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //if (context instanceof OnFragmentInteractionListener) {
-        //   mListener = (OnFragmentInteractionListener) context;
-        //} else {
-        //throw new RuntimeException(context.toString()
-        //          + " must implement OnFragmentInteractionListener");
-        //}
+        if (context instanceof OnSignInListener) {
+           onSignInListener = (OnSignInListener) context;
+        } else {
+        throw new RuntimeException(context.toString()
+                  + " must implement OnRegisterListener");
+        }
     }
 
     @Override
@@ -77,7 +77,7 @@ public class SigninFragment extends Fragment {
         ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
             @Override
             public void onFinish(int rCode, JSONObject jObject) {
-                onRegisterFinished(rCode);
+                onRegisterFinished(rCode, jObject);
             }
         }, Query.BuildType.JSONPatch);
 
@@ -88,22 +88,26 @@ public class SigninFragment extends Fragment {
         userCreateDTO.addPair("email", emailEdit.getText().toString());
         userCreateDTO.addPair("privacyPolicesConfirmed", "true");
         scm.addPOSTPair("", userCreateDTO);
+        scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
+        scm.setMethod(ServerConnectionManager.METHOD_POST);
         scm.start("https://korepetycjenajuzapi.azurewebsites.net/api/Users/Create");
         getView().findViewById(R.id.progressbar).setVisibility(View.VISIBLE);
     }
 
-    public void onRegisterFinished(int rCode){
+    public void onRegisterFinished(int rCode, JSONObject jObj){
         getView().findViewById(R.id.progressbar).setVisibility(View.INVISIBLE);
 
         if(rCode==201){
-            Toast.makeText(getContext(),R.string.info_success_signin,Toast.LENGTH_SHORT).show();
+            onSignInListener.onSignInSuccess();
+
         } else if(rCode==400){
             Toast.makeText(getContext(),R.string.info_failed_signin,Toast.LENGTH_SHORT).show();
         }
+        Log.e("JSON", jObj.toString());
 
     }
 
-    public interface OnRegisterListener {
-        void onRegisterSuccess(User user);
+    public interface OnSignInListener {
+        void onSignInSuccess();
     }
 }

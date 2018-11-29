@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">KNJ</string>
+
+    <string name="facebook_app_id" translatable="false">327640684632071</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb327640684632071</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title" translatable="false">Sierotka Marysia</string>

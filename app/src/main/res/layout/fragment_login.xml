@@ -102,19 +102,17 @@
             android:background="@color/colorFullBlack" />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/f_login_button"
-        android:layout_width="match_parent"
+    <!--
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/fb_login_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginEnd="64dp"
-        android:layout_marginTop="16dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="30dp"
         android:layout_below="@id/spacer"
-        android:layout_centerHorizontal="true"
-        android:text="@string/button_fb_login"
-        android:textAllCaps="false"
-        android:background="@drawable/ripple_default_round"
-        android:textColor="@color/colorTextButton"/>
+        android:layout_centerHorizontal="true"/>
+        -->
 
     <ProgressBar
         android:id="@+id/progressbar"

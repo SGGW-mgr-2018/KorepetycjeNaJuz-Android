@@ -2,6 +2,7 @@ package pl.dawidkulpa.serverconnectionmanager;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,9 +31,15 @@ public class JSONParser {
             }
 
             json=sb.toString();
-            //Log.e("JSON", json);
-            jObject=new JSONObject(json);
 
+            if(!json.isEmpty()){
+                if(json.charAt(0)=='[') {
+                    jObject= new JSONObject();
+                    jObject.put("array", new JSONArray(json));
+                } else {
+                    jObject = new JSONObject(json);
+                }
+            }
         } catch (JSONException me){
             if(me.getMessage()!=null)
                 Log.e("JSONParser", me.getMessage());

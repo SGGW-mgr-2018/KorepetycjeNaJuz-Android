@@ -77,7 +77,7 @@ public class Query {
             } else if(buildType==BuildType.JSONPatch){
 
                 if(!names.get(i).equals("")){
-                    queryString+="\""+names.get(i)+"\"";
+                    queryString+="\""+names.get(i)+"\":";
                 }
 
                 if(values.get(i).charAt(0)!='{'){
@@ -92,9 +92,6 @@ public class Query {
                     queryString+=", ";
             }
         }
-
-
-        Log.e("Query String", queryString);
         
         return queryString;
     }

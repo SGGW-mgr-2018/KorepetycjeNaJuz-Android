@@ -42,10 +42,10 @@ public class LessonsListAdapter extends ArrayAdapter<Lesson> {
         }
 
         String title= data.get(position).getSubject()+", liceum, ";
-        Time sTime= data.get(position).getStartTime();
-        Time eTime= new Time(sTime.getTime() + data.get(position).getLenMin()*60*1000);
-        title+= sTime.getHours()+":"+sTime.getMinutes()+" - ";
-        title+= eTime.getHours()+":"+eTime.getMinutes();
+        //Time sTime= data.get(position).getStartTime();
+        //Time eTime= new Time(sTime.getTime() + data.get(position).getLenMin()*60*1000);
+        //title+= sTime.getHours()+":"+sTime.getMinutes()+" - ";
+        //title+= eTime.getHours()+":"+eTime.getMinutes();
 
         lessonHolder.titleText.setText(title);
         lessonHolder.descrText.setText("Description");

@@ -83,7 +83,7 @@ public class CalendarFragment extends Fragment {
         dayLessons.clear();
 
         for(int i=0; i<d; i++){
-            dayLessons.add(new Lesson("Polski", 1, new Time(65700000), 90));
+            //dayLessons.add(new Lesson("Polski", 1, new Time(65700000), 90));
         }
 
         lessonsListAdapter.notifyDataSetChanged();

@@ -93,6 +93,8 @@ public class LoginFragment extends Fragment {
         userLoginDto.addPair("password", user.getPassword());
 
         scm.addPOSTPair("", userLoginDto);
+        scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
+        scm.setMethod(ServerConnectionManager.METHOD_POST);
         scm.start("https://korepetycjenajuzapi.azurewebsites.net/api/Authorization/Login");
         getView().findViewById(R.id.progressbar).setVisibility(View.VISIBLE);
 

@@ -3,6 +3,7 @@ package pl.dawidkulpa.knj;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -10,19 +11,28 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class LessonMapMarker {
     private Marker googleMarker;
     private GoogleMap map;
     private Context context;
 
-    private double lat;
-    private double lng;
-
     private Lesson lesson;
 
-    public LessonMapMarker(double lat, double lng){
-        this.lat= lat;
-        this.lng= lng;
+    public static LessonMapMarker create(JSONObject jObj){
+        LessonMapMarker lessonMapMarker= new LessonMapMarker();
+
+        lessonMapMarker.lesson= Lesson.create(jObj);
+        if(lessonMapMarker.lesson==null)
+            return null;
+
+        return lessonMapMarker;
+    }
+
+    public boolean equals(JSONObject jObj){
+        return lesson.equals(jObj);
     }
 
     public void register(Context context, GoogleMap map){
@@ -31,12 +41,20 @@ public class LessonMapMarker {
 
 
         googleMarker= map.addMarker(new MarkerOptions()
-                .position(new LatLng(lat, lng))
+                .position(new LatLng(lesson.getLat(), lesson.getLng()))
                 .anchor(0.5f, 1.0f)
                 .icon(BitmapDescriptorFactory.fromBitmap(icon)));
 
 
         this.map= map;
         this.context= context;
+    }
+
+    public void unregister(){
+        googleMarker.remove();
+    }
+
+    public void update(JSONObject jObj){
+
     }
 }
