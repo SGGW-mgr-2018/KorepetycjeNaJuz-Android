@@ -1,4 +1,4 @@
-package pl.dawidkulpa.knj;
+package pl.dawidkulpa.knj.Lessons;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,8 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.sql.Time;
 import java.util.ArrayList;
+
+import pl.dawidkulpa.knj.R;
 
 public class LessonsListAdapter extends ArrayAdapter<Lesson> {
     private ArrayList<Lesson> data;

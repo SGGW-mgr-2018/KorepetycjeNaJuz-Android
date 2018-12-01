@@ -1,9 +1,8 @@
-package pl.dawidkulpa.knj;
+package pl.dawidkulpa.knj.Lessons;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -11,8 +10,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONException;
 import org.json.JSONObject;
+
+import pl.dawidkulpa.knj.R;
 
 public class LessonMapMarker {
     private Marker googleMarker;
@@ -38,7 +38,6 @@ public class LessonMapMarker {
     public void register(Context context, GoogleMap map){
         BitmapDrawable bitmapdraw= (BitmapDrawable)context.getResources().getDrawable(R.drawable.pin2);
         Bitmap icon = Bitmap.createScaledBitmap(bitmapdraw.getBitmap(), 200, 200, false);
-
 
         googleMarker= map.addMarker(new MarkerOptions()
                 .position(new LatLng(lesson.getLat(), lesson.getLng()))

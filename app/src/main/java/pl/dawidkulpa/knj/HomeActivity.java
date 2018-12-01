@@ -24,8 +24,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
-import com.facebook.FacebookSdk;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,18 +34,13 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 import pl.dawidkulpa.knj.Fragments.AccountFragment;
 import pl.dawidkulpa.knj.Fragments.CalendarFragment;
@@ -54,6 +50,8 @@ import pl.dawidkulpa.knj.Fragments.MapFragment;
 import pl.dawidkulpa.knj.Fragments.NotifFragment;
 import pl.dawidkulpa.knj.Fragments.SettingsFragment;
 import pl.dawidkulpa.knj.Fragments.SigninFragment;
+import pl.dawidkulpa.knj.Lessons.SubjectDefinition;
+import pl.dawidkulpa.knj.Lessons.LessonsManager;
 import pl.dawidkulpa.serverconnectionmanager.Query;
 import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
 
@@ -76,34 +74,28 @@ public class HomeActivity extends AppCompatActivity
     private ArrayList<Fragment> appFragments;
 
     private User logedInUser;
-    private ArrayList<LessonMapMarker> onMapLessons;
 
     private GoogleMap map;
     private FusedLocationProviderClient fusedLocationClient;
 
+    private LessonsManager lessonsManager;
 
-    //MAP filters
-    private int radiusFilter;
-    private LatLng mapCenter;
-    private Date today;
-    private int timeFilter;
-    private Date dateToFilter;
-    private int subjectFilter;
-    private int levelFilter;
-    private int coachIdFilter;
+    private View dialogView;
+
+    private SubjectDefinition[] subjectDefinitions;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //FacebookSdk.sdkInitialize(getApplicationContext());
 
         //Prepare FAB
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -111,14 +103,16 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
+        getLessonSubjects();
+
         //Prepare side navigation
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         getLocationPermission();
 
@@ -139,26 +133,13 @@ public class HomeActivity extends AppCompatActivity
 
         switchFragment(0);
 
-        if(logedInUser!=null){
-            fab.show();
-        } else {
-            fab.hide();
-        }
-
         fusedLocationClient= LocationServices.getFusedLocationProviderClient(this);
-        onMapLessons= new ArrayList<>();
 
-        subjectFilter=-1;
-        levelFilter=-1;
-        coachIdFilter=-1;
-    }
-
-    private void setSubjectsBox(){
-
+        lessonsManager= new LessonsManager(this);
     }
 
     private void switchFragment(int id){
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
 
         if(id!=MAP_FRAGMENT_ID){
             fab.hide();
@@ -183,7 +164,6 @@ public class HomeActivity extends AppCompatActivity
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED;
 
-
         if (!granted) {
             perms= new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION};
@@ -194,7 +174,7 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -265,11 +245,10 @@ public class HomeActivity extends AppCompatActivity
                 break;
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 
 
     @Override
@@ -284,7 +263,6 @@ public class HomeActivity extends AppCompatActivity
             fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
-                    Log.e("HomeActivity", "Loc update");
                     map.animateCamera(CameraUpdateFactory.newLatLngZoom(
                             new LatLng(location.getLatitude(), location.getLongitude()), 10));
                 }
@@ -297,23 +275,11 @@ public class HomeActivity extends AppCompatActivity
         map.setOnCameraIdleListener(new GoogleMap.OnCameraIdleListener() {
             @Override
             public void onCameraIdle() {
-                double latLength=0;
-                LatLngBounds latLngBounds;
-                mapCenter= map.getCameraPosition().target;
-                latLngBounds= map.getProjection().getVisibleRegion().latLngBounds;
-                latLength= latLngBounds.northeast.latitude-latLngBounds.southwest.latitude;
-                latLength= Math.abs(latLength);
-                radiusFilter= (int)((latLength*110.574)/5);
-
-                startMapRefresh();
+                lessonsManager.refreshLessonMarkers(map);
             }
         });
 
-
-        mapCenter=map.getCameraPosition().target;
-        radiusFilter=50;
-
-        startMapRefresh();
+        lessonsManager.refreshLessonMarkers(map);
     }
 
     public void onFindLessonClick(){
@@ -325,10 +291,10 @@ public class HomeActivity extends AppCompatActivity
     }
 
     public void onLogoutClick(){
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         logedInUser=null;
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.getMenu().clear();
         navigationView.inflateMenu(R.menu.activity_home_drawer_guest);
         switchFragment(0);
@@ -339,10 +305,10 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onLoginAcquired(User user) {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         logedInUser= user;
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.getMenu().clear();
         navigationView.inflateMenu(R.menu.activity_home_drawer_user);
         switchFragment(MAP_FRAGMENT_ID);
@@ -355,7 +321,7 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onSignInSuccess() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         switchFragment(MAP_FRAGMENT_ID);
         Snackbar.make(fab, R.string.info_success_signin, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
@@ -363,6 +329,7 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onDataSaveSuccessful(User user) {
+
     }
 
     private void openFilterDialog(){
@@ -373,106 +340,77 @@ public class HomeActivity extends AppCompatActivity
         adbuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
+                lessonsManager.updateFilters(dialogView);
+                lessonsManager.refreshLessonMarkers(map);
             }
         });
         adbuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-
             }
         });
 
-        adbuilder.setView(inflater.inflate(R.layout.dialog_filters, null));
+        dialogView= inflater.inflate(R.layout.dialog_filters, null);
+
+        //Create subject radio group
+        RadioGroup subjectsGroup= dialogView.findViewById(R.id.subjects_radio_group);
+        RadioGroup.LayoutParams params= new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT,
+                RadioGroup.LayoutParams.WRAP_CONTENT);
+        RadioButton rdoBtn;
+        for(int i=0; i<subjectDefinitions.length; i++){
+            rdoBtn= new RadioButton(this);
+            rdoBtn.setLayoutParams(params);
+            rdoBtn.setText(subjectDefinitions[i].getName());
+            subjectsGroup.addView(rdoBtn);
+        }
+
+
+        int checkId;
+        //Set last selected filer in radio group (Level)
+        RadioGroup levelsGroup= dialogView.findViewById(R.id.levels_radio_group);
+        if(lessonsManager.getLevelFilter()>=0){
+            checkId= lessonsManager.getLevelFilter()+1;
+        } else {
+            checkId=0;
+        }
+        RadioButton levelButton= (RadioButton)levelsGroup.getChildAt(checkId);
+        levelButton.setChecked(true);
+
+        //Set last selected filer in radio group (Subject)
+        if(lessonsManager.getSubjectFilter()>=0){
+            checkId= lessonsManager.getSubjectFilter();
+        } else {
+            checkId=0;
+        }
+        RadioButton subjectButton= (RadioButton)subjectsGroup.getChildAt(checkId);
+        subjectButton.setChecked(true);
+
+
+        adbuilder.setView(dialogView);
 
         adbuilder.create().show();
     }
 
-    private void startMapRefresh(){
-        today= Calendar.getInstance().getTime();
-        SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.US);
-
-        Calendar c=Calendar.getInstance();
-        c.setTime(today);
-        c.add(Calendar.DAY_OF_MONTH, timeFilter);
-        dateToFilter= c.getTime();
-
+    private void getLessonSubjects(){
         ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
             @Override
             public void onFinish(int respCode, JSONObject jObject) {
-                refreshMap(respCode, jObject);
+                onGetSubjectsFinished(respCode, jObject);
             }
         }, Query.BuildType.Pairs);
-
-        //Testowe
-        //scm.addPOSTPair("Latitude", "52.327286");
-        //scm.addPOSTPair("Longitude", "21.103956");
-        //scm.addPOSTPair("Radius", "100");
-        scm.addPOSTPair("DateFrom", "2018-11-23T14:00:00");
-        scm.addPOSTPair("DateTo", "2018-11-23T16:00:00");
-
-        //Prawidlowe
-        scm.addPOSTPair("Latitude", String.valueOf(mapCenter.latitude));
-        scm.addPOSTPair("Longitude", String.valueOf(mapCenter.longitude));
-        scm.addPOSTPair("Radius", String.valueOf(radiusFilter));
-        //scm.addPOSTPair("DateFrom", sdf.format(today));
-        //scm.addPOSTPair("DateTo", sdf.format(dateToFilter));
-
-        if(subjectFilter>=0)
-            scm.addPOSTPair("SubjectId", String.valueOf(subjectFilter));
-        if(levelFilter>=0)
-            scm.addPOSTPair("LevelId", String.valueOf(levelFilter));
-        if(coachIdFilter>=0)
-            scm.addPOSTPair("CoachId", String.valueOf(coachIdFilter));
-
         scm.setMethod(ServerConnectionManager.METHOD_GET);
-
-        scm.start("https://korepetycjenajuzapi.azurewebsites.net/api/CoachLesson/CoachLessonsByFilters");
+        scm.start("https://korepetycjenajuzapi.azurewebsites.net/api/LessonSubjects/GetAll");
     }
 
-    private void refreshMap(int rCode, JSONObject jObj){
-        if(rCode==200){
-            boolean[] occurMap= new boolean[onMapLessons.size()];
-
-            try {
-                JSONArray lessonsArray = jObj.getJSONArray("array");
-
-                //Update or add lesson marker
-                for(int i=0; i<lessonsArray.length(); i++){
-                    boolean occured=false;
-                    JSONObject lessonJObj= lessonsArray.getJSONObject(i);
-
-                    //Search for occurrence
-                    for(int j=0; i<onMapLessons.size(); j++){
-                        if(onMapLessons.get(j).equals(lessonJObj)){
-                            occurMap[j]=true;
-                            occured= true;
-                            onMapLessons.get(j).update(lessonJObj);
-                            break;
-                        }
-                    }
-
-                    //If absent -> add
-                    if(!occured){
-                        onMapLessons.add(LessonMapMarker.create(lessonJObj));
-                        onMapLessons.get(onMapLessons.size()-1).register(this, map);
-                    }
-                }
-            } catch (JSONException jsonE){
-                Log.e("Refresh Map", jsonE.getMessage());
+    private void onGetSubjectsFinished(int rCode, JSONObject jObj){
+        try{
+            JSONArray jArray= jObj.getJSONArray("array");
+            subjectDefinitions= new SubjectDefinition[jArray.length()];
+            for(int i=0; i<jArray.length(); i++){
+                subjectDefinitions[i]= SubjectDefinition.create(jArray.getJSONObject(i));
             }
-
-            //Remove absent elements
-            for(int i=0; i<occurMap.length; i++){
-                if(!occurMap[i]){
-                    onMapLessons.get(i).unregister();
-                    onMapLessons.remove(i);
-                }
-            }
+        } catch (JSONException je){
+            Log.e("HomeActivity", je.getMessage());
         }
-
-        Log.e("Home Activity", "Map refreshed");
     }
-
-
 }

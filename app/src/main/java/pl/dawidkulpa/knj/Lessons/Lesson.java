@@ -1,13 +1,16 @@
-package pl.dawidkulpa.knj;
+package pl.dawidkulpa.knj.Lessons;
 
+import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.Time;
 import java.util.Date;
+
+import pl.dawidkulpa.knj.Address;
+import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
 
 public class Lesson {
     private int id;

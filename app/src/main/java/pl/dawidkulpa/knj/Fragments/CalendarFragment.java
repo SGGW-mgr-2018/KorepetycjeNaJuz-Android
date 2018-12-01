@@ -4,18 +4,16 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.ListView;
 
-import java.sql.Time;
 import java.util.ArrayList;
 
-import pl.dawidkulpa.knj.Lesson;
-import pl.dawidkulpa.knj.LessonsListAdapter;
+import pl.dawidkulpa.knj.Lessons.Lesson;
+import pl.dawidkulpa.knj.Lessons.LessonsListAdapter;
 import pl.dawidkulpa.knj.R;
 
 public class CalendarFragment extends Fragment {
