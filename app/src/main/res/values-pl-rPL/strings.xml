@@ -49,4 +49,9 @@
     <string name="menu_tag_signin">Zarejestruj się</string>
     <string name="info_success_signin">Pomyślnie utworzono konto. Teraz zajrzyj na swojego maila :)</string>
     <string name="info_failed_signin">Błąd rejestracji</string>
+    <string name="label_level">Poziom</string>
+    <string name="label_subject">Przedmiot</string>
+    <string name="label_rate">Cena</string>
+    <string name="label_time">Czas</string>
+    <string name="button_cancel">Anuluj</string>
 </resources>

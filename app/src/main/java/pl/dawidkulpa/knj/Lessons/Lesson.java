@@ -10,7 +10,6 @@ import org.json.JSONObject;
 import java.util.Date;
 
 import pl.dawidkulpa.knj.Address;
-import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
 
 public class Lesson {
     private int id;

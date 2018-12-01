@@ -42,6 +42,13 @@
     <string name="label_password">Password</string>
     <string name="label_edit_account">Edit your account</string>
     <string name="label_notifs">Notifications</string>
+    <string name="label_level">Level</string>
+    <string name="label_subject">Subject</string>
+    <string name="label_rate">Rate</string>
+    <string name="label_time">Time</string>
+    <string name="label_hour" translatable="false">h</string>
+    <string name="label_from">from</string>
+    <string name="label_to">to</string>
 
     <!-- Hints -->
     <string name="hint_email">Your e-mail</string>
@@ -56,6 +63,8 @@
     <string name="button_signin">Sign in</string>
     <string name="button_change_account">Change account data</string>
     <string name="button_save">Save</string>
+    <string name="button_ok" translatable="false">Ok</string>
+    <string name="button_cancel">Cancel</string>
 
     <!-- Info -->
     <string name="info_register_claim">Reg claim</string>

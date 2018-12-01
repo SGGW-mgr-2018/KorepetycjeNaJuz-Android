@@ -1,7 +1,6 @@
 package pl.dawidkulpa.knj;
 
 import android.Manifest;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -12,9 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -24,8 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
+import android.widget.ArrayAdapter;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -42,6 +38,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import pl.dawidkulpa.knj.Dialogs.FilterDialog;
 import pl.dawidkulpa.knj.Fragments.AccountFragment;
 import pl.dawidkulpa.knj.Fragments.CalendarFragment;
 import pl.dawidkulpa.knj.Fragments.HistoryFragment;
@@ -50,6 +47,7 @@ import pl.dawidkulpa.knj.Fragments.MapFragment;
 import pl.dawidkulpa.knj.Fragments.NotifFragment;
 import pl.dawidkulpa.knj.Fragments.SettingsFragment;
 import pl.dawidkulpa.knj.Fragments.SigninFragment;
+import pl.dawidkulpa.knj.Lessons.LessonFilters;
 import pl.dawidkulpa.knj.Lessons.SubjectDefinition;
 import pl.dawidkulpa.knj.Lessons.LessonsManager;
 import pl.dawidkulpa.serverconnectionmanager.Query;
@@ -80,9 +78,10 @@ public class HomeActivity extends AppCompatActivity
 
     private LessonsManager lessonsManager;
 
-    private View dialogView;
-
     private SubjectDefinition[] subjectDefinitions;
+
+    private ArrayAdapter<CharSequence> levelsAdapter;
+    private ArrayAdapter<CharSequence> subjectsAdapter;
 
 
     @Override
@@ -103,7 +102,15 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
+        levelsAdapter= new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
+        subjectsAdapter= new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
+
         getLessonSubjects();
+        levelsAdapter.add("Wszystkie");
+        levelsAdapter.add("Podstawowy");
+        levelsAdapter.add("Średni");
+        levelsAdapter.add("Wysoki");
+        levelsAdapter.add("Studia");
 
         //Prepare side navigation
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -333,62 +340,20 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void openFilterDialog(){
-        AlertDialog.Builder adbuilder= new AlertDialog.Builder(this);
-        LayoutInflater inflater = getLayoutInflater();
-
-        adbuilder.setTitle("Filtry");
-        adbuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        FilterDialog filterDialog= new FilterDialog(this, new FilterDialog.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                lessonsManager.updateFilters(dialogView);
+            public void onPositiveClick(LessonFilters filters) {
+                lessonsManager.updateFilters(filters);
                 lessonsManager.refreshLessonMarkers(map);
             }
-        });
-        adbuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onNegativeClick() {
+
             }
         });
 
-        dialogView= inflater.inflate(R.layout.dialog_filters, null);
-
-        //Create subject radio group
-        RadioGroup subjectsGroup= dialogView.findViewById(R.id.subjects_radio_group);
-        RadioGroup.LayoutParams params= new RadioGroup.LayoutParams(RadioGroup.LayoutParams.WRAP_CONTENT,
-                RadioGroup.LayoutParams.WRAP_CONTENT);
-        RadioButton rdoBtn;
-        for(int i=0; i<subjectDefinitions.length; i++){
-            rdoBtn= new RadioButton(this);
-            rdoBtn.setLayoutParams(params);
-            rdoBtn.setText(subjectDefinitions[i].getName());
-            subjectsGroup.addView(rdoBtn);
-        }
-
-
-        int checkId;
-        //Set last selected filer in radio group (Level)
-        RadioGroup levelsGroup= dialogView.findViewById(R.id.levels_radio_group);
-        if(lessonsManager.getLevelFilter()>=0){
-            checkId= lessonsManager.getLevelFilter()+1;
-        } else {
-            checkId=0;
-        }
-        RadioButton levelButton= (RadioButton)levelsGroup.getChildAt(checkId);
-        levelButton.setChecked(true);
-
-        //Set last selected filer in radio group (Subject)
-        if(lessonsManager.getSubjectFilter()>=0){
-            checkId= lessonsManager.getSubjectFilter();
-        } else {
-            checkId=0;
-        }
-        RadioButton subjectButton= (RadioButton)subjectsGroup.getChildAt(checkId);
-        subjectButton.setChecked(true);
-
-
-        adbuilder.setView(dialogView);
-
-        adbuilder.create().show();
+        filterDialog.show(levelsAdapter, subjectsAdapter, lessonsManager.getFilters());
     }
 
     private void getLessonSubjects(){
@@ -406,8 +371,10 @@ public class HomeActivity extends AppCompatActivity
         try{
             JSONArray jArray= jObj.getJSONArray("array");
             subjectDefinitions= new SubjectDefinition[jArray.length()];
+            subjectsAdapter.add("Wszystkie");
             for(int i=0; i<jArray.length(); i++){
                 subjectDefinitions[i]= SubjectDefinition.create(jArray.getJSONObject(i));
+                subjectsAdapter.add(subjectDefinitions[i].getName());
             }
         } catch (JSONException je){
             Log.e("HomeActivity", je.getMessage());
