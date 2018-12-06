@@ -55,6 +55,9 @@
     <string name="hint_pass">Your password</string>
     <string name="hint_name">First Name</string>
     <string name="hint_sname">Last Name</string>
+    <string name="hint_city">City</string>
+    <string name="hint_street">Street</string>
+    <string name="hint_flat">Flat</string>
 
     <!-- Button labels -->
     <string name="button_login">Login</string>

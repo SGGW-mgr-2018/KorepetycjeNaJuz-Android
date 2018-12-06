@@ -13,6 +13,11 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTheme.NoActionBar.Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
         <item name="android:textColorPrimary">@color/colorTextLabels</item>
     </style>
@@ -21,6 +26,11 @@
 
     <style name="AppTheme.FABOverlay" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorAccent">@color/colorBackground</item>
+    </style>
+    
+    <style name="AppTheme.CustomDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/colorBackground</item>
+        <item name="android:textColorPrimary">@color/colorTextLabels</item>
     </style>
 
 </resources>

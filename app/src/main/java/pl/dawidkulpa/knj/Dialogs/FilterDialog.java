@@ -38,7 +38,7 @@ public class FilterDialog {
                      ArrayAdapter<CharSequence> subjectsAdapter,
                      LessonFilters filters){
 
-        AlertDialog.Builder adbuilder= new AlertDialog.Builder(context);
+        AlertDialog.Builder adbuilder= new AlertDialog.Builder(context, R.style.AppTheme_CustomDialog);
         LayoutInflater inflater = ((Activity)context).getLayoutInflater();
 
         adbuilder.setTitle("Filtry");
@@ -94,9 +94,10 @@ public class FilterDialog {
 
         adbuilder.setView(dialogView);
 
-        adbuilder.create().show();
-
-
+        AlertDialog dialog= adbuilder.create();
+        dialog.show();
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(context.getResources().getColor(R.color.colorTextLabels));
+        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(context.getResources().getColor(R.color.colorTextLabels));
     }
 
     private void onDateSelectClick(final View v){
@@ -146,7 +147,13 @@ public class FilterDialog {
     }
 
     private void onTimeSelectResult(View v, int d, int M, int y, int h, int m){
-        String date= d+"/"+M+"/"+y+" - "+h+":"+m;
+        String date= d+"/"+M+"/"+y+" - "+h+":";
+
+        if(m<10)
+            date+="0"+m;
+        else
+            date+=m;
+
         ((EditText)v).setText(date);
     }
 }

@@ -52,6 +52,8 @@
     <string name="label_level">Poziom</string>
     <string name="label_subject">Przedmiot</string>
     <string name="label_rate">Cena</string>
-    <string name="label_time">Czas</string>
+    <string name="label_time">W dniach</string>
     <string name="button_cancel">Anuluj</string>
+    <string name="label_from">od</string>
+    <string name="label_to">do</string>
 </resources>

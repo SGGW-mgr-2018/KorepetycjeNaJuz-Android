@@ -1,6 +1,7 @@
 package pl.dawidkulpa.knj;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -41,6 +42,9 @@ import java.util.ArrayList;
 import pl.dawidkulpa.knj.Dialogs.FilterDialog;
 import pl.dawidkulpa.knj.Fragments.AccountFragment;
 import pl.dawidkulpa.knj.Fragments.CalendarFragment;
+import pl.dawidkulpa.knj.Fragments.CLAddressFragment;
+import pl.dawidkulpa.knj.Fragments.CLSubjectFragment;
+import pl.dawidkulpa.knj.Fragments.CLDateFragment;
 import pl.dawidkulpa.knj.Fragments.HistoryFragment;
 import pl.dawidkulpa.knj.Fragments.LoginFragment;
 import pl.dawidkulpa.knj.Fragments.MapFragment;
@@ -67,6 +71,10 @@ public class HomeActivity extends AppCompatActivity
     private static final int SETTINGS_FRAGMENT_ID=5;
     private static final int NOTIF_FRAGMENT_ID=6;
     private static final int SIGNIN_FRAGMENT_ID=7;
+    private static final int CREATE_LESSON_ONE_FRAGMENT_ID=8;
+    private static final int CREATE_LESSON_TWO_FRAGMENT_ID=9;
+    private static final int CREATE_LESSON_FINAL_FRAGMENT_ID=10;
+
 
     private FragmentManager fragmentManager;
     private ArrayList<Fragment> appFragments;
@@ -137,6 +145,9 @@ public class HomeActivity extends AppCompatActivity
         appFragments.add(SettingsFragment.newInstance());
         appFragments.add(NotifFragment.newInstance());
         appFragments.add(SigninFragment.newInstance());
+        appFragments.add(CLSubjectFragment.newInstance());
+        appFragments.add(CLDateFragment.newInstance());
+        appFragments.add(CLAddressFragment.newInstance());
 
         switchFragment(0);
 
@@ -245,7 +256,8 @@ public class HomeActivity extends AppCompatActivity
                 onFindLessonClick();
                 break;
             case R.id.nav_create:
-                onCreateLessonClick();
+                Intent intent= new Intent(this, CreateLessonActivity.class);
+                startActivity(intent);
                 break;
             case R.id.nav_logout:
                 onLogoutClick();
