@@ -45,7 +45,6 @@ public class LessonsManager {
     public void refreshLessonMarkers(final GoogleMap map){
         readMapPosition(map);
 
-        filters.dateFrom= Calendar.getInstance().getTime();
         SimpleDateFormat sdf= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'", Locale.US);
 
         ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
@@ -119,11 +118,6 @@ public class LessonsManager {
                     onMapLessons.remove(i);
                 }
             }
-
-            //Log.d("Lesson Manager", "Map refreshed with "+String.valueOf(onMapLessons.size())+" markers");
-            //Log.d("Lesson Manager", "LessonFilters:");
-            //Log.d("Lesson Manager", "Map center: "+String.valueOf(mapCenter.latitude)+" / "+String.valueOf(mapCenter.longitude));
-            //Log.d("Lesson Manager", "Radius: "+String.valueOf(radiusFilter));
         } else {
             //Log.d("Lesson Manager", "No lessons found");
             for(int i=0; i<onMapLessons.size(); i++){

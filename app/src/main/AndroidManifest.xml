@@ -57,9 +57,9 @@
         -->
 
         <activity
-            android:name=".CreateLessonActivity"
+            android:name=".Dialogs.CreateLesson.CreateLessonActivity"
             android:theme="@style/AppTheme.NoActionBar.Dialog" />
-        <activity android:name=".DateTimeActivity"
+        <activity android:name=".Dialogs.DateTimePicker.DateTimeActivity"
             android:theme="@style/AppTheme.NoActionBar.Dialog"/>
     </application>
 

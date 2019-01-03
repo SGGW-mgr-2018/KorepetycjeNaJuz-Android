@@ -33,19 +33,32 @@ public class Query {
     public void addPair(String name, Query obj){
         names.add(name);
 
-        String valString="{";
+        String val= "{";
+        val+= obj.build(BuildType.JSONPatch);
+        val+= "}";
 
-        for(int i=0; i<obj.size(); i++){
-            valString+= "\""+obj.names.get(i)+"\": \""+obj.values.get(i)+"\"";
-            if(i<obj.size()-1)
-                valString+=", ";
-        }
-
-        valString+="}";
-        values.add(valString);
+        values.add(val);
     }
 
-    public boolean encryptValue(SecretKey key){
+    public void addPair(String name, ArrayList<String> list){
+        names.add(name);
+
+        StringBuilder sb= new StringBuilder();
+
+        sb.append("[");
+
+        for(int i=0; i<list.size(); i++){
+            sb.append(list.get(i));
+
+            if(i<list.size()-1)
+                sb.append(", ");
+        }
+
+        sb.append("]");
+        values.add(sb.toString());
+    }
+
+    boolean encryptValue(SecretKey key){
         byte[] rawSecret;
 
         for(int i=0; i<values.size(); i++){
@@ -64,35 +77,46 @@ public class Query {
     }
 
     public String build(BuildType buildType){
-        String queryString="";
-
+        StringBuilder sb= new StringBuilder();
 
         for(int i=0; i<this.size(); i++){
 
             if(buildType==BuildType.Pairs) {
                 if (i > 0) {
-                    queryString += "&";
+                    sb.append("&");
                 }
-                queryString += names.get(i) + "=" + values.get(i);
+                sb.append(names.get(i));
+                sb.append("=");
+                sb.append(values.get(i));
             } else if(buildType==BuildType.JSONPatch){
 
+                //If name is not empty write its name
                 if(!names.get(i).equals("")){
-                    queryString+="\""+names.get(i)+"\":";
+                    sb.append("\"");
+                    sb.append(names.get(i));
+                    sb.append("\": ");
                 }
 
-                if(values.get(i).charAt(0)!='{'){
-                    queryString+="\"";
+                //If value first char is not { and [ start with "
+                if(values.get(i).charAt(0)!='{' && values.get(i).charAt(0)!='['){
+                    sb.append("\"");
                 }
-                queryString += values.get(i);
-                if(values.get(i).charAt(0)!='{'){
-                    queryString+="\"";
+
+                //Add value
+                sb.append(values.get(i));
+
+                //If value first char i { and [ end with "
+                if(values.get(i).charAt(0)!='{' && values.get(i).charAt(0)!='['){
+                    sb.append("\"");
                 }
 
                 if(i<this.size()-1)
-                    queryString+=", ";
+                    sb.append(", ");
             }
         }
+
+        Log.e("Query", sb.toString());
         
-        return queryString;
+        return sb.toString();
     }
 }

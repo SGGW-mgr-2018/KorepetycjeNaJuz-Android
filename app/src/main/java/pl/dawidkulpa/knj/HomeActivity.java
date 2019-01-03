@@ -39,12 +39,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import pl.dawidkulpa.knj.Dialogs.CreateLesson.CreateLessonActivity;
 import pl.dawidkulpa.knj.Dialogs.FilterDialog;
 import pl.dawidkulpa.knj.Fragments.AccountFragment;
 import pl.dawidkulpa.knj.Fragments.CalendarFragment;
-import pl.dawidkulpa.knj.Fragments.CLAddressFragment;
-import pl.dawidkulpa.knj.Fragments.CLSubjectFragment;
-import pl.dawidkulpa.knj.Fragments.CLDateFragment;
+import pl.dawidkulpa.knj.Dialogs.CreateLesson.CLAddressFragment;
+import pl.dawidkulpa.knj.Dialogs.CreateLesson.CLSubjectFragment;
+import pl.dawidkulpa.knj.Dialogs.CreateLesson.CLDateFragment;
 import pl.dawidkulpa.knj.Fragments.HistoryFragment;
 import pl.dawidkulpa.knj.Fragments.LoginFragment;
 import pl.dawidkulpa.knj.Fragments.MapFragment;
@@ -52,7 +53,6 @@ import pl.dawidkulpa.knj.Fragments.NotifFragment;
 import pl.dawidkulpa.knj.Fragments.SettingsFragment;
 import pl.dawidkulpa.knj.Fragments.SigninFragment;
 import pl.dawidkulpa.knj.Lessons.LessonFilters;
-import pl.dawidkulpa.knj.Lessons.SubjectDefinition;
 import pl.dawidkulpa.knj.Lessons.LessonsManager;
 import pl.dawidkulpa.serverconnectionmanager.Query;
 import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
@@ -75,6 +75,8 @@ public class HomeActivity extends AppCompatActivity
     private static final int CREATE_LESSON_TWO_FRAGMENT_ID=9;
     private static final int CREATE_LESSON_FINAL_FRAGMENT_ID=10;
 
+    public static final String SERVER_NAME="http://api.meteomap.pl:7181/api";
+
 
     private FragmentManager fragmentManager;
     private ArrayList<Fragment> appFragments;
@@ -86,10 +88,10 @@ public class HomeActivity extends AppCompatActivity
 
     private LessonsManager lessonsManager;
 
-    private SubjectDefinition[] subjectDefinitions;
-
+    private String[] subjectLabels;
     private ArrayAdapter<CharSequence> levelsAdapter;
     private ArrayAdapter<CharSequence> subjectsAdapter;
+    private ArrayList<String> subjectsList;
 
 
     @Override
@@ -252,11 +254,9 @@ public class HomeActivity extends AppCompatActivity
             case  R.id.nav_signin:
                 switchFragment(SIGNIN_FRAGMENT_ID);
                 break;
-            case R.id.nav_find_lesson:
-                onFindLessonClick();
-                break;
             case R.id.nav_create:
                 Intent intent= new Intent(this, CreateLessonActivity.class);
+                intent.putExtra("subjects", subjectLabels);
                 startActivity(intent);
                 break;
             case R.id.nav_logout:
@@ -376,17 +376,17 @@ public class HomeActivity extends AppCompatActivity
             }
         }, Query.BuildType.Pairs);
         scm.setMethod(ServerConnectionManager.METHOD_GET);
-        scm.start("https://korepetycjenajuzapi.azurewebsites.net/api/LessonSubjects/GetAll");
+        scm.start(SERVER_NAME+"/LessonSubjects/GetAll");
     }
 
     private void onGetSubjectsFinished(int rCode, JSONObject jObj){
         try{
             JSONArray jArray= jObj.getJSONArray("array");
-            subjectDefinitions= new SubjectDefinition[jArray.length()];
+            subjectLabels= new String[jArray.length()];
             subjectsAdapter.add("Wszystkie");
             for(int i=0; i<jArray.length(); i++){
-                subjectDefinitions[i]= SubjectDefinition.create(jArray.getJSONObject(i));
-                subjectsAdapter.add(subjectDefinitions[i].getName());
+                subjectLabels[i]=jArray.getJSONObject(i).getString("name");
+                subjectsAdapter.add(subjectLabels[i]);
             }
         } catch (JSONException je){
             Log.e("HomeActivity", je.getMessage());

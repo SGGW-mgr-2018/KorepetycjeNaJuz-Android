@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import pl.dawidkulpa.knj.HomeActivity;
 import pl.dawidkulpa.knj.R;
 import pl.dawidkulpa.serverconnectionmanager.Query;
 import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
@@ -90,7 +91,7 @@ public class SigninFragment extends Fragment {
         scm.addPOSTPair("", userCreateDTO);
         scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
         scm.setMethod(ServerConnectionManager.METHOD_POST);
-        scm.start("https://korepetycjenajuzapi.azurewebsites.net/api/Users/Create");
+        scm.start(HomeActivity.SERVER_NAME+"/Users/Create");
         getView().findViewById(R.id.progressbar).setVisibility(View.VISIBLE);
     }
 

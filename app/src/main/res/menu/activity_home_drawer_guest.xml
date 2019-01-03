@@ -28,10 +28,6 @@
     <item android:title="Action">
         <menu>
             <item
-                android:id="@+id/nav_find_lesson"
-                android:title="@string/menu_tag_find_lesson"
-                android:icon="@drawable/ic_search_black"/>
-            <item
                 android:id="@+id/nav_create"
                 android:icon="@drawable/ic_add_circle_outline_black"
                 android:title="@string/menu_tag_create_lesson" />

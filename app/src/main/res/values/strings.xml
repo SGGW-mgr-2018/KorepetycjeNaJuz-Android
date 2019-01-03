@@ -58,6 +58,10 @@
     <string name="hint_city">City</string>
     <string name="hint_street">Street</string>
     <string name="hint_flat">Flat</string>
+    <string name="hint_hour">Hour</string>
+    <string name="hint_min">Min</string>
+    <string name="hint_day">Day</string>
+    <string name="hint_month">Month</string>
 
     <!-- Button labels -->
     <string name="button_login">Login</string>
@@ -68,6 +72,9 @@
     <string name="button_save">Save</string>
     <string name="button_ok" translatable="false">Ok</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_next">Next</string>
+    <string name="button_back">Back</string>
+    <string name="button_create">Create</string>
 
     <!-- Info -->
     <string name="info_register_claim">Reg claim</string>
@@ -77,5 +84,8 @@
     <string name="info_failed_logout">Logout failed</string>
     <string name="info_success_signin">Successful sign in. Look at your email account :)</string>
     <string name="info_failed_signin">Sign in failed</string>
+    <string name="info_select_address">Select lesson address</string>
+    <string name="info_select_subject">Select lesson subject, levels and rate</string>
+    <string name="info_select_date">Select from-to date</string>
 
 </resources>

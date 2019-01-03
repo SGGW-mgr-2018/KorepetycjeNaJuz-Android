@@ -9,10 +9,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Select lesson address"
-        android:textSize="24sp"/>
+        android:text="@string/info_select_address"
+        android:textSize="18sp"
+        android:textAlignment="center"/>
 
     <EditText
+        android:id="@+id/city_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minWidth="150dp"
@@ -20,6 +22,7 @@
         android:hint="@string/hint_city"
         android:textAlignment="center"/>
     <EditText
+        android:id="@+id/street_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
@@ -27,6 +30,7 @@
         android:hint="@string/hint_street"
         android:textAlignment="center"/>
     <EditText
+        android:id="@+id/flat_edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

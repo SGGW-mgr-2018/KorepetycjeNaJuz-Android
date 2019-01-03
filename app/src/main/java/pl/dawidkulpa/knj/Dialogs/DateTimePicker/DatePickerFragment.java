@@ -1,4 +1,4 @@
-package pl.dawidkulpa.knj.Fragments;
+package pl.dawidkulpa.knj.Dialogs.DateTimePicker;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -9,15 +9,15 @@ import android.view.ViewGroup;
 
 import pl.dawidkulpa.knj.R;
 
-public class CLDateFragment extends Fragment {
-    public CLDateFragment() {
+public class DatePickerFragment extends Fragment {
+    public DatePickerFragment() {
         // Required empty public constructor
     }
 
 
     // TODO: Rename and change types and number of parameters
-    public static CLDateFragment newInstance() {
-        CLDateFragment fragment = new CLDateFragment();
+    public static DatePickerFragment newInstance() {
+        DatePickerFragment fragment = new DatePickerFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -32,7 +32,7 @@ public class CLDateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cl_date, container, false);
+        return inflater.inflate(R.layout.fragment_dp_date, container, false);
     }
 
     @Override

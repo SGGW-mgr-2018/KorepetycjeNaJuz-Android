@@ -1,24 +1,24 @@
-package pl.dawidkulpa.knj.Fragments;
+package pl.dawidkulpa.knj.Dialogs.CreateLesson;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import pl.dawidkulpa.knj.Lessons.CoachLesson;
 import pl.dawidkulpa.knj.R;
 
-public class CLSubjectFragment extends Fragment {
-
-    public CLSubjectFragment() {
+public class CLAddressFragment extends CLFragment {
+    public CLAddressFragment() {
         // Required empty public constructor
     }
 
 
     // TODO: Rename and change types and number of parameters
-    public static CLSubjectFragment newInstance() {
-        CLSubjectFragment fragment = new CLSubjectFragment();
+    public static CLAddressFragment newInstance() {
+        CLAddressFragment fragment = new CLAddressFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -32,10 +32,8 @@ public class CLSubjectFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView= inflater.inflate(R.layout.fragment_cl_subject, container, false);
-
         // Inflate the layout for this fragment
-        return rootView;
+        return inflater.inflate(R.layout.fragment_cl_address, container, false);
     }
 
     @Override
@@ -52,5 +50,25 @@ public class CLSubjectFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
+    }
+
+    @Override
+    public void putOnView(CoachLesson coachLesson) {
+        if(getView()!=null){
+            ((EditText)getView().findViewById(R.id.city_edit)).setText(coachLesson.city);
+            ((EditText)getView().findViewById(R.id.street_edit)).setText(coachLesson.street);
+        }
+    }
+
+    @Override
+    public boolean getherData(CoachLesson coachLesson) {
+        if(getView()!=null){
+            coachLesson.city= ((EditText)getView().findViewById(R.id.city_edit)).getText().toString();
+            coachLesson.street= ((EditText)getView().findViewById(R.id.street_edit)).getText().toString();
+
+            return true;
+        } else {
+            return false;
+        }
     }
 }

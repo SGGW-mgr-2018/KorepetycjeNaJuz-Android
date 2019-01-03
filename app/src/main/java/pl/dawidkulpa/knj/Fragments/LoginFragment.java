@@ -13,10 +13,12 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import pl.dawidkulpa.knj.HomeActivity;
 import pl.dawidkulpa.knj.R;
 import pl.dawidkulpa.knj.User;
 import pl.dawidkulpa.serverconnectionmanager.Query;
 import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
+
 
 public class LoginFragment extends Fragment {
 
@@ -95,7 +97,7 @@ public class LoginFragment extends Fragment {
         scm.addPOSTPair("", userLoginDto);
         scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
         scm.setMethod(ServerConnectionManager.METHOD_POST);
-        scm.start("https://korepetycjenajuzapi.azurewebsites.net/api/Authorization/Login");
+        scm.start(HomeActivity.SERVER_NAME+"/Authorization/Login");
         getView().findViewById(R.id.progressbar).setVisibility(View.VISIBLE);
 
         user.setName("Sierotka");

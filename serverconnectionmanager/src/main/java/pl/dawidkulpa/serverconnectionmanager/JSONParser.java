@@ -32,6 +32,8 @@ public class JSONParser {
 
             json=sb.toString();
 
+            Log.e("JSON", json);
+
             if(!json.isEmpty()){
                 if(json.charAt(0)=='[') {
                     jObject= new JSONObject();
@@ -51,6 +53,7 @@ public class JSONParser {
             } else
                 Log.e("IO", "nom");
         }
+
 
         return jObject;
     }

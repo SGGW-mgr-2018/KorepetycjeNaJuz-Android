@@ -4,6 +4,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DateTimeActivity">
+    tools:context=".Dialogs.DateTimePicker.DateTimeActivity">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Date / Time picker"
+        android:textSize="24sp"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_goneMarginBottom="16dp"
+        android:textColor="@color/colorTextLabels"/>
+
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/title"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
+
+
+    <Button
+        android:id="@+id/date_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date"
+        android:background="@drawable/ripple_default_rect"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@id/fragment_container"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintRight_toLeftOf="@id/time_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textColor="@color/colorTextLabels"
+        android:onClick="onDateButtonClick"/>
+
+    <Button
+        android:id="@+id/time_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time"
+        android:background="@drawable/ripple_default_rect"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@id/fragment_container"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/date_button"
+        android:textColor="@color/colorTextLabels"
+        android:onClick="onTimeButtonClick"/>
+
+    <Button
+        android:id="@+id/neg_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAllCaps="false"
+        android:text="@string/button_cancel"
+        android:background="@drawable/ripple_default_rect"
+        app:layout_constraintTop_toBottomOf="@id/time_button"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintRight_toLeftOf="@id/pos_button"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textColor="@color/colorTextLabels"
+        android:onClick="onCancelButtonClick"/>
+    <Button
+        android:id="@+id/pos_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Select"
+        android:background="@drawable/ripple_default_rect"
+        android:textAllCaps="false"
+        app:layout_constraintTop_toBottomOf="@id/time_button"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/neg_button"
+        android:textColor="@color/colorTextLabels"
+        android:onClick="onSelectButtonClick"/>
+
+
 
 </android.support.constraint.ConstraintLayout>

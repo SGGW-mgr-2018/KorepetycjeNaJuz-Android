@@ -8,8 +8,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:text="Select subject and levels"
-        android:textSize="24sp"/>
+        android:text="@string/info_select_date"
+        android:textSize="18sp"
+        android:textAlignment="center"/>
 
     <TextView
         android:id="@+id/date_from_label"
@@ -19,111 +20,32 @@
         android:layout_below="@id/title_text"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
-    <LinearLayout
-        android:id="@+id/date_from_box"
+    <Button
+        android:id="@+id/date_from_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:background="@drawable/ripple_default_rect"
+        android:text="15/12/2018 15:00"
         android:layout_below="@id/date_from_label"
-        android:layout_centerHorizontal="true">
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Day"
-            android:inputType="numberDecimal"
-            android:maxLength="2"
-            android:textAlignment="center"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="/"
-            android:textSize="19sp"/>
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Month"
-            android:inputType="numberDecimal"
-            android:maxLength="2"
-            android:textAlignment="center"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Hour"
-            android:layout_marginStart="16dp"
-            android:inputType="numberDecimal"
-            android:maxLength="2"
-            android:textAlignment="center"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=":"
-            android:textSize="19sp"/>
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Min"
-            android:inputType="numberDecimal"
-            android:maxLength="2"
-            android:textAlignment="center"/>
-    </LinearLayout>
+        android:textColor="@color/colorTextLabels"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/date_to_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/label_to"
-        android:layout_below="@id/date_from_box"
+        android:layout_below="@id/date_from_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="8dp"/>
-
-    <LinearLayout
-        android:id="@+id/date_to_box"
+    <Button
+        android:id="@+id/date_to_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:background="@drawable/ripple_default_rect"
+        android:text="15/12/2018 15:00"
         android:layout_below="@id/date_to_label"
-        android:layout_centerHorizontal="true">
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Day"
-            android:inputType="numberDecimal"
-            android:maxLength="2"
-            android:textAlignment="center"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="/"
-            android:textSize="19sp"/>
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Month"
-            android:inputType="numberDecimal"
-            android:maxLength="2"
-            android:textAlignment="center"/>
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Hour"
-            android:layout_marginStart="16dp"
-            android:inputType="numberDecimal"
-            android:maxLength="2"
-            android:textAlignment="center"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=":"
-            android:textSize="19sp"/>
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="Min"
-            android:inputType="numberDecimal"
-            android:maxLength="2"
-            android:textAlignment="center"/>
-    </LinearLayout>
+        android:textColor="@color/colorTextLabels"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

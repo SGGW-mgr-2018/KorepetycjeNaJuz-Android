@@ -56,4 +56,17 @@
     <string name="button_cancel">Anuluj</string>
     <string name="label_from">od</string>
     <string name="label_to">do</string>
+    <string name="hint_city">Miasto</string>
+    <string name="hint_street">Ulica i numer</string>
+    <string name="hint_flat">Mieszkanie</string>
+    <string name="button_next">Dalej</string>
+    <string name="button_back">Powrót</string>
+    <string name="button_create">Utwórz</string>
+    <string name="info_select_address">Wybierz miejsce lekcji</string>
+    <string name="info_select_subject">Wybierz przedmiot, poziomy i cenę</string>
+    <string name="info_select_date">Wybierz daty od do</string>
+    <string name="hint_hour">Godź</string>
+    <string name="hint_min">Min</string>
+    <string name="hint_day">Dzień</string>
+    <string name="hint_month">Miesiąc</string>
 </resources>

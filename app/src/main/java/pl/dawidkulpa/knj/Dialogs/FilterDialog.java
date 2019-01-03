@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import pl.dawidkulpa.knj.Lessons.LessonFilters;
 import pl.dawidkulpa.knj.R;
@@ -23,6 +24,8 @@ public class FilterDialog {
     private Context context;
     private OnClickListener onClickListener;
     private View dialogView;
+    private Date dateFrom;
+    private Date dateTo;
 
     public interface OnClickListener{
         void onPositiveClick(LessonFilters filters);
@@ -131,6 +134,9 @@ public class FilterDialog {
         else
             filters.subject= -1;
 
+        filters.dateFrom= dateFrom;
+        filters.dateTo= dateTo;
+
         return filters;
     }
 
@@ -148,6 +154,18 @@ public class FilterDialog {
 
     private void onTimeSelectResult(View v, int d, int M, int y, int h, int m){
         String date= d+"/"+M+"/"+y+" - "+h+":";
+        Calendar calendar= Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, d);
+        calendar.set(Calendar.MONTH, M);
+        calendar.set(Calendar.YEAR, y);
+        calendar.set(Calendar.HOUR_OF_DAY, h);
+        calendar.set(Calendar.MINUTE, m);
+
+        if(v.getId()==R.id.date_from_edit){
+            dateFrom= new Date(calendar.getTimeInMillis());
+        } else {
+            dateTo= new Date(calendar.getTimeInMillis());
+        }
 
         if(m<10)
             date+="0"+m;
