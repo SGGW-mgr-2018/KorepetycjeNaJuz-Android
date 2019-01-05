@@ -4,6 +4,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +85,40 @@ public class CLDateFragment extends CLFragment {
     }
 
     public void onDateToButtonClick(View v){
+        Intent intent= new Intent(getContext(), DateTimeActivity.class);
+        startActivityForResult(intent, 2);
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e("Result", String.valueOf(requestCode));
+
+        int y= data.getIntExtra("year", 0);
+        int m= data.getIntExtra("month", 0);
+        int d= data.getIntExtra("day", 0);
+        int hh= data.getIntExtra("hour", 0);
+        int mm= data.getIntExtra("minutes",0);
+
+        Calendar calendar= Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, d);
+        calendar.set(Calendar.MONTH, m);
+        calendar.set(Calendar.YEAR, y);
+        calendar.set(Calendar.HOUR_OF_DAY, hh);
+        calendar.set(Calendar.MINUTE, mm);
+        String dateStr= d+"/"+m+"/"+y+" "+hh+":";
+        if(mm<10)
+            dateStr+="0"+mm;
+        else
+            dateStr+=mm;
+
+
+        if(requestCode==1){
+            dateFrom= calendar.getTimeInMillis();
+            ((Button)getView().findViewById(R.id.date_from_button)).setText(dateStr);
+        } else if(requestCode==2){
+            dateTo= calendar.getTimeInMillis();
+            ((Button)getView().findViewById(R.id.date_to_button)).setText(dateStr);
+        }
     }
 
     private void onDateSelectResult(final View v, final int d, final int m, final int y){

@@ -21,8 +21,6 @@ public class DateTimeActivity extends AppCompatActivity {
     private Fragment timePickerFragment;
     private FragmentManager fragmentManager;
 
-    private Date date;
-
     private int step=0;
 
     @Override
@@ -71,11 +69,16 @@ public class DateTimeActivity extends AppCompatActivity {
 
     public void onSelectButtonClick(View v){
         Intent result= new Intent();
-        result.putExtra("Date", date.getTime());
+
+        result.putExtra("year", ((DatePickerFragment)datePickerFragment).getYear());
+        result.putExtra("month", ((DatePickerFragment)datePickerFragment).getMonth());
+        result.putExtra("day", ((DatePickerFragment)datePickerFragment).getDay());
+
+        result.putExtra("hour", ((TimePickerFragment)timePickerFragment).getHours());
+        result.putExtra("minutes", ((TimePickerFragment)timePickerFragment).getMinutes());
 
         setResult(Activity.RESULT_OK, result);
+        finish();
     }
-
-
 
 }

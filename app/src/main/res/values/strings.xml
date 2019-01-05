@@ -20,6 +20,7 @@
     <string name="menu_tag_calendar">Calendar</string>
     <string name="menu_tag_notif">Notifications</string>
     <string name="menu_title_actions">Actions</string>
+    <string name="menu_messages">Messages</string>
     <string name="menu_tag_create_lesson">Create lesson</string>
     <string name="menu_tag_logout">Logout</string>
     <string name="menu_tag_find_lesson">Find lesson</string>
@@ -75,6 +76,7 @@
     <string name="button_next">Next</string>
     <string name="button_back">Back</string>
     <string name="button_create">Create</string>
+    <string name="button_lesson_signin">Sign in</string>
 
     <!-- Info -->
     <string name="info_register_claim">Reg claim</string>
@@ -87,5 +89,8 @@
     <string name="info_select_address">Select lesson address</string>
     <string name="info_select_subject">Select lesson subject, levels and rate</string>
     <string name="info_select_date">Select from-to date</string>
+    <string name="info_server_error">Server error :(</string>
+    <string name="info_lesson_signin_success">Successfully signed in for this lesson</string>
+    <string name="info_lesson_already_signin">You are already signed in for this lesson</string>
 
 </resources>

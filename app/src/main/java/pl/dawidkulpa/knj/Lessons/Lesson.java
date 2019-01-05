@@ -69,6 +69,8 @@ public class Lesson {
         return r;
     }
 
+
+
     public String getSubject() {
         return "Matematyka";
     }
@@ -99,6 +101,19 @@ public class Lesson {
 
     public String[] getLevels() {
         return levels;
+    }
+
+    public String getLevelsAsOne(){
+        String levelsStr="";
+
+        for(int i=0; i<levels.length; i++){
+            levelsStr+= levels[i];
+            if(i!=levels.length-1){
+                levelsStr+=", ";
+            }
+        }
+
+        return levelsStr;
     }
 
     public int getSubjectId() {

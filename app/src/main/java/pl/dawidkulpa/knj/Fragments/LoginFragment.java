@@ -99,26 +99,36 @@ public class LoginFragment extends Fragment {
         scm.setMethod(ServerConnectionManager.METHOD_POST);
         scm.start(HomeActivity.SERVER_NAME+"/Authorization/Login");
         getView().findViewById(R.id.progressbar).setVisibility(View.VISIBLE);
-
-        user.setName("Sierotka");
-        user.setSname("Marysia");
-        user.setPhoneNo("534 214 123");
-        user.setAboutMe("Lubię krasnoludki i duże lustra ale najbardziej to lubie jabłka. Czasem chodzę na spacery.");
     }
 
     private void onLoginFinished(int rCode, JSONObject jObj){
-        getView().findViewById(R.id.progressbar).setVisibility(View.INVISIBLE);
+
         if(rCode==200){
-            try {
-                user.setLoginToken(jObj.getString("token"));
-                onLoginListener.onLoginAcquired(user);
-            } catch (JSONException je){
-                Log.e("LoginFragment", je.getMessage());
-            }
+            user.onLoginSuccessful(jObj);
+            ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
+                @Override
+                public void onFinish(int respCode, JSONObject jObject) {
+                    onGetDataFinished(respCode, jObject);
+                }
+            }, Query.BuildType.Pairs);
+            scm.addHeaderEntry("Authorization", "Bearer "+user.getLoginToken());
+            scm.setMethod(ServerConnectionManager.METHOD_GET);
+            scm.start(HomeActivity.SERVER_NAME+"/Users/Get/"+user.getId());
         } else if(rCode==400){
             Toast.makeText(getContext(),R.string.info_failed_login,Toast.LENGTH_SHORT).show();
         } else if(rCode==403){
             Toast.makeText(getContext(),R.string.info_failed_login,Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void onGetDataFinished(int rCode, JSONObject jObj){
+        getView().findViewById(R.id.progressbar).setVisibility(View.INVISIBLE);
+        Log.e("Error code", String.valueOf(rCode));
+        if(rCode==200){
+            user.onGetDataSuccessful(jObj);
+            onLoginListener.onLoginAcquired(user);
+        } else {
+            Toast.makeText(getContext(), "Server error!", Toast.LENGTH_SHORT).show();
         }
     }
 

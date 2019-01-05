@@ -1,6 +1,13 @@
 package pl.dawidkulpa.knj;
 
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 
 public class User {
     private String name;
@@ -10,6 +17,7 @@ public class User {
     private String aboutMe;
     private String password;
     private String loginToken;
+    private int id;
 
 
     public String getName() {
@@ -33,32 +41,32 @@ public class User {
     }
     public String getPassword(){return password;}
     public String getLoginToken(){return loginToken;}
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setSname(String sname) {
-        this.sname = sname;
-    }
+    public int getId(){return id;}
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setPhoneNo(String phoneNo) {
-        this.phoneNo = phoneNo;
-    }
-
-    public void setAboutMe(String aboutMe) {
-        this.aboutMe = aboutMe;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
 
-    public void setLoginToken(String loginToken){
-        this.loginToken= loginToken;
+    public void onLoginSuccessful(JSONObject jObj){
+        try{
+            loginToken= jObj.getString("token");
+
+            String[] split= loginToken.split("\\.");
+            byte[] decoded= Base64.decode(split[1], Base64.DEFAULT);
+            JSONObject tokenJObj= new JSONObject(new String(decoded));
+
+            id= tokenJObj.getInt("UserId");
+            Log.e("User", "User id: "+id);
+        } catch (JSONException je){
+            Log.e("User", je.getMessage());
+        }
+    }
+
+    public void onGetDataSuccessful(JSONObject jObj){
+
     }
 }

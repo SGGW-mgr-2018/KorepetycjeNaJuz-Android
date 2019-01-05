@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import javax.crypto.SecretKey;
 
@@ -35,6 +36,7 @@ public class ServerConnectionManager extends AsyncTask<String, Integer, Integer>
     private JSONObject jObj;
     private OnFinishListener onFinishListener;
     private Query postData;
+    private ArrayList<HeaderEntry> headerEntries;
     private Query.BuildType buildType;
     private String contentType;
     private String method;
@@ -47,6 +49,7 @@ public class ServerConnectionManager extends AsyncTask<String, Integer, Integer>
         method=METHOD_POST;
         contentType="";
         outtype=OUTTYPE_JSON;
+        headerEntries= new ArrayList<>();
     }
 
     public void setOnFinishListener(OnFinishListener onFinishListener) {
@@ -66,6 +69,11 @@ public class ServerConnectionManager extends AsyncTask<String, Integer, Integer>
     public void addPOSTPair(String name, Query objDescr){
         postData.addPair(name, objDescr);
     }
+
+    public void addHeaderEntry(String name, String value){
+        headerEntries.add(new HeaderEntry(name, value));
+    }
+
     public Query getPOSTQuery(){
         return postData;
     }
@@ -99,9 +107,10 @@ public class ServerConnectionManager extends AsyncTask<String, Integer, Integer>
         URL url;
 
         try {
-            if(method.equals(METHOD_GET))
-                url= new URL(params[0]+"?"+params[1]);
-            else
+            if(method.equals(METHOD_GET)) {
+                Log.e("URL", params[0]+"?"+params[1]);
+                url = new URL(params[0] + "?" + params[1]);
+            }else
                 url = new URL(params[0]);
 
             httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -109,6 +118,12 @@ public class ServerConnectionManager extends AsyncTask<String, Integer, Integer>
 
             if(!contentType.isEmpty())
                 httpURLConnection.setRequestProperty("Content-type", contentType);
+
+            if(headerEntries.size()>0){
+                for(int i=0; i<headerEntries.size(); i++){
+                    httpURLConnection.setRequestProperty(headerEntries.get(i).getName(), headerEntries.get(i).getValue());
+                }
+            }
 
             httpURLConnection.setDoInput(true);
 

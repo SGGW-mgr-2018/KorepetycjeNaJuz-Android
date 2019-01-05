@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import pl.dawidkulpa.knj.HomeActivity;
 import pl.dawidkulpa.serverconnectionmanager.Query;
 import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
 
@@ -75,7 +77,7 @@ public class LessonsManager {
 
         scm.setMethod(ServerConnectionManager.METHOD_GET);
 
-        scm.start("https://korepetycjenajuzapi.azurewebsites.net/api/CoachLesson/CoachLessonsByFilters");
+        scm.start(HomeActivity.SERVER_NAME+"/CoachLesson/CoachLessonsByFilters");
 
     }
 
@@ -137,5 +139,15 @@ public class LessonsManager {
 
     public LessonFilters getFilters(){
         return filters;
+    }
+
+    public LessonMapMarker findLessonObject(Marker marker){
+        for(int i=0; i<onMapLessons.size(); i++){
+            if(onMapLessons.get(i).compareWith(marker)){
+                return onMapLessons.get(i);
+            }
+        }
+
+        return null;
     }
 }

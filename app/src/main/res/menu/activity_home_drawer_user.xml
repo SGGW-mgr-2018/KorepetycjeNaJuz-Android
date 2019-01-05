@@ -17,6 +17,10 @@
             android:icon="@drawable/ic_notifications_black"
             android:title="@string/menu_tag_notif"/>
         <item
+            android:id="@+id/nav_mess"
+            android:icon="@drawable/ic_message_black"
+            android:title="@string/menu_messages"/>
+        <item
             android:id="@+id/nav_calendar"
             android:icon="@drawable/ic_today_black"
             android:title="@string/menu_tag_calendar" />

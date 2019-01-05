@@ -44,9 +44,12 @@ public class LessonMapMarker {
                 .anchor(0.5f, 1.0f)
                 .icon(BitmapDescriptorFactory.fromBitmap(icon)));
 
-
         this.map= map;
         this.context= context;
+    }
+
+    public Marker getGoogleMarker(){
+        return googleMarker;
     }
 
     public void unregister(){
@@ -55,5 +58,13 @@ public class LessonMapMarker {
 
     public void update(JSONObject jObj){
 
+    }
+
+    public Lesson getLesson(){
+        return lesson;
+    }
+
+    public boolean compareWith(Marker marker){
+        return googleMarker.getId().equals(marker.getId());
     }
 }

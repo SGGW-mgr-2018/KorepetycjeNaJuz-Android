@@ -31,6 +31,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
@@ -41,6 +42,7 @@ import java.util.ArrayList;
 
 import pl.dawidkulpa.knj.Dialogs.CreateLesson.CreateLessonActivity;
 import pl.dawidkulpa.knj.Dialogs.FilterDialog;
+import pl.dawidkulpa.knj.Dialogs.LessonDescriptionDialog;
 import pl.dawidkulpa.knj.Fragments.AccountFragment;
 import pl.dawidkulpa.knj.Fragments.CalendarFragment;
 import pl.dawidkulpa.knj.Dialogs.CreateLesson.CLAddressFragment;
@@ -53,6 +55,7 @@ import pl.dawidkulpa.knj.Fragments.NotifFragment;
 import pl.dawidkulpa.knj.Fragments.SettingsFragment;
 import pl.dawidkulpa.knj.Fragments.SigninFragment;
 import pl.dawidkulpa.knj.Lessons.LessonFilters;
+import pl.dawidkulpa.knj.Lessons.LessonMapMarker;
 import pl.dawidkulpa.knj.Lessons.LessonsManager;
 import pl.dawidkulpa.serverconnectionmanager.Query;
 import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
@@ -297,8 +300,24 @@ public class HomeActivity extends AppCompatActivity
                 lessonsManager.refreshLessonMarkers(map);
             }
         });
+        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                HomeActivity.this.onMarkerClick(marker);
+                return true;
+            }
+        });
 
         lessonsManager.refreshLessonMarkers(map);
+    }
+
+    public void onMarkerClick(Marker marker){
+        LessonMapMarker lessonMapMarker= lessonsManager.findLessonObject(marker);
+
+        if(lessonMapMarker!=null){
+            LessonDescriptionDialog lessonDescriptionDialog= new LessonDescriptionDialog(this,lessonMapMarker, logedInUser);
+            lessonDescriptionDialog.show();
+        }
     }
 
     public void onFindLessonClick(){

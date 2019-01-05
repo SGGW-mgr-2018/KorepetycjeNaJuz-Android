@@ -69,4 +69,9 @@
     <string name="hint_min">Min</string>
     <string name="hint_day">Dzień</string>
     <string name="hint_month">Miesiąc</string>
+    <string name="button_lesson_signin">Zapisz się</string>
+    <string name="info_server_error">Błąd serwera :(</string>
+    <string name="info_lesson_signin_success">Wysłano prośbę o uczestnictwo w lekcji</string>
+    <string name="info_lesson_already_signin">Już jesteś zapisany na tą lekcję</string>
+    <string name="menu_messages">Wiadomości</string>
 </resources>
