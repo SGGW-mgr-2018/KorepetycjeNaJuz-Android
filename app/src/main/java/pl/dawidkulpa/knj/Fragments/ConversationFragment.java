@@ -3,13 +3,35 @@ package pl.dawidkulpa.knj.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import pl.dawidkulpa.knj.HomeActivity;
+import pl.dawidkulpa.knj.Messages.Message;
+import pl.dawidkulpa.knj.Messages.MessagesListAdapter;
 import pl.dawidkulpa.knj.R;
+import pl.dawidkulpa.knj.User;
+import pl.dawidkulpa.serverconnectionmanager.Query;
+import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
 
 public class ConversationFragment extends Fragment {
+
+    private int withId;
+    private ArrayList<Message> messages;
+    private MessagesListAdapter messagesListAdapter;
+    private TimerTask refreshTask;
+    private Timer refreshTimer;
+
     public ConversationFragment() {
         // Required empty public constructor
     }
@@ -31,24 +53,108 @@ public class ConversationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        //TODO: Change layout
-        return inflater.inflate(R.layout.fragment_history, container, false);
+        View rootView= inflater.inflate(R.layout.fragment_conversation, container, false);
+
+        messages= new ArrayList<>();
+
+        refreshConversation();
+
+        rootView.findViewById(R.id.send_message_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onSendMessageButtonClick();
+            }
+        });
+
+        refreshTask= new TimerTask() {
+            @Override
+            public void run() {
+                refreshConversation();
+            }
+        };
+        refreshTimer= new Timer();
+        refreshTimer.schedule(refreshTask, 10000, 20000);
+
+        return rootView;
+    }
+
+    private void refreshConversation(){
+        ((HomeActivity)getContext()).getLogedInUser().refreshConversation(withId, new User.ConversationRefreshListener() {
+            @Override
+            public void onConversationRefreshFinished(ArrayList<Message> messages) {
+                onsConversationRefreshFinished(messages);
+            }
+        });
+    }
+
+    public void onsConversationRefreshFinished(ArrayList<Message> messages){
+        boolean scroll= messages.size()!=this.messages.size();
+
+        ListView listView= getActivity().findViewById(R.id.messages_list_view);
+
+        if(messages.size()>this.messages.size()) {
+            for(int i=this.messages.size(); i<messages.size(); i++){
+                this.messages.add(messages.get(i));
+            }
+        } else {
+            this.messages.clear();
+            this.messages.addAll(messages);
+        }
+
+        if(messagesListAdapter==null)
+            messagesListAdapter = new MessagesListAdapter(getContext(), this.messages, withId);
+        if(listView.getAdapter()==null)
+            listView.setAdapter(messagesListAdapter);
+        messagesListAdapter.notifyDataSetChanged();
+
+        if(scroll)
+            listView.setSelection(messagesListAdapter.getCount()-1);
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //if (context instanceof OnFragmentInteractionListener) {
-        //   mListener = (OnFragmentInteractionListener) context;
-        //} else {
-        //throw new RuntimeException(context.toString()
-        //          + " must implement OnFragmentInteractionListener");
-        //}
     }
 
     @Override
     public void onDetach() {
+        refreshTimer.cancel();
         super.onDetach();
+    }
+
+    public void setWithId(int withId){
+        this.withId= withId;
+    }
+
+    public void onSendMessageButtonClick(){
+        TextView textView= getView().findViewById(R.id.send_message_text);
+        String text= textView.getText().toString();
+
+        if(!text.isEmpty()){
+            ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
+                @Override
+                public void onFinish(int respCode, JSONObject jObject) {
+                    onSendMessageFinished(respCode);
+                }
+            }, Query.BuildType.JSONPatch);
+
+            Query messageDto= new Query();
+            messageDto.addPair("recipientId", String.valueOf(withId));
+            messageDto.addPair("content", text);
+            scm.addPOSTPair("", messageDto);
+            scm.addHeaderEntry("Authorization", "Bearer "+((HomeActivity)getContext()).getLogedInUser().getLoginToken());
+            scm.setMethod(ServerConnectionManager.METHOD_POST);
+            scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
+
+            scm.start(HomeActivity.SERVER_NAME+"/Messages");
+
+            textView.setText("");
+        }
+    }
+
+    public void onSendMessageFinished(int rCode){
+        if(rCode==201){
+            refreshConversation();
+        }
     }
 }

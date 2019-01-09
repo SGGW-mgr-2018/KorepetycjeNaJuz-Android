@@ -1,6 +1,5 @@
 package pl.dawidkulpa.knj.Lessons;
 
-import android.content.Context;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -12,7 +11,12 @@ import java.util.Date;
 import pl.dawidkulpa.knj.Address;
 
 public class Lesson {
+    public static final int ROLE_STUDENT=1;
+    public static final int ROLE_COACH=2;
+
+
     private int id;
+    private int role;
     private int coachId;
     private String coachName;
     private String statusName;
@@ -27,6 +31,7 @@ public class Lesson {
 
     public static Lesson create(JSONObject jObj){
         Lesson lesson= new Lesson();
+        int role;
 
         try {
             lesson.id= jObj.getInt("id");
@@ -136,3 +141,32 @@ public class Lesson {
         return time;
     }
 }
+
+
+/**
+ * [
+ *   {
+ *     "dateStart": "2019-01-05T17:00:52",
+ *     "dateEnd": "2019-01-05T18:00:52",
+ *     "myLesson": {
+ *       "id": 3,
+ *       "lessonStatusId": 2,
+ *       "student": {
+ *         "id": 2,
+ *         "firstName": "Sierotka",
+ *         "lastName": "Marysia",
+ *         "email": "wilk@czerwonykapturek.com",
+ *         "telephone": null,
+ *         "description": "nie chce mi sie",
+ *         "avatar": null
+ *       },
+ *       "date": "2019-01-05T17:00:52",
+ *       "numberOfHours": 1,
+ *       "ratingOfStudent": null,
+ *       "opinionOfStudent": null,
+ *       "ratingOfCoach": null,
+ *       "opinionOfCoach": null
+ *     }
+ *   },
+ * ]
+ */

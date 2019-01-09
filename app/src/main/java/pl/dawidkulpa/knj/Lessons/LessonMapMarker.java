@@ -44,6 +44,9 @@ public class LessonMapMarker {
                 .anchor(0.5f, 1.0f)
                 .icon(BitmapDescriptorFactory.fromBitmap(icon)));
 
+        googleMarker.setTitle(lesson.getSubject());
+        googleMarker.setSnippet(lesson.getLevelsAsOne()+", "+lesson.getRatePH()+" zł/h");
+
         this.map= map;
         this.context= context;
     }

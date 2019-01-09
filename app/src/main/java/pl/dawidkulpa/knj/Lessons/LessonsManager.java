@@ -150,4 +150,10 @@ public class LessonsManager {
 
         return null;
     }
+
+    public void hideAllInfoWindows(){
+        for(int i=0; i<onMapLessons.size(); i++){
+            onMapLessons.get(i).getGoogleMarker().hideInfoWindow();
+        }
+    }
 }

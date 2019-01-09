@@ -23,7 +23,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/home/dkulpa/ToolBox/Android/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/communication/ic_message_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/home/dkulpa/ToolBox/Android/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_send_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -33,8 +33,11 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_message_black" />
+                            <entry key="height" value="20" />
+                            <entry key="outputName" value="ic_send_black_20dp" />
+                            <entry key="overrideSize" value="true" />
                             <entry key="sourceFile" value="$USER_HOME$" />
+                            <entry key="width" value="20" />
                           </map>
                         </option>
                       </PersistentState>

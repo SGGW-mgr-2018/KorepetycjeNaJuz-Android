@@ -45,12 +45,11 @@ import pl.dawidkulpa.knj.Dialogs.FilterDialog;
 import pl.dawidkulpa.knj.Dialogs.LessonDescriptionDialog;
 import pl.dawidkulpa.knj.Fragments.AccountFragment;
 import pl.dawidkulpa.knj.Fragments.CalendarFragment;
-import pl.dawidkulpa.knj.Dialogs.CreateLesson.CLAddressFragment;
-import pl.dawidkulpa.knj.Dialogs.CreateLesson.CLSubjectFragment;
-import pl.dawidkulpa.knj.Dialogs.CreateLesson.CLDateFragment;
+import pl.dawidkulpa.knj.Fragments.MessagesFragment;
 import pl.dawidkulpa.knj.Fragments.HistoryFragment;
 import pl.dawidkulpa.knj.Fragments.LoginFragment;
 import pl.dawidkulpa.knj.Fragments.MapFragment;
+import pl.dawidkulpa.knj.Fragments.ConversationFragment;
 import pl.dawidkulpa.knj.Fragments.NotifFragment;
 import pl.dawidkulpa.knj.Fragments.SettingsFragment;
 import pl.dawidkulpa.knj.Fragments.SigninFragment;
@@ -66,6 +65,7 @@ public class HomeActivity extends AppCompatActivity
         AccountFragment.OnSaveListener, SigninFragment.OnSignInListener {
 
     private static final int PERMISSIONS_REQUEST_ALL=1;
+
     private static final int MAP_FRAGMENT_ID=0;
     private static final int LOGIN_FRAGMENT_ID=1;
     private static final int ACCOUNT_FRAGMENT_ID=2;
@@ -74,6 +74,9 @@ public class HomeActivity extends AppCompatActivity
     private static final int SETTINGS_FRAGMENT_ID=5;
     private static final int NOTIF_FRAGMENT_ID=6;
     private static final int SIGNIN_FRAGMENT_ID=7;
+    private static final int MESSAGES_FRAGMENT_ID =8;
+    private static final int CONVERSATION_FRAGMENT_ID =9;
+
     private static final int CREATE_LESSON_ONE_FRAGMENT_ID=8;
     private static final int CREATE_LESSON_TWO_FRAGMENT_ID=9;
     private static final int CREATE_LESSON_FINAL_FRAGMENT_ID=10;
@@ -150,9 +153,8 @@ public class HomeActivity extends AppCompatActivity
         appFragments.add(SettingsFragment.newInstance());
         appFragments.add(NotifFragment.newInstance());
         appFragments.add(SigninFragment.newInstance());
-        appFragments.add(CLSubjectFragment.newInstance());
-        appFragments.add(CLDateFragment.newInstance());
-        appFragments.add(CLAddressFragment.newInstance());
+        appFragments.add(MessagesFragment.newInstance());
+        appFragments.add(ConversationFragment.newInstance());
 
         switchFragment(0);
 
@@ -257,6 +259,9 @@ public class HomeActivity extends AppCompatActivity
             case  R.id.nav_signin:
                 switchFragment(SIGNIN_FRAGMENT_ID);
                 break;
+            case R.id.nav_mess:
+                switchFragment(MESSAGES_FRAGMENT_ID);
+                break;
             case R.id.nav_create:
                 Intent intent= new Intent(this, CreateLessonActivity.class);
                 intent.putExtra("subjects", subjectLabels);
@@ -303,8 +308,20 @@ public class HomeActivity extends AppCompatActivity
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                HomeActivity.this.onMarkerClick(marker);
+                marker.showInfoWindow();
                 return true;
+            }
+        });
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                HomeActivity.this.onMarkerClick(marker);
+            }
+        });
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                lessonsManager.hideAllInfoWindows();
             }
         });
 
@@ -355,7 +372,10 @@ public class HomeActivity extends AppCompatActivity
                 .setAction("Action", null).show();
 
         ((AccountFragment)appFragments.get(ACCOUNT_FRAGMENT_ID)).setUser(logedInUser);
+        logedInUser.refreshCalendar();
     }
+
+
 
     @Override
     public void onSignInSuccess() {
@@ -410,5 +430,14 @@ public class HomeActivity extends AppCompatActivity
         } catch (JSONException je){
             Log.e("HomeActivity", je.getMessage());
         }
+    }
+
+    public User getLogedInUser(){
+        return logedInUser;
+    }
+
+    public void showConversation(int withId){
+        ((ConversationFragment)appFragments.get(CONVERSATION_FRAGMENT_ID)).setWithId(withId);
+        switchFragment(CONVERSATION_FRAGMENT_ID);
     }
 }

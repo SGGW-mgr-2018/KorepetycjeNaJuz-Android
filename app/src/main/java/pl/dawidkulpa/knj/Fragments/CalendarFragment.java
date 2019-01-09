@@ -12,15 +12,18 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import pl.dawidkulpa.knj.HomeActivity;
 import pl.dawidkulpa.knj.Lessons.Lesson;
 import pl.dawidkulpa.knj.Lessons.LessonsListAdapter;
 import pl.dawidkulpa.knj.R;
+import pl.dawidkulpa.knj.User;
 
 public class CalendarFragment extends Fragment {
 
     private LessonsListAdapter lessonsListAdapter;
     private ArrayList<Lesson> dayLessons;
     private Context context;
+    private User logedInUser;
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -64,6 +67,10 @@ public class CalendarFragment extends Fragment {
         super.onAttach(context);
         dayLessons= new ArrayList<>();
         lessonsListAdapter= new LessonsListAdapter(context, dayLessons);
+        logedInUser= ((HomeActivity)context).getLogedInUser();
+
+
+
         //if (context instanceof OnFragmentInteractionListener) {
         //   mListener = (OnFragmentInteractionListener) context;
         //} else {
@@ -81,6 +88,7 @@ public class CalendarFragment extends Fragment {
         dayLessons.clear();
 
         for(int i=0; i<d; i++){
+            dayLessons.add(new Lesson());
             //dayLessons.add(new Lesson("Polski", 1, new Time(65700000), 90));
         }
 

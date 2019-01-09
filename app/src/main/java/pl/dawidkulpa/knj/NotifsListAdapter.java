@@ -1,35 +1,56 @@
 package pl.dawidkulpa.knj;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.CheckBox;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class NotifsListAdapter extends BaseAdapter {
-    public static final int TYPE_ITEM=0;
-    public static final int TYPE_SEPARATOR=1;
+public class NotifsListAdapter extends ArrayAdapter<NotifyEntry> {
+    private ArrayList<NotifyEntry> data;
+    private Context context;
 
-    private ArrayList<Integer> itemTypes;
-    private ArrayList<NotifEntry> data;
-    private LayoutInflater inflater;
-
-    public NotifsListAdapter(Context context){
-        inflater= (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public NotifsListAdapter(@NonNull Context context, ArrayList<NotifyEntry> data){
+        super(context, R.layout.list_item_notif);
+        this.context= context;
+        this.data= data;
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return itemTypes.get(position);
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View row= convertView;
+        NotifyHolder notifyHolder=null;
+        NotifyEntry obj= data.get(position);
+
+        if(row==null){
+            LayoutInflater inflater= ((Activity) context).getLayoutInflater();
+            row= inflater.inflate(R.layout.list_item_notif, null);
+
+            notifyHolder= new NotifyHolder();
+            notifyHolder.titleText= row.findViewById(R.id.title_text);
+            notifyHolder.contentText= row.findViewById(R.id.content_text);
+
+            row.setTag(notifyHolder);
+        }else {
+            notifyHolder= (NotifyHolder) row.getTag();
+        }
+
+        notifyHolder.titleText.setText(obj.getTitle());
+        notifyHolder.contentText.setText(obj.getContent());
+
+        return row;
     }
 
+    @Nullable
     @Override
-    public int getViewTypeCount() {
-        return 2;
+    public NotifyEntry getItem(int position) {
+        return data.get(position);
     }
 
     @Override
@@ -37,64 +58,8 @@ public class NotifsListAdapter extends BaseAdapter {
         return data.size();
     }
 
-    @Override
-    public NotifEntry getItem(int position) {
-        return data.get(position);
+    static class NotifyHolder{
+        TextView titleText;
+        TextView contentText;
     }
-
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        TextView sepText=null;
-        CheckBox notifCheck=null;
-        int type = getItemViewType(position);
-
-        if (convertView == null) {
-            switch (type) {
-                case TYPE_ITEM:
-                    convertView = inflater.inflate(R.layout.list_item_notif, null);
-                    notifCheck= convertView.findViewById(R.id.notif_checkbox);
-                    convertView.setTag(notifCheck);
-                    break;
-                case TYPE_SEPARATOR:
-                    convertView = inflater.inflate(R.layout.list_item_day_sep, null);
-                    sepText= convertView.findViewById(R.id.day_separator_text);
-                    convertView.setTag(sepText);
-                    break;
-            }
-        } else {
-            switch (type) {
-                case TYPE_ITEM:
-                    notifCheck= (CheckBox)convertView.getTag();
-                    break;
-                case TYPE_SEPARATOR:
-                    sepText= (TextView)convertView.getTag();
-                    break;
-            }
-        }
-
-        switch (type) {
-            case TYPE_ITEM:
-                notifCheck.setText("");
-                break;
-            case TYPE_SEPARATOR:
-                sepText.setText("");
-                break;
-        }
-
-        return convertView;
-    }
-
-    static class ItemViewHolder {
-        public CheckBox checkBox;
-    }
-
-    static class SeparatorViewHolder{
-        public TextView textView;
-    }
-
 }
