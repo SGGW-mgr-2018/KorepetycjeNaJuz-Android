@@ -14,11 +14,11 @@ import java.util.ArrayList;
 
 import pl.dawidkulpa.knj.R;
 
-public class LessonsListAdapter extends ArrayAdapter<Lesson> {
-    private ArrayList<Lesson> data;
+public class CalendarListAdapter extends ArrayAdapter<LessonEntry> {
+    private ArrayList<LessonEntry> data;
     private Context context;
 
-    public LessonsListAdapter(@NonNull Context context, ArrayList<Lesson> data) {
+    public CalendarListAdapter(@NonNull Context context, ArrayList<LessonEntry> data) {
         super(context, R.layout.list_item_day_lesson);
         this.context= context;
         this.data= data;
@@ -28,6 +28,7 @@ public class LessonsListAdapter extends ArrayAdapter<Lesson> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row= convertView;
         LessonHolder lessonHolder=null;
+        LessonEntry obj= data.get(position);
 
         if(row==null){
             LayoutInflater inflater= ((Activity) context).getLayoutInflater();
@@ -42,14 +43,15 @@ public class LessonsListAdapter extends ArrayAdapter<Lesson> {
             lessonHolder= (LessonHolder) row.getTag();
         }
 
-        String title= data.get(position).getSubject()+", liceum, ";
+        String title= obj.getLesson().getSubject()+", "+obj.getLesson().getLevelsAsOne();
+        String descr= obj.getLesson().getAddressString()+ "   "+obj.getLesson().getTimeStartString()+" / "+obj.getLessonLength()+" godzin";
         //Time sTime= data.get(position).getStartTime();
         //Time eTime= new Time(sTime.getTime() + data.get(position).getLenMin()*60*1000);
         //title+= sTime.getHours()+":"+sTime.getMinutes()+" - ";
         //title+= eTime.getHours()+":"+eTime.getMinutes();
 
         lessonHolder.titleText.setText(title);
-        lessonHolder.descrText.setText("Description");
+        lessonHolder.descrText.setText(descr);
 
         return row;
     }
@@ -60,7 +62,7 @@ public class LessonsListAdapter extends ArrayAdapter<Lesson> {
 
     @Nullable
     @Override
-    public Lesson getItem(int position) {
+    public LessonEntry getItem(int position) {
         return data.get(position);
     }
 

@@ -171,8 +171,8 @@ public class CLDateFragment extends CLFragment {
     public boolean getherData(CoachLesson coachLesson) {
         if(getView()!=null){
 
-            coachLesson.dateFrom= new Date(dateFrom);
-            coachLesson.dateTo= new Date(dateTo);
+            //coachLesson.dateFrom= new Date(dateFrom);
+            //coachLesson.dateTo= new Date(dateTo);
 
             return true;
         } else {

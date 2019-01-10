@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import pl.dawidkulpa.knj.Lessons.Lesson;
+import pl.dawidkulpa.knj.Lessons.LessonEntry;
 import pl.dawidkulpa.knj.Messages.Conversation;
 import pl.dawidkulpa.knj.Messages.Message;
 import pl.dawidkulpa.serverconnectionmanager.Query;
@@ -25,13 +25,13 @@ public class User {
     private String loginToken;
     private int id;
 
-    ArrayList<Lesson> myLessons;
-    ArrayList<Lesson> myCoachLessons;
+    private ArrayList<LessonEntry> myLessonsEntries;
 
-    ArrayList<Conversation> conversations;
+    private ArrayList<Conversation> conversations;
 
-    ConversationsRefreshListener conversationsRefreshListener;
-    ConversationRefreshListener conversationRefreshListener;
+    private ConversationsRefreshListener conversationsRefreshListener;
+    private ConversationRefreshListener conversationRefreshListener;
+
 
     public interface ConversationsRefreshListener {
         void onConversationsRefreshFinished(ArrayList<Conversation> conversations);
@@ -41,22 +41,23 @@ public class User {
         void onConversationRefreshFinished(ArrayList<Message> messages);
     }
 
+    public User() {
+        myLessonsEntries= new ArrayList<>();
+    }
+
+    // ########## Getters ##########
     public String getName() {
         return name;
     }
-
     public String getSname() {
         return sname;
     }
-
     public String getEmail() {
         return email;
     }
-
     public String getPhoneNo() {
         return phoneNo;
     }
-
     public String getAboutMe() {
         return aboutMe;
     }
@@ -64,14 +65,70 @@ public class User {
     public String getLoginToken(){return loginToken;}
     public int getId(){return id;}
 
+    public ArrayList<LessonEntry> getLessonsEntries() {
+        return myLessonsEntries;
+    }
+
+    // ########## Setters ##########
     public void setEmail(String email) {
         this.email = email;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
 
+
+    // ########## Refreshers ##########
+    public void refreshLessonEntries(){
+        ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
+            @Override
+            public void onFinish(int respCode, JSONObject jObject) {
+                onGetLessonEntriesFinished(respCode, jObject);
+            }
+        }, Query.BuildType.Pairs);
+        scm.setMethod(ServerConnectionManager.METHOD_GET);
+        scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
+        scm.addHeaderEntry("Authorization", "Bearer "+loginToken);
+        scm.addPOSTPair("DateFrom", "2018-01-05T17:26:05.313Z");
+        scm.addPOSTPair("DateTo", "2030-01-05T17:26:05.313Z");
+
+        scm.start(HomeActivity.SERVER_NAME+"/CoachLesson/Calendar");
+    }
+
+    public void refreshConversations(ConversationsRefreshListener conversationsRefreshListener){
+        this.conversationsRefreshListener = conversationsRefreshListener;
+
+        ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
+            @Override
+            public void onFinish(int respCode, JSONObject jObject) {
+                onRefreshConversationsFinished(respCode, jObject);
+            }
+        }, Query.BuildType.Pairs);
+        scm.setMethod(ServerConnectionManager.METHOD_GET);
+        scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
+        scm.addHeaderEntry("Authorization", "Bearer "+loginToken);
+
+        scm.start(HomeActivity.SERVER_NAME+"/Messages");
+    }
+
+    public void refreshConversation(int messId, ConversationRefreshListener conversationRefreshListener){
+        this.conversationRefreshListener= conversationRefreshListener;
+
+        ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
+            @Override
+            public void onFinish(int respCode, JSONObject jObject) {
+                onRefreshConversationFinished(respCode, jObject);
+            }
+        }, Query.BuildType.Pairs);
+        scm.setMethod(ServerConnectionManager.METHOD_GET);
+        scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
+        scm.addHeaderEntry("Authorization", "Bearer "+loginToken);
+
+        scm.start(HomeActivity.SERVER_NAME+"/Messages/"+messId);
+    }
+
+
+    // ########## Callbacks ##########
     public void onLoginSuccessful(JSONObject jObj){
         try{
             loginToken= jObj.getString("token");
@@ -89,64 +146,6 @@ public class User {
 
     public void onGetDataSuccessful(JSONObject jObj){
 
-    }
-
-    public void refreshCalendar(){
-        ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
-            @Override
-            public void onFinish(int respCode, JSONObject jObject) {
-                onGetCalendarFinished(respCode, jObject);
-            }
-        }, Query.BuildType.Pairs);
-        scm.setMethod(ServerConnectionManager.METHOD_GET);
-        scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
-        scm.addHeaderEntry("Authorization", "Bearer "+loginToken);
-        scm.addPOSTPair("DateFrom", "2018-01-05T17:26:05.313Z");
-        scm.addPOSTPair("DateTo", "2030-01-05T17:26:05.313Z");
-
-        scm.start(HomeActivity.SERVER_NAME+"/CoachLesson/Calendar");
-    }
-
-    private void onGetCalendarFinished(int rCode, JSONObject jObj){
-        myLessons= new ArrayList<>();
-        myCoachLessons= new ArrayList<>();
-
-        if(rCode==200){
-            try{
-                Log.e("User", jObj.toString());
-                JSONArray jArr= jObj.getJSONArray("array");
-                JSONObject jEntry;
-
-                for(int i=0; i<jArr.length(); i++){
-                    jEntry= jArr.getJSONObject(i);
-
-                    if(jEntry.getInt("userRole")==Lesson.ROLE_STUDENT){
-                        //myLessons.add(Lesson.create(jEntry));
-                    } else {
-                        myCoachLessons.add(Lesson.create(jEntry));
-                    }
-                }
-
-            } catch (JSONException je){
-                Log.e("User", je.getMessage());
-            }
-        }
-    }
-
-    public void refreshConversations(ConversationsRefreshListener conversationsRefreshListener){
-        this.conversationsRefreshListener = conversationsRefreshListener;
-
-        ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
-            @Override
-            public void onFinish(int respCode, JSONObject jObject) {
-                onRefreshConversationsFinished(respCode, jObject);
-            }
-        }, Query.BuildType.Pairs);
-        scm.setMethod(ServerConnectionManager.METHOD_GET);
-        scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
-        scm.addHeaderEntry("Authorization", "Bearer "+loginToken);
-
-        scm.start(HomeActivity.SERVER_NAME+"/Messages");
     }
 
     private void onRefreshConversationsFinished(int rCode, JSONObject jObj){
@@ -174,23 +173,7 @@ public class User {
         }
     }
 
-    public void refreshConversation(final int messId, ConversationRefreshListener conversationRefreshListener){
-        this.conversationRefreshListener= conversationRefreshListener;
-
-        ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
-            @Override
-            public void onFinish(int respCode, JSONObject jObject) {
-                onRefreshConversationFinished(respCode, jObject, messId);
-            }
-        }, Query.BuildType.Pairs);
-        scm.setMethod(ServerConnectionManager.METHOD_GET);
-        scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
-        scm.addHeaderEntry("Authorization", "Bearer "+loginToken);
-
-        scm.start(HomeActivity.SERVER_NAME+"/Messages/"+messId);
-    }
-
-    private void onRefreshConversationFinished(int rCode, JSONObject jObj, int messId){
+    private void onRefreshConversationFinished(int rCode, JSONObject jObj){
         ArrayList<Message> messages= new ArrayList<>();
         if(rCode==200){
 
@@ -211,15 +194,22 @@ public class User {
         }
     }
 
-    public ArrayList<Lesson> getMyLessons(){
-        return myLessons;
-    }
+    private void onGetLessonEntriesFinished(int rCode, JSONObject jObj){
+        if(rCode==200){
+            try{
+                Log.e("User", jObj.toString());
+                JSONArray jArr= jObj.getJSONArray("array");
+                JSONObject jEntry;
 
-    public ArrayList<Lesson> getMyCoachLessons(){
-        return myCoachLessons;
-    }
+                for(int i=0; i<jArr.length(); i++){
+                    jEntry= jArr.getJSONObject(i);
 
-    public ArrayList<Conversation> getConversations(){
-        return conversations;
+                    myLessonsEntries.addAll(LessonEntry.create(jEntry));
+                }
+
+            } catch (JSONException je){
+                Log.e("User", je.getMessage());
+            }
+        }
     }
 }

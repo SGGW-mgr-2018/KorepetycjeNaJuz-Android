@@ -11,17 +11,19 @@ import android.widget.CalendarView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import pl.dawidkulpa.knj.HomeActivity;
 import pl.dawidkulpa.knj.Lessons.Lesson;
-import pl.dawidkulpa.knj.Lessons.LessonsListAdapter;
+import pl.dawidkulpa.knj.Lessons.LessonEntry;
+import pl.dawidkulpa.knj.Lessons.CalendarListAdapter;
 import pl.dawidkulpa.knj.R;
 import pl.dawidkulpa.knj.User;
 
 public class CalendarFragment extends Fragment {
 
-    private LessonsListAdapter lessonsListAdapter;
-    private ArrayList<Lesson> dayLessons;
+    private CalendarListAdapter calendarListAdapter;
+    private ArrayList<LessonEntry> dayLessons;
     private Context context;
     private User logedInUser;
 
@@ -48,8 +50,8 @@ public class CalendarFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_calendar, container, false);
 
-        ((ListView)view.findViewById(R.id.lessons_list)).setAdapter(lessonsListAdapter);
-        lessonsListAdapter.notifyDataSetChanged();
+        ((ListView)view.findViewById(R.id.lessons_list)).setAdapter(calendarListAdapter);
+        calendarListAdapter.notifyDataSetChanged();
 
         ((CalendarView)view.findViewById(R.id.calendar)).setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
@@ -66,17 +68,8 @@ public class CalendarFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         dayLessons= new ArrayList<>();
-        lessonsListAdapter= new LessonsListAdapter(context, dayLessons);
+        calendarListAdapter = new CalendarListAdapter(context, dayLessons);
         logedInUser= ((HomeActivity)context).getLogedInUser();
-
-
-
-        //if (context instanceof OnFragmentInteractionListener) {
-        //   mListener = (OnFragmentInteractionListener) context;
-        //} else {
-        //throw new RuntimeException(context.toString()
-        //          + " must implement OnFragmentInteractionListener");
-        //}
     }
 
     @Override
@@ -86,12 +79,14 @@ public class CalendarFragment extends Fragment {
 
     private void onDateChange(int y, int m, int d){
         dayLessons.clear();
+        ArrayList<LessonEntry> lessonEntries= logedInUser.getLessonsEntries();
 
-        for(int i=0; i<d; i++){
-            dayLessons.add(new Lesson());
-            //dayLessons.add(new Lesson("Polski", 1, new Time(65700000), 90));
+        for(int i=0; i<lessonEntries.size(); i++){
+            if(lessonEntries.get(i).getLesson().isAtDay(y, m, d)){
+                dayLessons.add(lessonEntries.get(i));
+            }
         }
 
-        lessonsListAdapter.notifyDataSetChanged();
+        calendarListAdapter.notifyDataSetChanged();
     }
 }

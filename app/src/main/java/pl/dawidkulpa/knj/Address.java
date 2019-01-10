@@ -29,6 +29,11 @@ public class Address {
         return address;
     }
 
+    @Override
+    public String toString() {
+        return street+", "+city;
+    }
+
     public double getLat() {
         return lat;
     }

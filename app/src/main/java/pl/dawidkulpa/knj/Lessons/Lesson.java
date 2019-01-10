@@ -6,15 +6,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import pl.dawidkulpa.knj.Address;
 
 public class Lesson {
-    public static final int ROLE_STUDENT=1;
-    public static final int ROLE_COACH=2;
-
-
     private int id;
     private int role;
     private int coachId;
@@ -49,7 +48,8 @@ public class Lesson {
             lesson.subject= jObj.getString("lessonSubject");
             lesson.ratePH= jObj.getDouble("ratePerHour");
 
-            //Get date
+            lesson.dateStart= parseDate(jObj.getString("dateStart"));
+            lesson.dateEnd= parseDate(jObj.getString("dateEnd"));
 
             lesson.address= Address.create(jObj.getJSONObject("address"));
             lesson.time= jObj.getInt("time");
@@ -121,6 +121,10 @@ public class Lesson {
         return levelsStr;
     }
 
+    public String getAddressString(){
+        return address.toString();
+    }
+
     public int getSubjectId() {
         return subjectId;
     }
@@ -139,6 +143,51 @@ public class Lesson {
 
     public int getTime() {
         return time;
+    }
+
+    public String getDateStartString(){
+        DateFormat df = new SimpleDateFormat("HH:mm   dd/MM/yyyy");
+
+        return df.format(dateStart);
+    }
+
+    public String getDateEndString(){
+        DateFormat df = new SimpleDateFormat("HH:mm   dd/MM/yyyy");
+
+        return df.format(dateEnd);
+    }
+
+    public boolean isAtDay(int y, int m, int d){
+        Calendar calendar= Calendar.getInstance();
+        calendar.setTime(dateStart);
+
+        return (calendar.get(Calendar.DAY_OF_MONTH)==d) &&
+                (calendar.get(Calendar.MONTH)==m) &&
+                (calendar.get(Calendar.YEAR)==y);
+    }
+
+    public String getTimeStartString(){
+        DateFormat df= new SimpleDateFormat("HH:mm");
+        return df.format(dateStart);
+    }
+    public String getTimeEndString(){
+        DateFormat df= new SimpleDateFormat("HH:mm");
+        return df.format(dateEnd);
+    }
+
+    public static Date parseDate(String strDate){
+        Calendar calendar= Calendar.getInstance();
+        String[] timeDateSplit= strDate.split("T");
+        String[] timeSplit= timeDateSplit[1].split(":");
+        String[] dateSplit= timeDateSplit[0].split("-");
+
+        calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(dateSplit[2]));
+        calendar.set(Calendar.MONTH, Integer.valueOf(dateSplit[1]));
+        calendar.set(Calendar.YEAR, Integer.valueOf(dateSplit[0]));
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.valueOf(timeSplit[0]));
+        calendar.set(Calendar.MINUTE, Integer.valueOf(timeSplit[1]));
+
+        return new Date(calendar.getTimeInMillis());
     }
 }
 

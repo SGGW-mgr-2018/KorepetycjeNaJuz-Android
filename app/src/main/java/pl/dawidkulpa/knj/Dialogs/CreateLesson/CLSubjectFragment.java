@@ -77,15 +77,15 @@ public class CLSubjectFragment extends CLFragment {
     @Override
     public void putOnView(CoachLesson coachLesson) {
         if(getView()!=null){
-            ((EditText)getView().findViewById(R.id.rate_edit)).setText(String.valueOf(coachLesson.rate));
+            //((EditText)getView().findViewById(R.id.rate_edit)).setText(String.valueOf(coachLesson.rate));
             Spinner subjectSpinner= getView().findViewById(R.id.subjects_spinner);
-            subjectSpinner.setSelection(coachLesson.subjectId);
+            //subjectSpinner.setSelection(coachLesson.subjectId);
             LinearLayout levels_box = getView().findViewById(R.id.levels_box);
             ((CheckBox)levels_box.getChildAt(2)).setChecked(true);
 
-            for(int i=0; i<coachLesson.levels.size(); i++){
-                ((CheckBox)levels_box.getChildAt(2)).setChecked(true);
-            }
+            //for(int i=0; i<coachLesson.levels.size(); i++){
+             //   ((CheckBox)levels_box.getChildAt(2)).setChecked(true);
+            //}
         }
     }
 
@@ -95,13 +95,13 @@ public class CLSubjectFragment extends CLFragment {
             Spinner subjectSpinner = getView().findViewById(R.id.subjects_spinner);
             LinearLayout levels_box = getView().findViewById(R.id.levels_box);
 
-            coachLesson.rate = Integer.valueOf(rateEdit.getText().toString());
-            coachLesson.subjectId = subjectSpinner.getSelectedItemPosition() + 1;
-            coachLesson.levels.clear();
+            //coachLesson.rate = Integer.valueOf(rateEdit.getText().toString());
+            //coachLesson.subjectId = subjectSpinner.getSelectedItemPosition() + 1;
+            //coachLesson.levels.clear();
 
             for (int i = 1; i < levels_box.getChildCount(); i++) {
                 if (((CheckBox)levels_box.getChildAt(i)).isChecked()) {
-                    coachLesson.levels.add(i);
+                    //coachLesson.levels.add(i);
                 }
             }
 

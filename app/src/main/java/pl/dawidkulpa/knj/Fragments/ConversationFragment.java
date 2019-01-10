@@ -31,6 +31,7 @@ public class ConversationFragment extends Fragment {
     private MessagesListAdapter messagesListAdapter;
     private TimerTask refreshTask;
     private Timer refreshTimer;
+    private User user;
 
     public ConversationFragment() {
         // Required empty public constructor
@@ -57,7 +58,7 @@ public class ConversationFragment extends Fragment {
 
         messages= new ArrayList<>();
 
-        refreshConversation();
+        user= ((HomeActivity)getContext()).getLogedInUser();
 
         rootView.findViewById(R.id.send_message_button).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,6 +67,7 @@ public class ConversationFragment extends Fragment {
             }
         });
 
+        refreshConversation();
         refreshTask= new TimerTask() {
             @Override
             public void run() {
@@ -73,13 +75,13 @@ public class ConversationFragment extends Fragment {
             }
         };
         refreshTimer= new Timer();
-        refreshTimer.schedule(refreshTask, 10000, 20000);
+        refreshTimer.schedule(refreshTask, 10000, 10000);
 
         return rootView;
     }
 
     private void refreshConversation(){
-        ((HomeActivity)getContext()).getLogedInUser().refreshConversation(withId, new User.ConversationRefreshListener() {
+        user.refreshConversation(withId, new User.ConversationRefreshListener() {
             @Override
             public void onConversationRefreshFinished(ArrayList<Message> messages) {
                 onsConversationRefreshFinished(messages);
@@ -142,7 +144,7 @@ public class ConversationFragment extends Fragment {
             messageDto.addPair("recipientId", String.valueOf(withId));
             messageDto.addPair("content", text);
             scm.addPOSTPair("", messageDto);
-            scm.addHeaderEntry("Authorization", "Bearer "+((HomeActivity)getContext()).getLogedInUser().getLoginToken());
+            scm.addHeaderEntry("Authorization", "Bearer "+user.getLoginToken());
             scm.setMethod(ServerConnectionManager.METHOD_POST);
             scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
 

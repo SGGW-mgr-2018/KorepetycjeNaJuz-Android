@@ -372,7 +372,7 @@ public class HomeActivity extends AppCompatActivity
                 .setAction("Action", null).show();
 
         ((AccountFragment)appFragments.get(ACCOUNT_FRAGMENT_ID)).setUser(logedInUser);
-        logedInUser.refreshCalendar();
+        logedInUser.refreshLessonEntries();
     }
 
 

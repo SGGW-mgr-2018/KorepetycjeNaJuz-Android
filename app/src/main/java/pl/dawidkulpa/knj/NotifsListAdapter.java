@@ -12,11 +12,14 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class NotifsListAdapter extends ArrayAdapter<NotifyEntry> {
-    private ArrayList<NotifyEntry> data;
+import pl.dawidkulpa.knj.Lessons.Lesson;
+import pl.dawidkulpa.knj.Lessons.LessonEntry;
+
+public class NotifsListAdapter extends ArrayAdapter<LessonEntry> {
+    private ArrayList<LessonEntry> data;
     private Context context;
 
-    public NotifsListAdapter(@NonNull Context context, ArrayList<NotifyEntry> data){
+    public NotifsListAdapter(@NonNull Context context, ArrayList<LessonEntry> data){
         super(context, R.layout.list_item_notif);
         this.context= context;
         this.data= data;
@@ -26,7 +29,7 @@ public class NotifsListAdapter extends ArrayAdapter<NotifyEntry> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View row= convertView;
         NotifyHolder notifyHolder=null;
-        NotifyEntry obj= data.get(position);
+        LessonEntry obj= data.get(position);
 
         if(row==null){
             LayoutInflater inflater= ((Activity) context).getLayoutInflater();
@@ -34,22 +37,37 @@ public class NotifsListAdapter extends ArrayAdapter<NotifyEntry> {
 
             notifyHolder= new NotifyHolder();
             notifyHolder.titleText= row.findViewById(R.id.title_text);
-            notifyHolder.contentText= row.findViewById(R.id.content_text);
+            notifyHolder.descriptionText= row.findViewById(R.id.description_text);
+            notifyHolder.sendMessageButton= row.findViewById(R.id.send_message_button);
+            notifyHolder.confirmButton= row.findViewById(R.id.confirm_button);
+            notifyHolder.declineButton= row.findViewById(R.id.decline_button);
 
             row.setTag(notifyHolder);
         }else {
             notifyHolder= (NotifyHolder) row.getTag();
         }
 
-        notifyHolder.titleText.setText(obj.getTitle());
-        notifyHolder.contentText.setText(obj.getContent());
+        notifyHolder.titleText.setText(obj.getLesson().getSubject()+" - "+obj.getLesson().getStatusName());
+
+
+        if(obj.getRole()==LessonEntry.ROLE_STUDENT){
+            notifyHolder.sendMessageButton.setVisibility(View.GONE);
+            notifyHolder.confirmButton.setVisibility(View.GONE);
+            notifyHolder.declineButton.setVisibility(View.GONE);
+            notifyHolder.descriptionText.setText(obj.getLesson().getDateStartString());
+        } else {
+            notifyHolder.sendMessageButton.setVisibility(View.VISIBLE);
+            notifyHolder.confirmButton.setVisibility(View.VISIBLE);
+            notifyHolder.declineButton.setVisibility(View.VISIBLE);
+            notifyHolder.descriptionText.setText(obj.getStudentName()+" "+obj.getStudentSName());
+        }
 
         return row;
     }
 
     @Nullable
     @Override
-    public NotifyEntry getItem(int position) {
+    public LessonEntry getItem(int position) {
         return data.get(position);
     }
 
@@ -60,6 +78,9 @@ public class NotifsListAdapter extends ArrayAdapter<NotifyEntry> {
 
     static class NotifyHolder{
         TextView titleText;
-        TextView contentText;
+        TextView descriptionText;
+        TextView sendMessageButton;
+        TextView confirmButton;
+        TextView declineButton;
     }
 }

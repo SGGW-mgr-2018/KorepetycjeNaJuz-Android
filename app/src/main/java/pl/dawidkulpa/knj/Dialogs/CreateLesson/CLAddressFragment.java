@@ -55,16 +55,16 @@ public class CLAddressFragment extends CLFragment {
     @Override
     public void putOnView(CoachLesson coachLesson) {
         if(getView()!=null){
-            ((EditText)getView().findViewById(R.id.city_edit)).setText(coachLesson.city);
-            ((EditText)getView().findViewById(R.id.street_edit)).setText(coachLesson.street);
+            //((EditText)getView().findViewById(R.id.city_edit)).setText(coachLesson.city);
+            //((EditText)getView().findViewById(R.id.street_edit)).setText(coachLesson.street);
         }
     }
 
     @Override
     public boolean getherData(CoachLesson coachLesson) {
         if(getView()!=null){
-            coachLesson.city= ((EditText)getView().findViewById(R.id.city_edit)).getText().toString();
-            coachLesson.street= ((EditText)getView().findViewById(R.id.street_edit)).getText().toString();
+            //coachLesson.city= ((EditText)getView().findViewById(R.id.city_edit)).getText().toString();
+            //coachLesson.street= ((EditText)getView().findViewById(R.id.street_edit)).getText().toString();
 
             return true;
         } else {

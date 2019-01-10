@@ -107,7 +107,7 @@ public class CreateLessonActivity extends AppCompatActivity {
         Query coachLessonDTO= new Query();
         Query addressDTO= new Query();
 
-        ArrayList<String> levels= new ArrayList<>();
+       /* ArrayList<String> levels= new ArrayList<>();
         for(int i=0; i<coachLesson.levels.size(); i++){
             levels.add(String.valueOf(coachLesson.levels.get(i)));
         }
@@ -125,7 +125,7 @@ public class CreateLessonActivity extends AppCompatActivity {
         //coachLessonDTO.addPair("dateStart", coachLesson.dateFrom);
         //coachLessonDTO.addPair("dateEnd", coachLesson.dateTo);
         coachLessonDTO.addPair("time", coachLesson.time);
-        coachLessonDTO.addPair("address", addressDTO);
+        coachLessonDTO.addPair("address", addressDTO);*/
 
         scm.addPOSTPair("", coachLessonDTO);
         scm.start("https://korepetycjenajuzapi.azurewebsites.net/api/coachLesson/Create");

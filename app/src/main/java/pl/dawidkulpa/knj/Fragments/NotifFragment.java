@@ -8,16 +8,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
+import pl.dawidkulpa.knj.HomeActivity;
 import pl.dawidkulpa.knj.NotifsListAdapter;
-import pl.dawidkulpa.knj.NotifyEntry;
 import pl.dawidkulpa.knj.R;
+import pl.dawidkulpa.knj.User;
 
 public class NotifFragment extends Fragment {
 
     private NotifsListAdapter notifsListAdapter;
-    private ArrayList<NotifyEntry> notifyEntries;
+    private User user;
 
 
     public NotifFragment() {
@@ -43,7 +42,9 @@ public class NotifFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.fragment_notif, container, false);
 
-        notifsListAdapter= new NotifsListAdapter(getContext(), notifyEntries);
+        user= ((HomeActivity)getContext()).getLogedInUser();
+
+        notifsListAdapter= new NotifsListAdapter(getContext(), user.getLessonsEntries());
         ListView listView= rootView.findViewById(R.id.notifs_list);
         listView.setAdapter(notifsListAdapter);
         notifsListAdapter.notifyDataSetChanged();
@@ -55,11 +56,7 @@ public class NotifFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         //TODO: Download all notifs
-
-
-        notifsListAdapter.notifyDataSetChanged();
     }
-
 
     @Override
     public void onDetach() {
