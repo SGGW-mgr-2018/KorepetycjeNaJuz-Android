@@ -34,7 +34,7 @@ public class Conversation {
 
 
     public String getWithName(){
-        return withName + withSecondName;
+        return withName+ " " + withSecondName;
     }
 
     public Message getLastMsg() {

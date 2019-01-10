@@ -56,16 +56,16 @@ public class MessagesFragment extends Fragment {
     public void onConvRefreshFinished(ArrayList<Conversation> conversations){
         conversationsListAdapter= new ConversationsListAdapter(getContext(), conversations, new ConversationsListAdapter.ItemClickListener() {
             @Override
-            public void onItemClickListener(int withId) {
-                onConversationClick(withId);
+            public void onItemClickListener(int withId, String withName) {
+                onConversationClick(withId, withName);
             }
         });
         ((ListView)getView().findViewById(R.id.conversation_list_view)).setAdapter(conversationsListAdapter);
 
     }
 
-    private void onConversationClick(int withId){
-        ((HomeActivity)getContext()).showConversation(withId);
+    private void onConversationClick(int withId, String withName){
+        ((HomeActivity)getContext()).showConversation(withId, withName);
     }
 
     @Override

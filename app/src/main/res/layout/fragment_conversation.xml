@@ -5,6 +5,15 @@
     android:orientation="vertical"
     android:background="@color/colorBackground">
 
+    <TextView
+        android:id="@+id/with_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="With"
+        android:textColor="@color/colorTextLabels"
+        android:textSize="25sp"/>
+
     <ListView
         android:id="@+id/messages_list_view"
         android:layout_width="match_parent"

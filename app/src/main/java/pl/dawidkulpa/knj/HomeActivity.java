@@ -436,8 +436,9 @@ public class HomeActivity extends AppCompatActivity
         return logedInUser;
     }
 
-    public void showConversation(int withId){
+    public void showConversation(int withId, String withName){
         ((ConversationFragment)appFragments.get(CONVERSATION_FRAGMENT_ID)).setWithId(withId);
+        ((ConversationFragment)appFragments.get(CONVERSATION_FRAGMENT_ID)).setWithName(withName);
         switchFragment(CONVERSATION_FRAGMENT_ID);
     }
 }

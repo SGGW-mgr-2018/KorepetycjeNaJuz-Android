@@ -27,11 +27,13 @@ import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
 public class ConversationFragment extends Fragment {
 
     private int withId;
+    private String withName;
     private ArrayList<Message> messages;
     private MessagesListAdapter messagesListAdapter;
     private TimerTask refreshTask;
     private Timer refreshTimer;
     private User user;
+    private ListView listView;
 
     public ConversationFragment() {
         // Required empty public constructor
@@ -66,6 +68,9 @@ public class ConversationFragment extends Fragment {
                 onSendMessageButtonClick();
             }
         });
+        listView= rootView.findViewById(R.id.messages_list_view);
+
+        ((TextView)rootView.findViewById(R.id.with_text)).setText(withName);
 
         refreshConversation();
         refreshTask= new TimerTask() {
@@ -92,25 +97,29 @@ public class ConversationFragment extends Fragment {
     public void onsConversationRefreshFinished(ArrayList<Message> messages){
         boolean scroll= messages.size()!=this.messages.size();
 
-        ListView listView= getActivity().findViewById(R.id.messages_list_view);
+        if(listView==null)
+            listView= getView().findViewById(R.id.messages_list_view);
 
-        if(messages.size()>this.messages.size()) {
-            for(int i=this.messages.size(); i<messages.size(); i++){
-                this.messages.add(messages.get(i));
+        if(listView!=null) {
+            if (messages.size() > this.messages.size()) {
+                for (int i = this.messages.size(); i < messages.size(); i++) {
+                    this.messages.add(messages.get(i));
+                }
+            } else {
+                this.messages.clear();
+                this.messages.addAll(messages);
             }
-        } else {
-            this.messages.clear();
-            this.messages.addAll(messages);
+
+            if (messagesListAdapter == null)
+                messagesListAdapter = new MessagesListAdapter(getContext(), this.messages, withId);
+
+            if (listView.getAdapter() == null)
+                listView.setAdapter(messagesListAdapter);
+            messagesListAdapter.notifyDataSetChanged();
+
+            if (scroll)
+                listView.setSelection(messagesListAdapter.getCount() - 1);
         }
-
-        if(messagesListAdapter==null)
-            messagesListAdapter = new MessagesListAdapter(getContext(), this.messages, withId);
-        if(listView.getAdapter()==null)
-            listView.setAdapter(messagesListAdapter);
-        messagesListAdapter.notifyDataSetChanged();
-
-        if(scroll)
-            listView.setSelection(messagesListAdapter.getCount()-1);
     }
 
     @Override
@@ -126,6 +135,10 @@ public class ConversationFragment extends Fragment {
 
     public void setWithId(int withId){
         this.withId= withId;
+    }
+
+    public void setWithName(String withName){
+        this.withName= withName;
     }
 
     public void onSendMessageButtonClick(){

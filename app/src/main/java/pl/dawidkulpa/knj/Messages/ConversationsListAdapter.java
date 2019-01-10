@@ -17,7 +17,7 @@ import pl.dawidkulpa.knj.R;
 public class ConversationsListAdapter extends ArrayAdapter<Conversation> {
 
     public interface ItemClickListener{
-        void onItemClickListener(int withId);
+        void onItemClickListener(int withId, String withName);
     }
 
     private ArrayList<Conversation> data;
@@ -54,7 +54,7 @@ public class ConversationsListAdapter extends ArrayAdapter<Conversation> {
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                itemClickListener.onItemClickListener(obj.getWithId());
+                itemClickListener.onItemClickListener(obj.getWithId(), obj.getWithName());
             }
         });
 

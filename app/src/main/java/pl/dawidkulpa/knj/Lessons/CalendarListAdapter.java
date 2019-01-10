@@ -36,7 +36,9 @@ public class CalendarListAdapter extends ArrayAdapter<LessonEntry> {
 
             lessonHolder= new LessonHolder();
             lessonHolder.titleText= row.findViewById(R.id.title_text);
-            lessonHolder.descrText= row.findViewById(R.id.descr_text);
+            lessonHolder.addressText= row.findViewById(R.id.address_text);
+            lessonHolder.dateText= row.findViewById(R.id.date_text);
+            lessonHolder.lengthText= row.findViewById(R.id.length_text);
 
             row.setTag(lessonHolder);
         }else {
@@ -51,7 +53,17 @@ public class CalendarListAdapter extends ArrayAdapter<LessonEntry> {
         //title+= eTime.getHours()+":"+eTime.getMinutes();
 
         lessonHolder.titleText.setText(title);
-        lessonHolder.descrText.setText(descr);
+        lessonHolder.addressText.setText(obj.getLesson().getAddressString());
+        lessonHolder.dateText.setText(obj.getLesson().getTimeStartString());
+
+        if(obj.getLessonLength()==1){
+            lessonHolder.lengthText.setText(obj.getLessonLength()+" godzina");
+        } else if (obj.getLessonLength()<5) {
+            lessonHolder.lengthText.setText(obj.getLessonLength()+" godziny");
+        } else {
+            lessonHolder.lengthText.setText(obj.getLessonLength()+" godzin");
+        }
+
 
         return row;
     }
@@ -73,6 +85,8 @@ public class CalendarListAdapter extends ArrayAdapter<LessonEntry> {
 
     static class LessonHolder{
         TextView titleText;
-        TextView descrText;
+        TextView addressText;
+        TextView dateText;
+        TextView lengthText;
     }
 }
