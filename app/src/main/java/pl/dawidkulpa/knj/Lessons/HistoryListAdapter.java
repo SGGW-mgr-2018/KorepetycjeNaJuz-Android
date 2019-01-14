@@ -16,16 +16,16 @@ import java.util.ArrayList;
 
 import pl.dawidkulpa.knj.R;
 
-public class HistoryListAdapter extends ArrayAdapter<LessonEntry> {
-    private ArrayList<LessonEntry> data;
+public class HistoryListAdapter extends ArrayAdapter<HistoryLessonEntry> {
+    private ArrayList<HistoryLessonEntry> data;
     private Context context;
     StarButtonClickListener starButtonClickListener;
 
     public interface StarButtonClickListener{
-        void onStarButtonClick(int i);
+        void onStarButtonClick(int id, int rating);
     }
 
-    public HistoryListAdapter(@NonNull Context context, ArrayList<LessonEntry> data, StarButtonClickListener starButtonClickListener) {
+    public HistoryListAdapter(@NonNull Context context, ArrayList<HistoryLessonEntry> data, StarButtonClickListener starButtonClickListener) {
         super(context, R.layout.list_item_history_lesson);
         this.context= context;
         this.data= data;
@@ -36,7 +36,7 @@ public class HistoryListAdapter extends ArrayAdapter<LessonEntry> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row= convertView;
         LessonHolder lessonHolder=null;
-        LessonEntry obj= data.get(position);
+        final HistoryLessonEntry obj= data.get(position);
 
         if(row==null){
             LayoutInflater inflater= ((Activity) context).getLayoutInflater();
@@ -45,7 +45,7 @@ public class HistoryListAdapter extends ArrayAdapter<LessonEntry> {
             lessonHolder= new LessonHolder();
             lessonHolder.starButtonsBox= row.findViewById(R.id.star_buttons_box);
             lessonHolder.titleText= row.findViewById(R.id.title_text);
-            lessonHolder.addressText= row.findViewById(R.id.address_text);
+            lessonHolder.coachText= row.findViewById(R.id.coach_text);
             lessonHolder.dateText= row.findViewById(R.id.date_text);
             lessonHolder.lengthText= row.findViewById(R.id.length_text);
 
@@ -54,24 +54,31 @@ public class HistoryListAdapter extends ArrayAdapter<LessonEntry> {
             lessonHolder= (LessonHolder) row.getTag();
         }
 
-        String title= obj.getLesson().getSubject()+", "+obj.getLesson().getLevelsAsOne();
+        String title= obj.getSubject();
         lessonHolder.titleText.setText(title);
-        lessonHolder.addressText.setText(obj.getLesson().getAddressString());
-        lessonHolder.dateText.setText(obj.getLesson().getTimeStartString());
+        lessonHolder.coachText.setText(obj.getCoachName()+" "+obj.getCoachSName());
+        lessonHolder.dateText.setText(obj.getDateStartString());
 
-        if(obj.getLessonLength()==1){
-            lessonHolder.lengthText.setText(obj.getLessonLength()+" godzina");
-        } else if (obj.getLessonLength()<5) {
-            lessonHolder.lengthText.setText(obj.getLessonLength()+" godziny");
+        if(obj.getTime()==1){
+            lessonHolder.lengthText.setText(obj.getTime()+" godzina");
+        } else if (obj.getTime()<5) {
+            lessonHolder.lengthText.setText(obj.getTime()+" godziny");
         } else {
-            lessonHolder.lengthText.setText(obj.getLessonLength()+" godzin");
+            lessonHolder.lengthText.setText(obj.getTime()+" godzin");
+        }
+
+        for(int i=0; i<obj.getCoachRating(); i++){
+            lessonHolder.starButtonsBox.getChildAt(i).setBackground(context.getDrawable(R.drawable.ripple_full_star));
+        }
+        for(int i=obj.getCoachRating(); i<lessonHolder.starButtonsBox.getChildCount(); i++){
+            lessonHolder.starButtonsBox.getChildAt(i).setBackground(context.getDrawable(R.drawable.ripple_empty_star));
         }
 
         lessonHolder.starButtonsBox.getChildAt(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setStartsOn(v, 1);
-                starButtonClickListener.onStarButtonClick(0);
+                starButtonClickListener.onStarButtonClick(obj.getId(), 0);
             }
         });
 
@@ -79,7 +86,7 @@ public class HistoryListAdapter extends ArrayAdapter<LessonEntry> {
             @Override
             public void onClick(View v) {
                 setStartsOn(v, 2);
-                starButtonClickListener.onStarButtonClick(1);
+                starButtonClickListener.onStarButtonClick(obj.getId(), 1);
             }
         });
 
@@ -88,7 +95,7 @@ public class HistoryListAdapter extends ArrayAdapter<LessonEntry> {
             @Override
             public void onClick(View v) {
                 setStartsOn(v, 3);
-                starButtonClickListener.onStarButtonClick(2);
+                starButtonClickListener.onStarButtonClick(obj.getId(), 2);
             }
         });
 
@@ -97,19 +104,17 @@ public class HistoryListAdapter extends ArrayAdapter<LessonEntry> {
             @Override
             public void onClick(View v) {
                 setStartsOn(v, 4);
-                starButtonClickListener.onStarButtonClick(3);
+                starButtonClickListener.onStarButtonClick(obj.getId(), 3);
             }
         });
-
 
         lessonHolder.starButtonsBox.getChildAt(4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setStartsOn(v, 5);
-                starButtonClickListener.onStarButtonClick(4);
+                starButtonClickListener.onStarButtonClick(obj.getId(), 4);
             }
         });
-
 
 
         return row;
@@ -130,7 +135,7 @@ public class HistoryListAdapter extends ArrayAdapter<LessonEntry> {
 
     @Nullable
     @Override
-    public LessonEntry getItem(int position) {
+    public HistoryLessonEntry getItem(int position) {
         return data.get(position);
     }
 
@@ -141,7 +146,7 @@ public class HistoryListAdapter extends ArrayAdapter<LessonEntry> {
 
     static class LessonHolder{
         TextView titleText;
-        TextView addressText;
+        TextView coachText;
         TextView dateText;
         TextView lengthText;
 

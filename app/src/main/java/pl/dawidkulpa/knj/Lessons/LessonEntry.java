@@ -17,6 +17,7 @@ public class LessonEntry{
     private int status;
     private int role;
 
+    private int lessonId;
     private int studentId;
     private String studentName;
     private String studentSName;
@@ -39,6 +40,7 @@ public class LessonEntry{
 
                 lessonEntries.get(0).nuberOfHours= jMyLesson.optInt("numberOfHours", 1);
                 lessonEntries.get(0).status= jMyLesson.getInt("lessonStatusId");
+                lessonEntries.get(0).lessonId= jMyLesson.getInt("id");
             }
 
             if(!jObject.isNull("lessons")){
@@ -59,7 +61,8 @@ public class LessonEntry{
                     lessonEntries.get(lessonEntries.size()-1).studentName= jStudent.getString("firstName");
                     lessonEntries.get(lessonEntries.size()-1).studentSName= jStudent.getString("lastName");
                     lessonEntries.get(lessonEntries.size()-1).studentPhone= jStudent.getString("telephone");
-                    lessonEntries.get(lessonEntries.size()-1).nuberOfHours= jStudent.optInt("numberOfHours", 1);
+                    lessonEntries.get(lessonEntries.size()-1).nuberOfHours= jLesson.optInt("numberOfHours", 1);
+                    lessonEntries.get(lessonEntries.size()-1).lessonId= jLesson.getInt("id");
                 }
             }
 
@@ -69,6 +72,10 @@ public class LessonEntry{
         }
 
         return lessonEntries;
+    }
+
+    public int getId(){
+        return lessonId;
     }
 
     public Lesson getLesson() {

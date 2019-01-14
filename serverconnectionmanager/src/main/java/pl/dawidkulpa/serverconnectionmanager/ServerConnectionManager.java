@@ -42,6 +42,17 @@ public class ServerConnectionManager extends AsyncTask<String, Integer, Integer>
     private String method;
     private String outtype;
 
+    public ServerConnectionManager(Query.BuildType buildType, OnFinishListener onFinishListener){
+        this.onFinishListener= onFinishListener;
+        postData= new Query();
+        this.buildType= buildType;
+        method=METHOD_POST;
+        contentType="";
+        outtype=OUTTYPE_JSON;
+        headerEntries= new ArrayList<>();
+    }
+
+    @Deprecated
     public ServerConnectionManager(OnFinishListener onFinishListener, Query.BuildType buildType){
         this.onFinishListener= onFinishListener;
         postData= new Query();
@@ -107,7 +118,7 @@ public class ServerConnectionManager extends AsyncTask<String, Integer, Integer>
         URL url;
 
         try {
-            if(method.equals(METHOD_GET)) {
+            if(method.equals(METHOD_GET) || buildType==Query.BuildType.Pairs) {
                 Log.e("URL", params[0]+"?"+params[1]);
                 url = new URL(params[0] + "?" + params[1]);
             }else

@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import pl.dawidkulpa.knj.Lessons.HistoryLessonEntry;
+import pl.dawidkulpa.knj.Lessons.Lesson;
 import pl.dawidkulpa.knj.Lessons.LessonEntry;
 import pl.dawidkulpa.knj.Messages.Conversation;
 import pl.dawidkulpa.knj.Messages.Message;
@@ -31,6 +33,10 @@ public class User {
 
     private ConversationsRefreshListener conversationsRefreshListener;
     private ConversationRefreshListener conversationRefreshListener;
+    private HistoryRefreshListener historyRefreshListener;
+    private UpdateFinishListener updateFinishListener;
+    private LessonEntriesRefreshListener lessonEntriesRefreshListener;
+
 
 
     public interface ConversationsRefreshListener {
@@ -39,6 +45,15 @@ public class User {
 
     public interface ConversationRefreshListener{
         void onConversationRefreshFinished(ArrayList<Message> messages);
+    }
+    public interface HistoryRefreshListener{
+        void onHistoryRefreshFinished(ArrayList<HistoryLessonEntry> historyEntries);
+    }
+    public interface UpdateFinishListener{
+        void onUpdateFinished(int rCode);
+    }
+    public interface LessonEntriesRefreshListener{
+        void onLessonEntriesRefreshFinished(ArrayList<LessonEntry> lessonEntries);
     }
 
     public User() {
@@ -56,10 +71,16 @@ public class User {
         return email;
     }
     public String getPhoneNo() {
-        return phoneNo;
+        if(phoneNo.equals("null"))
+            return "";
+        else
+            return phoneNo;
     }
     public String getAboutMe() {
-        return aboutMe;
+        if(aboutMe.equals("null"))
+            return "";
+        else
+            return aboutMe;
     }
     public String getPassword(){return password;}
     public String getLoginToken(){return loginToken;}
@@ -78,8 +99,38 @@ public class User {
     }
 
 
+    // ########## API Setters ##########
+    public void updateMyData(String phoneNo, String aboutMe, String pass,
+                             UpdateFinishListener updateFinishListener){
+        this.updateFinishListener= updateFinishListener;
+
+        ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
+            @Override
+            public void onFinish(int respCode, JSONObject jObject) {
+                onUpdateMyDataFinished(respCode, jObject);
+            }
+        }, Query.BuildType.JSONPatch);
+        scm.setMethod(ServerConnectionManager.METHOD_PUT);
+        scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
+        scm.addHeaderEntry("Authorization", "Bearer "+loginToken);
+
+        Query userEditDto= new Query();
+        userEditDto.addPair("id", String.valueOf(id));
+        userEditDto.addPair("firstName", name);
+        userEditDto.addPair("lastName", sname);
+        userEditDto.addPair("password", pass);
+        userEditDto.addPair("telephone", phoneNo);
+        userEditDto.addPair("description", aboutMe);
+        userEditDto.addPair("avatar", "none");
+        userEditDto.addPair("privacyPolicesConfirmed", "true");
+
+        scm.addPOSTPair("", userEditDto);
+        scm.start(HomeActivity.SERVER_NAME+"/Users/Update");
+    }
+
+
     // ########## Refreshers ##########
-    public void refreshLessonEntries(){
+    public void refreshLessonEntries(LessonEntriesRefreshListener lessonEntriesRefreshListener){
         ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
             @Override
             public void onFinish(int respCode, JSONObject jObject) {
@@ -91,6 +142,8 @@ public class User {
         scm.addHeaderEntry("Authorization", "Bearer "+loginToken);
         scm.addPOSTPair("DateFrom", "2018-01-05T17:26:05.313Z");
         scm.addPOSTPair("DateTo", "2030-01-05T17:26:05.313Z");
+
+        this.lessonEntriesRefreshListener= lessonEntriesRefreshListener;
 
         scm.start(HomeActivity.SERVER_NAME+"/CoachLesson/Calendar");
     }
@@ -127,6 +180,22 @@ public class User {
         scm.start(HomeActivity.SERVER_NAME+"/Messages/"+messId);
     }
 
+    public void refreshHistory(HistoryRefreshListener historyRefreshListener){
+        this.historyRefreshListener= historyRefreshListener;
+
+        ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
+            @Override
+            public void onFinish(int respCode, JSONObject jObject) {
+                onHistryRefreshFinished(respCode, jObject);
+            }
+        }, Query.BuildType.Pairs);
+        scm.setMethod(ServerConnectionManager.METHOD_GET);
+        scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
+        scm.addHeaderEntry("Authorization", "Bearer "+loginToken);
+
+        scm.start(HomeActivity.SERVER_NAME+"/CoachLesson/History");
+    }
+
 
     // ########## Callbacks ##########
     public void onLoginSuccessful(JSONObject jObj){
@@ -145,7 +214,15 @@ public class User {
     }
 
     public void onGetDataSuccessful(JSONObject jObj){
-
+        try{
+            name= jObj.getString("firstName");
+            sname= jObj.getString("lastName");
+            email= jObj.getString("email");
+            phoneNo= jObj.getString("telephone");
+            aboutMe= jObj.getString("description");
+        } catch (JSONException je){
+            Log.e("User", je.getMessage());
+        }
     }
 
     private void onRefreshConversationsFinished(int rCode, JSONObject jObj){
@@ -197,19 +274,56 @@ public class User {
     private void onGetLessonEntriesFinished(int rCode, JSONObject jObj){
         if(rCode==200){
             try{
-                Log.e("User", jObj.toString());
+                myLessonsEntries.clear();
                 JSONArray jArr= jObj.getJSONArray("array");
                 JSONObject jEntry;
 
                 for(int i=0; i<jArr.length(); i++){
                     jEntry= jArr.getJSONObject(i);
+                    ArrayList<LessonEntry> entries= LessonEntry.create(jEntry);
 
-                    myLessonsEntries.addAll(LessonEntry.create(jEntry));
+                    myLessonsEntries.addAll(entries);
+                }
+
+                if(lessonEntriesRefreshListener!=null){
+                    lessonEntriesRefreshListener.onLessonEntriesRefreshFinished(myLessonsEntries);
                 }
 
             } catch (JSONException je){
                 Log.e("User", je.getMessage());
             }
+        }
+    }
+
+    private void onHistryRefreshFinished(int rCode, JSONObject jObj){
+        if(rCode==200){
+            ArrayList<HistoryLessonEntry> historyLessonEntries= new ArrayList<>();
+
+            try {
+                JSONArray jArray = jObj.getJSONArray("array");
+
+                for(int i=0; i<jArray.length();i++){
+                    historyLessonEntries.add(HistoryLessonEntry.create(jArray.getJSONObject(i)));
+                }
+            }catch (JSONException je){
+                Log.e("User", je.getMessage());
+            }
+
+            if(historyRefreshListener!=null){
+                historyRefreshListener.onHistoryRefreshFinished(historyLessonEntries);
+            }
+        }
+    }
+
+    private void onUpdateMyDataFinished(int rCode, JSONObject jObj){
+        Log.e("Error code", String.valueOf(rCode));
+
+        if(rCode==200){
+            onGetDataSuccessful(jObj);
+        }
+
+        if(updateFinishListener!=null){
+            updateFinishListener.onUpdateFinished(rCode);
         }
     }
 }

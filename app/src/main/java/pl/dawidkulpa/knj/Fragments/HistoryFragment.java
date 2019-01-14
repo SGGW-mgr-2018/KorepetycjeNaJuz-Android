@@ -8,28 +8,31 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import pl.dawidkulpa.knj.HomeActivity;
 import pl.dawidkulpa.knj.Lessons.CalendarListAdapter;
+import pl.dawidkulpa.knj.Lessons.HistoryLessonEntry;
 import pl.dawidkulpa.knj.Lessons.HistoryListAdapter;
 import pl.dawidkulpa.knj.Lessons.LessonEntry;
 import pl.dawidkulpa.knj.R;
+import pl.dawidkulpa.knj.User;
+import pl.dawidkulpa.serverconnectionmanager.Query;
+import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
 
 public class HistoryFragment extends Fragment {
 
     private ListView historyListView;
     private HistoryListAdapter historyListAdapter;
-    private ArrayList<LessonEntry> historyLessonEntries;
 
     public HistoryFragment() {
         // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
     public static HistoryFragment newInstance() {
         HistoryFragment fragment = new HistoryFragment();
         Bundle args = new Bundle();
@@ -47,32 +50,46 @@ public class HistoryFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.fragment_history, container, false);
 
-        historyLessonEntries= new ArrayList<>();
-        historyListView= rootView.findViewById(R.id.history_list_view);
-        historyListAdapter= new HistoryListAdapter(getContext(), historyLessonEntries, new HistoryListAdapter.StarButtonClickListener() {
+        ((HomeActivity)getContext()).getLogedInUser().refreshHistory(new User.HistoryRefreshListener() {
             @Override
-            public void onStarButtonClick(int i) {
-
+            public void onHistoryRefreshFinished(ArrayList<HistoryLessonEntry> historyEntries) {
+                onHistoryRefreshed(historyEntries);
             }
         });
-        historyListView.setAdapter(historyListAdapter);
-
-        filterLessonEntries();
 
         return rootView;
     }
 
-    public void filterLessonEntries(){
-        ArrayList<LessonEntry> userLessonEntries= ((HomeActivity)getContext()).getLogedInUser().getLessonsEntries();
-        Date today= Calendar.getInstance().getTime();
+    public void onHistoryRefreshed(ArrayList<HistoryLessonEntry> historyLessonEntries){
+        historyListView= getView().findViewById(R.id.history_list_view);
+        historyListAdapter= new HistoryListAdapter(getContext(), historyLessonEntries, new HistoryListAdapter.StarButtonClickListener() {
+            @Override
+            public void onStarButtonClick(int id, int rating) {
+                sendRating(id, rating);
+            }
+        });
+        historyListView.setAdapter(historyListAdapter);
 
+        getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
+    }
 
-        for(int i=0; i<userLessonEntries.size(); i++){
-                historyLessonEntries.add(userLessonEntries.get(i));
-        }
+    public void sendRating(int id, int rating){
+        ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
+            @Override
+            public void onFinish(int rCode, JSONObject jObject) {
 
-        historyListAdapter.notifyDataSetChanged();
-        historyListAdapter.notifyDataSetInvalidated();
+            }
+        }, Query.BuildType.JSONPatch);
+
+        Query lessonRatingDto= new Query();
+        lessonRatingDto.addPair("lessonId", String.valueOf(id));
+        lessonRatingDto.addPair("rating", String.valueOf(rating));
+        lessonRatingDto.addPair("opinion", "");
+
+        scm.addPOSTPair("", lessonRatingDto);
+        scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
+        scm.setMethod(ServerConnectionManager.METHOD_POST);
+        scm.start(HomeActivity.SERVER_NAME+"/Lesson/Rating/Post");
     }
 
     @Override

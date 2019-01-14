@@ -94,19 +94,23 @@ public class LessonsManager {
                     JSONObject lessonJObj= lessonsArray.getJSONObject(i);
 
                     //Search for occurrence
-                    for(int j=0; i<onMapLessons.size(); j++){
-                        if(onMapLessons.get(j).equals(lessonJObj)){
-                            occurMap[j]=true;
-                            occured= true;
-                            onMapLessons.get(j).update(lessonJObj);
-                            break;
+                    try {
+                        for (int j = 0; i < onMapLessons.size(); j++) {
+                            if (onMapLessons.get(j).equals(lessonJObj)) {
+                                occurMap[j] = true;
+                                occured = true;
+                                onMapLessons.get(j).update(lessonJObj);
+                                break;
+                            }
                         }
-                    }
+                        //If absent -> add
+                        if(!occured){
+                            onMapLessons.add(LessonMapMarker.create(lessonJObj));
+                            onMapLessons.get(onMapLessons.size()-1).register(context, map);
+                        }
 
-                    //If absent -> add
-                    if(!occured){
-                        onMapLessons.add(LessonMapMarker.create(lessonJObj));
-                        onMapLessons.get(onMapLessons.size()-1).register(context, map);
+                    }catch (IndexOutOfBoundsException ie){
+                        Log.e("LessonManager", ie.getMessage());
                     }
                 }
             } catch (JSONException jsonE){
@@ -115,9 +119,13 @@ public class LessonsManager {
 
             //Remove absent elements
             for(int i=0; i<occurMap.length; i++){
-                if(!occurMap[i]){
-                    onMapLessons.get(i).unregister();
-                    onMapLessons.remove(i);
+                try {
+                    if (!occurMap[i]) {
+                        onMapLessons.get(i).unregister();
+                        onMapLessons.remove(i);
+                    }
+                }catch (IndexOutOfBoundsException ie){
+                    Log.e("LessonManager", ie.getMessage());
                 }
             }
         } else {

@@ -23,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -83,6 +84,7 @@ public class HomeActivity extends AppCompatActivity
 
 
     private FragmentManager fragmentManager;
+    private int fragmentOnId;
     private ArrayList<Fragment> appFragments;
 
     private User logedInUser;
@@ -170,6 +172,8 @@ public class HomeActivity extends AppCompatActivity
         transaction.replace(R.id.main_container, appFragments.get(id));
         transaction.addToBackStack(null);
 
+        fragmentOnId= id;
+
         transaction.commit();
     }
 
@@ -196,8 +200,16 @@ public class HomeActivity extends AppCompatActivity
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            if(fragmentOnId==CONVERSATION_FRAGMENT_ID)
+                super.onBackPressed();
         }
+    }
+
+    public void setDrawerTitle(String name, String email){
+        DrawerLayout drawer= findViewById(R.id.drawer_layout);
+
+        ((TextView)drawer.findViewById(R.id.name_text)).setText(name);
+        ((TextView)drawer.findViewById(R.id.email_text)).setText(email);
     }
 
     @Override
@@ -315,6 +327,8 @@ public class HomeActivity extends AppCompatActivity
         navigationView.inflateMenu(R.menu.activity_home_drawer_guest);
         switchFragment(0);
 
+        setDrawerTitle("Korepetycje Na Już", "Jakiś slogan!");
+
         Snackbar.make(fab, R.string.info_successful_logout, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
     }
@@ -332,8 +346,9 @@ public class HomeActivity extends AppCompatActivity
         Snackbar.make(fab, R.string.info_successful_login, Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
 
-        ((AccountFragment)appFragments.get(ACCOUNT_FRAGMENT_ID)).setUser(logedInUser);
-        logedInUser.refreshLessonEntries();
+        setDrawerTitle(user.getName()+" "+user.getSname(), user.getEmail());
+
+        logedInUser.refreshLessonEntries(null);
     }
 
 
@@ -397,9 +412,16 @@ public class HomeActivity extends AppCompatActivity
         return logedInUser;
     }
 
+    public void putSnackbar(String text){
+        FloatingActionButton fab = findViewById(R.id.fab);
+        Snackbar.make(fab, text, Snackbar.LENGTH_SHORT).show();
+    }
+
     public void showConversation(int withId, String withName){
         ((ConversationFragment)appFragments.get(CONVERSATION_FRAGMENT_ID)).setWithId(withId);
         ((ConversationFragment)appFragments.get(CONVERSATION_FRAGMENT_ID)).setWithName(withName);
         switchFragment(CONVERSATION_FRAGMENT_ID);
     }
+
+
 }

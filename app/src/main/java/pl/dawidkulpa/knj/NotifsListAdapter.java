@@ -12,24 +12,32 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import pl.dawidkulpa.knj.Lessons.Lesson;
 import pl.dawidkulpa.knj.Lessons.LessonEntry;
 
 public class NotifsListAdapter extends ArrayAdapter<LessonEntry> {
     private ArrayList<LessonEntry> data;
     private Context context;
+    private ControlButtonsClickListener cbcl;
 
-    public NotifsListAdapter(@NonNull Context context, ArrayList<LessonEntry> data){
+    public interface ControlButtonsClickListener{
+        void onSendMessageClick(LessonEntry lessonEntry);
+        void onConfirmLessonClick(LessonEntry lessonEntry);
+        void onDeclineLessonClick(LessonEntry lessonEntry);
+    }
+
+    public NotifsListAdapter(@NonNull Context context, ArrayList<LessonEntry> data,
+                             ControlButtonsClickListener cbcl){
         super(context, R.layout.list_item_notif);
         this.context= context;
         this.data= data;
+        this.cbcl= cbcl;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row= convertView;
         NotifyHolder notifyHolder=null;
-        LessonEntry obj= data.get(position);
+        final LessonEntry obj= data.get(position);
 
         if(row==null){
             LayoutInflater inflater= ((Activity) context).getLayoutInflater();
@@ -49,16 +57,48 @@ public class NotifsListAdapter extends ArrayAdapter<LessonEntry> {
 
         notifyHolder.titleText.setText(obj.getLesson().getSubject()+" - "+obj.getLesson().getStatusName());
 
-
         if(obj.getRole()==LessonEntry.ROLE_STUDENT){
             notifyHolder.sendMessageButton.setVisibility(View.GONE);
             notifyHolder.confirmButton.setVisibility(View.GONE);
             notifyHolder.declineButton.setVisibility(View.GONE);
+
             notifyHolder.descriptionText.setText(obj.getLesson().getDateStartString());
-        } else {
+        } else if(obj.getLesson().getStatusName().equals("Reserved")) {
             notifyHolder.sendMessageButton.setVisibility(View.VISIBLE);
             notifyHolder.confirmButton.setVisibility(View.VISIBLE);
             notifyHolder.declineButton.setVisibility(View.VISIBLE);
+
+            notifyHolder.sendMessageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cbcl.onSendMessageClick(obj);
+                }
+            });
+            notifyHolder.confirmButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cbcl.onConfirmLessonClick(obj);
+                }
+            });
+            notifyHolder.declineButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cbcl.onDeclineLessonClick(obj);
+                }
+            });
+
+            notifyHolder.descriptionText.setText(obj.getStudentName()+" "+obj.getStudentSName());
+        } else {
+            notifyHolder.sendMessageButton.setVisibility(View.VISIBLE);
+            notifyHolder.confirmButton.setVisibility(View.GONE);
+            notifyHolder.declineButton.setVisibility(View.GONE);
+
+            notifyHolder.sendMessageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cbcl.onSendMessageClick(obj);
+                }
+            });
             notifyHolder.descriptionText.setText(obj.getStudentName()+" "+obj.getStudentSName());
         }
 
