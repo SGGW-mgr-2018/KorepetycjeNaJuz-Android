@@ -37,7 +37,7 @@ public class LessonEntry{
 
                 JSONObject jMyLesson= jObject.getJSONObject("myLesson");
 
-                lessonEntries.get(0).nuberOfHours= jMyLesson.getInt("numberOfHours");
+                lessonEntries.get(0).nuberOfHours= jMyLesson.optInt("numberOfHours", 1);
                 lessonEntries.get(0).status= jMyLesson.getInt("lessonStatusId");
             }
 
@@ -59,7 +59,7 @@ public class LessonEntry{
                     lessonEntries.get(lessonEntries.size()-1).studentName= jStudent.getString("firstName");
                     lessonEntries.get(lessonEntries.size()-1).studentSName= jStudent.getString("lastName");
                     lessonEntries.get(lessonEntries.size()-1).studentPhone= jStudent.getString("telephone");
-                    lessonEntries.get(lessonEntries.size()-1).nuberOfHours= jStudent.getInt("numberOfHours");
+                    lessonEntries.get(lessonEntries.size()-1).nuberOfHours= jStudent.optInt("numberOfHours", 1);
                 }
             }
 

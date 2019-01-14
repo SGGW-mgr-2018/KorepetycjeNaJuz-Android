@@ -33,6 +33,20 @@ public class DateTimeActivity extends AppCompatActivity {
 
         step=0;
 
+        Intent intent= getIntent();
+
+        int y=intent.getIntExtra("year", 2019);
+        int m=intent.getIntExtra("month", 1);
+        int d=intent.getIntExtra("day", 1);
+        ((DatePickerFragment)datePickerFragment).setYear(y);
+        ((DatePickerFragment)datePickerFragment).setMonth(m);
+        ((DatePickerFragment)datePickerFragment).setDay(d);
+
+        int h=intent.getIntExtra("hour", 12);
+        int min=intent.getIntExtra("minutes", 0);
+        ((TimePickerFragment)timePickerFragment).setHours(h);
+        ((TimePickerFragment)timePickerFragment).setMinutes(min);
+
         fragmentManager= getSupportFragmentManager();
         onDateButtonClick(null);
     }
@@ -64,6 +78,7 @@ public class DateTimeActivity extends AppCompatActivity {
     }
 
     public void onCancelButtonClick(View v){
+        setResult(Activity.RESULT_CANCELED);
         finish();
     }
 

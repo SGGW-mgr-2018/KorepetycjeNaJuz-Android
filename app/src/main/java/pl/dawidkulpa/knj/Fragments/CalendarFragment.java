@@ -11,10 +11,8 @@ import android.widget.CalendarView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import pl.dawidkulpa.knj.HomeActivity;
-import pl.dawidkulpa.knj.Lessons.Lesson;
 import pl.dawidkulpa.knj.Lessons.LessonEntry;
 import pl.dawidkulpa.knj.Lessons.CalendarListAdapter;
 import pl.dawidkulpa.knj.R;
@@ -24,15 +22,12 @@ public class CalendarFragment extends Fragment {
 
     private CalendarListAdapter calendarListAdapter;
     private ArrayList<LessonEntry> dayLessons;
-    private Context context;
     private User logedInUser;
 
     public CalendarFragment() {
         // Required empty public constructor
     }
 
-
-    // TODO: Rename and change types and number of parameters
     public static CalendarFragment newInstance() {
         CalendarFragment fragment = new CalendarFragment();
         Bundle args = new Bundle();
@@ -46,7 +41,7 @@ public class CalendarFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_calendar, container, false);
 
@@ -60,7 +55,6 @@ public class CalendarFragment extends Fragment {
             }
         });
 
-        // Inflate the layout for this fragment
         return view;
     }
 

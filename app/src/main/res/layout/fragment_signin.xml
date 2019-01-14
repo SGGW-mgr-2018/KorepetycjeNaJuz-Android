@@ -21,50 +21,9 @@
         android:text="@string/label_signin"
         android:textSize="32sp"
         android:textStyle="bold"
+        android:textColor="@color/colorTextLabels"
         android:layout_centerHorizontal="true"/>
 
-    <Button
-        android:id="@+id/f_login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="@string/button_fb_login"
-        android:textAllCaps="false"
-        android:layout_below="@id/fragment_label"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/ripple_default_round"
-        android:textColor="@color/colorTextButton"
-        android:layout_marginTop="16dp"/>
-
-    <LinearLayout
-        android:id="@+id/spacer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/f_login_button"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp">
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="center_vertical"
-            android:background="@color/colorFullBlack"
-            android:layout_marginStart="64dp"
-            android:layout_weight="2"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:text="@string/label_or"
-            android:layout_weight="3"/>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="center_vertical"
-            android:background="@color/colorFullBlack"
-            android:layout_marginEnd="64dp"
-            android:layout_weight="2"/>
-    </LinearLayout>
 
     <EditText
         android:id="@+id/firstname_edit"
@@ -76,7 +35,8 @@
         android:inputType="text"
         android:autofillHints="name"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/spacer"/>
+        android:layout_marginTop="64dp"
+        android:layout_below="@id/fragment_label"/>
 
     <EditText
         android:id="@+id/lastname_edit"

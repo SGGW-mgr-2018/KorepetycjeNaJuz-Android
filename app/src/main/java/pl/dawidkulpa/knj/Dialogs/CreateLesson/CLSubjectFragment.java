@@ -2,6 +2,7 @@ package pl.dawidkulpa.knj.Dialogs.CreateLesson;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 
 import pl.dawidkulpa.knj.Lessons.CoachLesson;
+import pl.dawidkulpa.knj.Lessons.Lesson;
 import pl.dawidkulpa.knj.R;
 
 public class CLSubjectFragment extends CLFragment {
@@ -44,7 +46,19 @@ public class CLSubjectFragment extends CLFragment {
                              Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.fragment_cl_subject, container, false);
 
-        ((Spinner)rootView.findViewById(R.id.subjects_spinner)).setAdapter(subjectsAdapter);
+        Spinner subjectSpinner= rootView.findViewById(R.id.subjects_spinner);
+        subjectSpinner.setAdapter(subjectsAdapter);
+
+        if(lessonBuilder.ratePH>0)
+            ((EditText)rootView.findViewById(R.id.rate_edit)).setText(String.valueOf(lessonBuilder.ratePH));
+
+        subjectSpinner.setSelection(lessonBuilder.subjectId);
+        LinearLayout levels_box = rootView.findViewById(R.id.levels_box);
+
+        for(int i=0; i<lessonBuilder.levelIds.size(); i++){
+           ((CheckBox)levels_box.getChildAt(lessonBuilder.levelIds.get(i))).setChecked(true);
+        }
+        Log.e("CLSubjectFragment", "onCreateView");
 
         // Inflate the layout for this fragment
         return rootView;
@@ -74,34 +88,19 @@ public class CLSubjectFragment extends CLFragment {
         this.levelsList= levelsList;
     }
 
-    @Override
-    public void putOnView(CoachLesson coachLesson) {
-        if(getView()!=null){
-            //((EditText)getView().findViewById(R.id.rate_edit)).setText(String.valueOf(coachLesson.rate));
-            Spinner subjectSpinner= getView().findViewById(R.id.subjects_spinner);
-            //subjectSpinner.setSelection(coachLesson.subjectId);
-            LinearLayout levels_box = getView().findViewById(R.id.levels_box);
-            ((CheckBox)levels_box.getChildAt(2)).setChecked(true);
-
-            //for(int i=0; i<coachLesson.levels.size(); i++){
-             //   ((CheckBox)levels_box.getChildAt(2)).setChecked(true);
-            //}
-        }
-    }
-
-    public boolean getherData(CoachLesson coachLesson){
+    public boolean gatherData(){
         if(getView()!=null) {
             EditText rateEdit = getView().findViewById(R.id.rate_edit);
             Spinner subjectSpinner = getView().findViewById(R.id.subjects_spinner);
             LinearLayout levels_box = getView().findViewById(R.id.levels_box);
 
-            //coachLesson.rate = Integer.valueOf(rateEdit.getText().toString());
-            //coachLesson.subjectId = subjectSpinner.getSelectedItemPosition() + 1;
-            //coachLesson.levels.clear();
+            lessonBuilder.ratePH= Double.valueOf(rateEdit.getText().toString());
+            lessonBuilder.subjectId= subjectSpinner.getSelectedItemPosition() + 1;
 
+            lessonBuilder.levelIds.clear();
             for (int i = 1; i < levels_box.getChildCount(); i++) {
                 if (((CheckBox)levels_box.getChildAt(i)).isChecked()) {
-                    //coachLesson.levels.add(i);
+                    lessonBuilder.levelIds.add(i);
                 }
             }
 
@@ -109,5 +108,31 @@ public class CLSubjectFragment extends CLFragment {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public String checkProperties() {
+        EditText rateEdit = getView().findViewById(R.id.rate_edit);
+        Spinner subjectSpinner = getView().findViewById(R.id.subjects_spinner);
+        LinearLayout levels_box = getView().findViewById(R.id.levels_box);
+
+        //Check levels
+        int checkedNo=0;
+        for (int i = 1; i < levels_box.getChildCount(); i++) {
+            if (((CheckBox)levels_box.getChildAt(i)).isChecked()) {
+                checkedNo++;
+            }
+        }
+        if(checkedNo==0){
+            return "Select at least on lesson level";
+        }
+
+        //Check rate
+        if(rateEdit.getText().toString().isEmpty()){
+            return "Select rate per hour";
+        }
+
+
+        return "OK";
     }
 }

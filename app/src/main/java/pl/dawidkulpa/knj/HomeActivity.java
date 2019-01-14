@@ -51,7 +51,6 @@ import pl.dawidkulpa.knj.Fragments.LoginFragment;
 import pl.dawidkulpa.knj.Fragments.MapFragment;
 import pl.dawidkulpa.knj.Fragments.ConversationFragment;
 import pl.dawidkulpa.knj.Fragments.NotifFragment;
-import pl.dawidkulpa.knj.Fragments.SettingsFragment;
 import pl.dawidkulpa.knj.Fragments.SigninFragment;
 import pl.dawidkulpa.knj.Lessons.LessonFilters;
 import pl.dawidkulpa.knj.Lessons.LessonMapMarker;
@@ -71,17 +70,16 @@ public class HomeActivity extends AppCompatActivity
     private static final int ACCOUNT_FRAGMENT_ID=2;
     private static final int CALENDAR_FRAGMENT_ID=3;
     private static final int HISTORY_FRAGMENT_ID=4;
-    private static final int SETTINGS_FRAGMENT_ID=5;
-    private static final int NOTIF_FRAGMENT_ID=6;
-    private static final int SIGNIN_FRAGMENT_ID=7;
-    private static final int MESSAGES_FRAGMENT_ID =8;
-    private static final int CONVERSATION_FRAGMENT_ID =9;
-
-    private static final int CREATE_LESSON_ONE_FRAGMENT_ID=8;
-    private static final int CREATE_LESSON_TWO_FRAGMENT_ID=9;
-    private static final int CREATE_LESSON_FINAL_FRAGMENT_ID=10;
+    private static final int NOTIF_FRAGMENT_ID=5;
+    private static final int SIGNIN_FRAGMENT_ID=6;
+    private static final int MESSAGES_FRAGMENT_ID =7;
+    private static final int CONVERSATION_FRAGMENT_ID =8;
 
     public static final String SERVER_NAME="http://api.meteomap.pl:7181/api";
+    public static final String[] LEVELS_LIST={"Szkoła podstawowa",
+                                                "Liceum podstawa",
+                                                "Liceum rozszerzenie",
+                                                "Studia"};
 
 
     private FragmentManager fragmentManager;
@@ -97,7 +95,6 @@ public class HomeActivity extends AppCompatActivity
     private String[] subjectLabels;
     private ArrayAdapter<CharSequence> levelsAdapter;
     private ArrayAdapter<CharSequence> subjectsAdapter;
-    private ArrayList<String> subjectsList;
 
 
     @Override
@@ -106,8 +103,6 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        //FacebookSdk.sdkInitialize(getApplicationContext());
 
         //Prepare FAB
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -123,10 +118,9 @@ public class HomeActivity extends AppCompatActivity
 
         getLessonSubjects();
         levelsAdapter.add("Wszystkie");
-        levelsAdapter.add("Podstawowy");
-        levelsAdapter.add("Średni");
-        levelsAdapter.add("Wysoki");
-        levelsAdapter.add("Studia");
+        for(int i=0; i<LEVELS_LIST.length; i++){
+            levelsAdapter.add(LEVELS_LIST[i]);
+        }
 
         //Prepare side navigation
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -150,7 +144,6 @@ public class HomeActivity extends AppCompatActivity
         appFragments.add(AccountFragment.newInstance());
         appFragments.add(CalendarFragment.newInstance());
         appFragments.add(HistoryFragment.newInstance());
-        appFragments.add(SettingsFragment.newInstance());
         appFragments.add(NotifFragment.newInstance());
         appFragments.add(SigninFragment.newInstance());
         appFragments.add(MessagesFragment.newInstance());
@@ -208,28 +201,6 @@ public class HomeActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.home, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -250,9 +221,6 @@ public class HomeActivity extends AppCompatActivity
             case R.id.nav_history:
                 switchFragment(HISTORY_FRAGMENT_ID);
                 break;
-            case R.id.nav_settings:
-                switchFragment(SETTINGS_FRAGMENT_ID);
-                break;
             case R.id.nav_notif:
                 switchFragment(NOTIF_FRAGMENT_ID);
                 break;
@@ -265,6 +233,7 @@ public class HomeActivity extends AppCompatActivity
             case R.id.nav_create:
                 Intent intent= new Intent(this, CreateLessonActivity.class);
                 intent.putExtra("subjects", subjectLabels);
+                intent.putExtra("userLoginToken", logedInUser.getLoginToken());
                 startActivity(intent);
                 break;
             case R.id.nav_logout:
@@ -335,14 +304,6 @@ public class HomeActivity extends AppCompatActivity
             LessonDescriptionDialog lessonDescriptionDialog= new LessonDescriptionDialog(this,lessonMapMarker, logedInUser);
             lessonDescriptionDialog.show();
         }
-    }
-
-    public void onFindLessonClick(){
-
-    }
-
-    public void onCreateLessonClick(){
-
     }
 
     public void onLogoutClick(){

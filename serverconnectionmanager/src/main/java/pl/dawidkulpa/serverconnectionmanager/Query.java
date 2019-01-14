@@ -98,6 +98,7 @@ public class Query {
                 }
 
                 //If value first char is not { and [ start with "
+                Log.e("Query", names.get(i)+": "+values.get(i));
                 if(values.get(i).charAt(0)!='{' && values.get(i).charAt(0)!='['){
                     sb.append("\"");
                 }
@@ -105,7 +106,7 @@ public class Query {
                 //Add value
                 sb.append(values.get(i));
 
-                //If value first char i { and [ end with "
+                //If value first char is { and [ end with "
                 if(values.get(i).charAt(0)!='{' && values.get(i).charAt(0)!='['){
                     sb.append("\"");
                 }

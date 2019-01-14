@@ -44,6 +44,9 @@ public class TimePickerFragment extends Fragment {
             }
         });
 
+        ((TimePicker)rootView.findViewById(R.id.time_picker)).setHour(h);
+        ((TimePicker)rootView.findViewById(R.id.time_picker)).setMinute(m);
+
         // Inflate the layout for this fragment
         return rootView;
     }
@@ -59,6 +62,14 @@ public class TimePickerFragment extends Fragment {
 
     public int getMinutes(){
         return m;
+    }
+
+    public void setHours(int h) {
+        this.h = h;
+    }
+
+    public void setMinutes(int m) {
+        this.m = m;
     }
 
     @Override

@@ -15,7 +15,6 @@ import pl.dawidkulpa.knj.Address;
 
 public class Lesson {
     private int id;
-    private int role;
     private int coachId;
     private String coachName;
     private String statusName;
@@ -27,6 +26,7 @@ public class Lesson {
     private Date dateEnd;
     private Address address;
     private int time;
+    private String description;
 
     public static Lesson create(JSONObject jObj){
         Lesson lesson= new Lesson();
@@ -40,6 +40,7 @@ public class Lesson {
 
             JSONArray levelArray= jObj.getJSONArray("lessonLevels");
             lesson.levels= new String[levelArray.length()];
+
             for(int i=0; i<levelArray.length(); i++){
                 lesson.levels[i]= levelArray.getJSONObject(i).getString("name");
             }
@@ -77,7 +78,7 @@ public class Lesson {
 
 
     public String getSubject() {
-        return "Matematyka";
+        return subject;
     }
 
     public double getLat(){
@@ -166,6 +167,10 @@ public class Lesson {
                 (calendar.get(Calendar.YEAR)==y);
     }
 
+    public boolean isOlder(Date than){
+        return dateStart.before(than);
+    }
+
     public String getTimeStartString(){
         DateFormat df= new SimpleDateFormat("HH:mm");
         return df.format(dateStart);
@@ -190,32 +195,3 @@ public class Lesson {
         return new Date(calendar.getTimeInMillis());
     }
 }
-
-
-/**
- * [
- *   {
- *     "dateStart": "2019-01-05T17:00:52",
- *     "dateEnd": "2019-01-05T18:00:52",
- *     "myLesson": {
- *       "id": 3,
- *       "lessonStatusId": 2,
- *       "student": {
- *         "id": 2,
- *         "firstName": "Sierotka",
- *         "lastName": "Marysia",
- *         "email": "wilk@czerwonykapturek.com",
- *         "telephone": null,
- *         "description": "nie chce mi sie",
- *         "avatar": null
- *       },
- *       "date": "2019-01-05T17:00:52",
- *       "numberOfHours": 1,
- *       "ratingOfStudent": null,
- *       "opinionOfStudent": null,
- *       "ratingOfCoach": null,
- *       "opinionOfCoach": null
- *     }
- *   },
- * ]
- */

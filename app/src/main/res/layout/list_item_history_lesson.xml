@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp">
+
+    <LinearLayout
+        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorTextLabels"/>
+        <TextView
+            android:id="@+id/address_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/date_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/length_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/star_buttons_box"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true">
+
+        <Button
+            android:id="@+id/rating_button_one"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleY="0.8"
+            android:scaleX="0.8"
+            android:background="@drawable/ripple_empty_star"/>
+        <Button
+            android:id="@+id/rating_button_two"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleY="0.8"
+            android:scaleX="0.8"
+            android:background="@drawable/ripple_empty_star"/>
+        <Button
+            android:id="@+id/rating_button_three"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleY="0.8"
+            android:scaleX="0.8"
+            android:background="@drawable/ripple_empty_star"/>
+        <Button
+            android:id="@+id/rating_button_four"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleY="0.8"
+            android:scaleX="0.8"
+            android:background="@drawable/ripple_empty_star"/>
+        <Button
+            android:id="@+id/rating_button_five"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:scaleY="0.8"
+            android:scaleX="0.8"
+            android:background="@drawable/ripple_empty_star"/>
+    </LinearLayout>
+
+</RelativeLayout>

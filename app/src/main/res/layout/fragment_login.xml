@@ -71,55 +71,12 @@
         android:textAllCaps="false" />
 
 
-    <LinearLayout
-        android:id="@+id/spacer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/forgot_pass_button"
-        android:layout_centerHorizontal="true">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="16dp"
-            android:layout_weight="2"
-            android:background="@color/colorFullBlack" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:text="@string/label_or"
-            android:textAlignment="center" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="2"
-            android:background="@color/colorFullBlack" />
-    </LinearLayout>
-
-    <!--
-    <com.facebook.login.widget.LoginButton
-        android:id="@+id/fb_login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        android:layout_below="@id/spacer"
-        android:layout_centerHorizontal="true"/>
-        -->
-
     <ProgressBar
         android:id="@+id/progressbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/f_login_button"
+        android:layout_below="@id/login_button"
         android:layout_marginTop="32dp"
         android:visibility="invisible"/>
 

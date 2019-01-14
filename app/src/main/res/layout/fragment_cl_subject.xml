@@ -30,15 +30,15 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Podstawowy"/>
+            android:text="Szkoła podstawowa"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Średni"/>
+            android:text="Liceum podstawa"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Wysoki"/>
+            android:text="Liceum rozszerzenie"/>
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
         android:id="@+id/subjects_box"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_below="@id/levels_box"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp">
@@ -60,8 +60,7 @@
             android:layout_height="wrap_content"
             android:text="@string/label_subject"
             android:layout_gravity="center_vertical"
-            android:textSize="20sp"
-            android:textAlignment="center"/>
+            android:textSize="20sp"/>
         <Spinner
             android:id="@+id/subjects_spinner"
             android:layout_width="wrap_content"
@@ -69,13 +68,35 @@
             android:layout_marginStart="16dp"/>
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/rate_edit"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_below="@+id/subjects_box"
         android:layout_centerHorizontal="true"
-        android:hint="Rate"
-        android:inputType="number"/>
+        android:layout_marginTop="16dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_rate"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:textSize="20sp"/>
+        <EditText
+            android:id="@+id/rate_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Rate"
+            android:inputType="number"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="zł"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:textSize="20sp"/>
+
+    </LinearLayout>
+
 
 </RelativeLayout>

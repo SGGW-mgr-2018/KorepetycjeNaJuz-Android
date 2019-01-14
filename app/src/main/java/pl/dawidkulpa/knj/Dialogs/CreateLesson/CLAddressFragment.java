@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 
 import pl.dawidkulpa.knj.Lessons.CoachLesson;
+import pl.dawidkulpa.knj.Lessons.Lesson;
 import pl.dawidkulpa.knj.R;
 
 public class CLAddressFragment extends CLFragment {
@@ -32,19 +33,19 @@ public class CLAddressFragment extends CLFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cl_address, container, false);
+        View rootView= inflater.inflate(R.layout.fragment_cl_address, container, false);
+
+        ((EditText)rootView.findViewById(R.id.city_edit)).setText(lessonBuilder.city);
+        ((EditText)rootView.findViewById(R.id.street_edit)).setText(lessonBuilder.street);
+        ((EditText)rootView.findViewById(R.id.flat_edit)).setText(lessonBuilder.flat);
+
+        return rootView;
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        //if (context instanceof OnFragmentInteractionListener) {
-        //   mListener = (OnFragmentInteractionListener) context;
-        //} else {
-        //throw new RuntimeException(context.toString()
-        //          + " must implement OnFragmentInteractionListener");
-        //}
+
     }
 
     @Override
@@ -52,23 +53,31 @@ public class CLAddressFragment extends CLFragment {
         super.onDetach();
     }
 
-    @Override
-    public void putOnView(CoachLesson coachLesson) {
-        if(getView()!=null){
-            //((EditText)getView().findViewById(R.id.city_edit)).setText(coachLesson.city);
-            //((EditText)getView().findViewById(R.id.street_edit)).setText(coachLesson.street);
-        }
-    }
 
     @Override
-    public boolean getherData(CoachLesson coachLesson) {
+    public boolean gatherData() {
         if(getView()!=null){
-            //coachLesson.city= ((EditText)getView().findViewById(R.id.city_edit)).getText().toString();
-            //coachLesson.street= ((EditText)getView().findViewById(R.id.street_edit)).getText().toString();
+            lessonBuilder.city= ((EditText)getView().findViewById(R.id.city_edit)).getText().toString();
+            lessonBuilder.street= ((EditText)getView().findViewById(R.id.street_edit)).getText().toString();
+            lessonBuilder.flat= ((EditText)getView().findViewById(R.id.flat_edit)).getText().toString();
 
             return true;
         } else {
             return false;
         }
+    }
+
+    @Override
+    public String checkProperties() {
+
+        if(((EditText)getView().findViewById(R.id.city_edit)).getText().toString().isEmpty()){
+            return "Pass city";
+        }
+
+        if(((EditText)getView().findViewById(R.id.street_edit)).getText().toString().isEmpty()){
+            return "Pass street";
+        }
+
+        return "OK";
     }
 }

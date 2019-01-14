@@ -46,12 +46,6 @@ public class CalendarListAdapter extends ArrayAdapter<LessonEntry> {
         }
 
         String title= obj.getLesson().getSubject()+", "+obj.getLesson().getLevelsAsOne();
-        String descr= obj.getLesson().getAddressString()+ "   "+obj.getLesson().getTimeStartString()+" / "+obj.getLessonLength()+" godzin";
-        //Time sTime= data.get(position).getStartTime();
-        //Time eTime= new Time(sTime.getTime() + data.get(position).getLenMin()*60*1000);
-        //title+= sTime.getHours()+":"+sTime.getMinutes()+" - ";
-        //title+= eTime.getHours()+":"+eTime.getMinutes();
-
         lessonHolder.titleText.setText(title);
         lessonHolder.addressText.setText(obj.getLesson().getAddressString());
         lessonHolder.dateText.setText(obj.getLesson().getTimeStartString());

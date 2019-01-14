@@ -42,11 +42,10 @@ public class DatePickerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView= inflater.inflate(R.layout.fragment_dp_date, container, false);
 
-        Calendar today = Calendar.getInstance();
         ((DatePicker)rootView.findViewById(R.id.date_picker)).init(
-                today.get(Calendar.YEAR),
-                today.get(Calendar.MONTH),
-                today.get(Calendar.DAY_OF_MONTH),
+                y,
+                m,
+                d,
                 new DatePicker.OnDateChangedListener() {
                     @Override
                     public void onDateChanged(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -59,6 +58,18 @@ public class DatePickerFragment extends Fragment {
 
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    public void setYear(int y) {
+        this.y = y;
+    }
+
+    public void setMonth(int m) {
+        this.m = m;
+    }
+
+    public void setDay(int d) {
+        this.d = d;
     }
 
     public int getYear(){

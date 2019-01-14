@@ -60,6 +60,7 @@ public class MessagesFragment extends Fragment {
                 onConversationClick(withId, withName);
             }
         });
+        getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
         ((ListView)getView().findViewById(R.id.conversation_list_view)).setAdapter(conversationsListAdapter);
 
     }

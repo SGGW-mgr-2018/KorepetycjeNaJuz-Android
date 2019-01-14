@@ -1,5 +1,7 @@
 package pl.dawidkulpa.knj.Dialogs.CreateLesson;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -8,12 +10,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
-import pl.dawidkulpa.knj.Lessons.CoachLesson;
+import pl.dawidkulpa.knj.HomeActivity;
+import pl.dawidkulpa.knj.Lessons.Lesson;
+import pl.dawidkulpa.knj.Lessons.LessonBuilder;
 import pl.dawidkulpa.knj.R;
 import pl.dawidkulpa.serverconnectionmanager.Query;
 import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
@@ -24,12 +33,11 @@ public class CreateLessonActivity extends AppCompatActivity {
 
     private int step;
     private FragmentManager fragmentManager;
-
     private ArrayList<CLFragment> appFragments;
-
-    private CoachLesson coachLesson;
-
+    private LessonBuilder lessonBuilder;
     private ArrayAdapter<String> subjectsAdapter;
+
+    private String userLoginToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +46,11 @@ public class CreateLessonActivity extends AppCompatActivity {
 
         fragmentManager= getSupportFragmentManager();
 
-        coachLesson= new CoachLesson();
+        lessonBuilder= new LessonBuilder();
 
         Bundle extras= getIntent().getExtras();
         String[] subjectLabels= extras.getStringArray("subjects");
+        userLoginToken= extras.getString("userLoginToken");
         subjectsAdapter= new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item);
         for(int i=0; i<subjectLabels.length; i++){
             subjectsAdapter.add(subjectLabels[i]);
@@ -52,6 +61,10 @@ public class CreateLessonActivity extends AppCompatActivity {
         ((CLSubjectFragment)appFragments.get(0)).setSubjectsAdapter(subjectsAdapter);
         appFragments.add(CLDateFragment.newInstance());
         appFragments.add(CLAddressFragment.newInstance());
+
+        for(int i=0; i<appFragments.size(); i++){
+            appFragments.get(i).setLessonObj(lessonBuilder);
+        }
 
         step=0;
         switchFragment(step, 0);
@@ -74,26 +87,31 @@ public class CreateLessonActivity extends AppCompatActivity {
         transaction.addToBackStack(null);
 
         transaction.commit();
-        appFragments.get(id).putOnView(coachLesson);
+        //appFragments.get(id).putOnView();
     }
 
     public void onPosButtonClick(View v){
 
-        appFragments.get(step).getherData(coachLesson);
-
-        if(step<STEPS_NO-1){
-            step++;
-
-            switchFragment(step, 1);
-
-            if(step==STEPS_NO-1)
-                ((Button)findViewById(R.id.pos_button)).setText(R.string.button_create);
+        String checkResp= appFragments.get(step).checkProperties();
+        if(!checkResp.equals("OK")){
+            Toast.makeText(this, checkResp, Toast.LENGTH_SHORT).show();
         } else {
-            onCreateLessonStart();
+            appFragments.get(step).gatherData();
+
+            if (step < STEPS_NO - 1) {
+                step++;
+
+                switchFragment(step, 1);
+
+                if (step == STEPS_NO - 1)
+                    ((Button) findViewById(R.id.pos_button)).setText(R.string.button_create);
+            } else {
+                createLessonStart();
+            }
         }
     }
 
-    public void onCreateLessonStart(){
+    public void createLessonStart(){
         ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
             @Override
             public void onFinish(int respCode, JSONObject jObject) {
@@ -107,28 +125,49 @@ public class CreateLessonActivity extends AppCompatActivity {
         Query coachLessonDTO= new Query();
         Query addressDTO= new Query();
 
-       /* ArrayList<String> levels= new ArrayList<>();
-        for(int i=0; i<coachLesson.levels.size(); i++){
-            levels.add(String.valueOf(coachLesson.levels.get(i)));
+        addressDTO.addPair("city", lessonBuilder.city);
+        addressDTO.addPair("street", lessonBuilder.street);
+
+        ArrayList<String> levelsStrId= new ArrayList<>();
+        for(int i=0; i<lessonBuilder.levelIds.size(); i++){
+            levelsStrId.add(String.valueOf(lessonBuilder.levelIds.get(i)));
         }
 
-        addressDTO.addPair("latitude", "0");
-        addressDTO.addPair("longitude", "0");
-        addressDTO.addPair("city", coachLesson.city);
-        addressDTO.addPair("street", coachLesson.street);
+        List<Address> addresses=null;
+        Geocoder geocoder= new Geocoder(this, Locale.getDefault());
 
-        coachLessonDTO.addPair("coachId", String.valueOf(coachLesson.myId));
-        coachLessonDTO.addPair("lessonLevels", levels);
-        coachLessonDTO.addPair("lessonSubjectId", String.valueOf(coachLesson.subjectId));
-        coachLessonDTO.addPair("ratePerHour", String.valueOf(coachLesson.rate));
-        //"2018-12-06T02:07:33.592Z" <- Date time format
-        //coachLessonDTO.addPair("dateStart", coachLesson.dateFrom);
-        //coachLessonDTO.addPair("dateEnd", coachLesson.dateTo);
-        coachLessonDTO.addPair("time", coachLesson.time);
-        coachLessonDTO.addPair("address", addressDTO);*/
+        try {
+            addresses = geocoder.getFromLocationName(lessonBuilder.city + ", " + lessonBuilder.street, 2);
+        } catch (IOException ioE){
+            Log.e("CreateLessonActivity", ioE.getMessage());
+        }
 
-        scm.addPOSTPair("", coachLessonDTO);
-        scm.start("https://korepetycjenajuzapi.azurewebsites.net/api/coachLesson/Create");
+        if(addresses!=null && !addresses.isEmpty()){
+            addressDTO.addPair("latitude", String.valueOf(addresses.get(0).getLatitude()));
+            addressDTO.addPair("longitude", String.valueOf(addresses.get(0).getLongitude()));
+
+            Log.e("CreateLessonActivity", "Found at: "+addresses.get(0).getLatitude()+" / "+addresses.get(0).getLongitude());
+
+            coachLessonDTO.addPair("lessonLevels", levelsStrId);
+            coachLessonDTO.addPair("lessonSubjectId", String.valueOf(lessonBuilder.subjectId));
+            coachLessonDTO.addPair("ratePerHour", String.valueOf(lessonBuilder.ratePH));
+            coachLessonDTO.addPair("description", lessonBuilder.description);
+
+            //"2018-12-06T02:07:33.592Z" <- Date time format
+            SimpleDateFormat df= new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
+            coachLessonDTO.addPair("dateStart", df.format(lessonBuilder.dateStart));
+            coachLessonDTO.addPair("dateEnd", df.format(lessonBuilder.dateEnd));
+            coachLessonDTO.addPair("time", String.valueOf(lessonBuilder.time));
+
+            coachLessonDTO.addPair("address", addressDTO);
+
+            scm.addPOSTPair("", coachLessonDTO);
+            scm.addHeaderEntry("Authorization", "Bearer "+userLoginToken);
+            scm.start(HomeActivity.SERVER_NAME+"/CoachLesson/Create");
+        } else {
+            Toast.makeText(this, "Wrong address passed. Correct lesson address",Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public void onCreateLessonFinished(int rCode, JSONObject jObj){
