@@ -74,4 +74,5 @@
     <string name="info_lesson_signin_success">Wysłano prośbę o uczestnictwo w lekcji</string>
     <string name="info_lesson_already_signin">Już jesteś zapisany na tą lekcję</string>
     <string name="menu_messages">Wiadomości</string>
+    <string name="button_send_message">Wyślij wiadomość</string>
 </resources>

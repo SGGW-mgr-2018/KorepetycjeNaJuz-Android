@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -9,7 +9,8 @@
         android:id="@+id/with_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:text="With"
         android:textColor="@color/colorTextLabels"
         android:textSize="25sp"/>
@@ -18,14 +19,16 @@
         android:id="@+id/messages_list_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_below="@id/with_text"
+        android:layout_above="@id/bottom_box"
         android:divider="@color/colorFullTransparent"/>
 
     <LinearLayout
+        android:id="@+id/bottom_box"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="8">
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
         <EditText
             android:id="@+id/send_message_text"
             android:layout_width="match_parent"
@@ -44,4 +47,4 @@
             android:scaleY="0.7"/>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

@@ -1,6 +1,7 @@
 package pl.dawidkulpa.knj.Fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -9,8 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import pl.dawidkulpa.knj.HomeActivity;
 import pl.dawidkulpa.knj.Lessons.LessonEntry;
@@ -20,6 +27,22 @@ import pl.dawidkulpa.knj.User;
 
 public class CalendarFragment extends Fragment {
 
+    private static final String[] MONTHS={
+            "Styczeń",
+            "Luty",
+            "Marzec",
+            "Kwiecień",
+            "Maj",
+            "Czerwiec",
+            "Lipiec",
+            "Sierpień",
+            "Wrzesień",
+            "Październik",
+            "Listopad",
+            "Grudzień"
+    };
+
+    private CompactCalendarView calendarView;
     private CalendarListAdapter calendarListAdapter;
     private ArrayList<LessonEntry> dayLessons;
     private User logedInUser;
@@ -48,14 +71,51 @@ public class CalendarFragment extends Fragment {
         ((ListView)view.findViewById(R.id.lessons_list)).setAdapter(calendarListAdapter);
         calendarListAdapter.notifyDataSetChanged();
 
-        ((CalendarView)view.findViewById(R.id.calendar)).setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+        calendarView= view.findViewById(R.id.calendar);
+        calendarView.setUseThreeLetterAbbreviation(true);
+        calendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int i, int i1, int i2) {
-                onDateChange(i, i1, i2);
+            public void onDayClick(Date dateClicked) {
+                Calendar calendar= Calendar.getInstance();
+                calendar.setTime(dateClicked);
+                onDateChange(calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH));
+            }
+
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+                Calendar calendar= Calendar.getInstance();
+                calendar.setTime(firstDayOfNewMonth);
+
+                onMonthChanged(calendar.get(Calendar.MONTH), calendar.get(Calendar.YEAR));
             }
         });
 
+
+
+        Calendar calendar= Calendar.getInstance();
+        ((TextView)view.findViewById(R.id.month_year_text)).setText(
+                MONTHS[calendar.get(Calendar.MONTH)]+" "+String.valueOf(calendar.get(Calendar.YEAR)));
+
+        addMarkers(((HomeActivity)getContext()).getLogedInUser().getLessonsEntries());
+
         return view;
+    }
+
+    public void addMarkers(ArrayList<LessonEntry> lessonEntries){
+        Calendar time= Calendar.getInstance();
+
+
+        for(int i=0; i<lessonEntries.size(); i++){
+            time.setTime(lessonEntries.get(i).getLesson().getDateStart());
+
+            calendarView.addEvent(new Event(getContext().getResources().getColor(R.color.colorAccent), time.getTimeInMillis()));
+        }
+    }
+
+    public void onMonthChanged(int m, int y){
+        ((TextView)getView().findViewById(R.id.month_year_text)).setText(MONTHS[m]+" "+String.valueOf(y));
     }
 
     @Override

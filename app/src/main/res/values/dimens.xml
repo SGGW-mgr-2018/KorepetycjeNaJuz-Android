@@ -13,4 +13,6 @@
     <dimen name="label_to_value_space">4dp</dimen>
     <dimen name="label_to_edit_space">1dp</dimen>
     <dimen name="field_to_field_space">12dp</dimen>
+
+    <dimen name="lesson_description_star_size">20dp</dimen>
 </resources>

@@ -5,12 +5,18 @@
 
     <color name="colorPrimary">#f4f2fd</color>
     <color name="colorPrimaryDark">#353535</color>
+
     <color name="colorAccent">#e34196</color>
+    <color name="colorAccentLight">#e998c3</color>
     <color name="colorFullBlack">#000000</color>
     <color name="colorFullTransparent">#00000000</color>
 
     <color name="colorTextButton">#ffffff</color>
     <color name="colorTextLabels">#715aff</color>
+    <color name="colorTextLabelsLight">#a596ff</color>
+    <color name="colorTextLight">#737373</color>
+    <color name="colorTextDark">#353535</color>
+
 
     <color name="colorButtonBackground">@color/colorAccent</color>
 </resources>

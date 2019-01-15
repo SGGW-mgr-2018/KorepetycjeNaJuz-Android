@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import pl.dawidkulpa.knj.Address;
 
@@ -17,6 +18,7 @@ public class Lesson {
     private int id;
     private int coachId;
     private String coachName;
+    private int coachRating;
     private String statusName;
     private String levels[];
     private int subjectId;
@@ -54,6 +56,10 @@ public class Lesson {
 
             lesson.address= Address.create(jObj.getJSONObject("address"));
             lesson.time= jObj.getInt("time");
+
+            Random r= new Random();
+            lesson.coachRating= jObj.optInt("", r.nextInt(5)+1);
+            lesson.description= jObj.getString("description");
         } catch (JSONException je){
             Log.e("Lesson parser", je.getMessage());
             lesson= null;
@@ -144,6 +150,14 @@ public class Lesson {
 
     public int getTime() {
         return time;
+    }
+
+    public int getCoachRating(){
+        return coachRating;
+    }
+
+    public String getDescription(){
+        return description;
     }
 
     public String getDateStartString(){

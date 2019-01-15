@@ -8,6 +8,8 @@ import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,17 +46,32 @@ public class LessonDescriptionDialog {
         ((TextView)dialogView.findViewById(R.id.rateph_text)).setText(String.valueOf(lesson.getRatePH())+" zł/h");
         ((TextView)dialogView.findViewById(R.id.time_text)).setText(lesson.getTime()+" min");
 
-        //((TextView)dialogView.findViewById(R.id.start_text)).setText(lesson.getDateStart().toString());
-        //((TextView)dialogView.findViewById(R.id.end_text)).setText(lesson.getDateEnd().toString());
+        ((TextView)dialogView.findViewById(R.id.start_text)).setText(lesson.getDateStartString());
+        ((TextView)dialogView.findViewById(R.id.end_text)).setText(lesson.getDateEndString());
+
+        ((TextView)dialogView.findViewById(R.id.coach_name_text)).setText(lesson.getCoachName());
+        ((TextView)dialogView.findViewById(R.id.description_text)).setText(lesson.getDescription());
 
 
-        adBuilder.setTitle(lesson.getCoachName());
+        int rating= lesson.getCoachRating();
+        LinearLayout ratingBox= dialogView.findViewById(R.id.rating_box);
+        for(int i=0; i<rating; i++){
+            ((ImageView)ratingBox.getChildAt(i)).setImageDrawable(context.getDrawable(R.drawable.star_full));
+        }
+
         adBuilder.setView(dialogView);
 
         adBuilder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+            }
+        });
+
+        adBuilder.setNeutralButton(R.string.button_send_message, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                onSendMessageClick();
             }
         });
 
@@ -89,6 +106,10 @@ public class LessonDescriptionDialog {
         } else {
             Toast.makeText(context, "First log in", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void onSendMessageClick(){
+
     }
 
     private void onSignInFinished(int rCode){
