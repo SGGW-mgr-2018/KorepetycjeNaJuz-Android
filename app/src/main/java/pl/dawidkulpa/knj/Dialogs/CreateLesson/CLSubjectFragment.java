@@ -49,9 +49,6 @@ public class CLSubjectFragment extends CLFragment {
         Spinner subjectSpinner= rootView.findViewById(R.id.subjects_spinner);
         subjectSpinner.setAdapter(subjectsAdapter);
 
-        if(lessonBuilder.ratePH>0)
-            ((EditText)rootView.findViewById(R.id.rate_edit)).setText(String.valueOf(lessonBuilder.ratePH));
-
         subjectSpinner.setSelection(lessonBuilder.subjectId);
         LinearLayout levels_box = rootView.findViewById(R.id.levels_box);
 
@@ -90,11 +87,9 @@ public class CLSubjectFragment extends CLFragment {
 
     public boolean gatherData(){
         if(getView()!=null) {
-            EditText rateEdit = getView().findViewById(R.id.rate_edit);
             Spinner subjectSpinner = getView().findViewById(R.id.subjects_spinner);
             LinearLayout levels_box = getView().findViewById(R.id.levels_box);
 
-            lessonBuilder.ratePH= Double.valueOf(rateEdit.getText().toString());
             lessonBuilder.subjectId= subjectSpinner.getSelectedItemPosition() + 1;
 
             lessonBuilder.levelIds.clear();
@@ -112,8 +107,6 @@ public class CLSubjectFragment extends CLFragment {
 
     @Override
     public String checkProperties() {
-        EditText rateEdit = getView().findViewById(R.id.rate_edit);
-        Spinner subjectSpinner = getView().findViewById(R.id.subjects_spinner);
         LinearLayout levels_box = getView().findViewById(R.id.levels_box);
 
         //Check levels
@@ -124,14 +117,8 @@ public class CLSubjectFragment extends CLFragment {
             }
         }
         if(checkedNo==0){
-            return "Select at least on lesson level";
+            return getString(R.string.info_no_levels);
         }
-
-        //Check rate
-        if(rateEdit.getText().toString().isEmpty()){
-            return "Select rate per hour";
-        }
-
 
         return "OK";
     }

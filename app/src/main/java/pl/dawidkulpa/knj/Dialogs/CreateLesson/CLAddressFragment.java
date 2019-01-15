@@ -71,11 +71,11 @@ public class CLAddressFragment extends CLFragment {
     public String checkProperties() {
 
         if(((EditText)getView().findViewById(R.id.city_edit)).getText().toString().isEmpty()){
-            return "Pass city";
+            return getString(R.string.info_no_city);
         }
 
         if(((EditText)getView().findViewById(R.id.street_edit)).getText().toString().isEmpty()){
-            return "Pass street";
+            return getString(R.string.info_no_street);
         }
 
         return "OK";

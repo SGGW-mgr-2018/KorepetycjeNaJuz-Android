@@ -11,7 +11,6 @@
         android:id="@+id/month_year_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="July 2019"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textColor="@color/colorTextLabels"

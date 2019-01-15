@@ -29,7 +29,7 @@ import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
 
 public class CreateLessonActivity extends AppCompatActivity {
 
-    private static final int STEPS_NO=3;
+    private static final int STEPS_NO=5;
 
     private int step;
     private FragmentManager fragmentManager;
@@ -45,7 +45,6 @@ public class CreateLessonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_lesson);
 
         fragmentManager= getSupportFragmentManager();
-
         lessonBuilder= new LessonBuilder();
 
         Bundle extras= getIntent().getExtras();
@@ -59,8 +58,10 @@ public class CreateLessonActivity extends AppCompatActivity {
         appFragments= new ArrayList<>();
         appFragments.add(CLSubjectFragment.newInstance());
         ((CLSubjectFragment)appFragments.get(0)).setSubjectsAdapter(subjectsAdapter);
+        appFragments.add(CLLength.newInstance());
         appFragments.add(CLDateFragment.newInstance());
         appFragments.add(CLAddressFragment.newInstance());
+        appFragments.add(CLDescription.newInstance());
 
         for(int i=0; i<appFragments.size(); i++){
             appFragments.get(i).setLessonObj(lessonBuilder);

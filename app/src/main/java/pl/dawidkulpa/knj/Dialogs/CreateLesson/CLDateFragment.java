@@ -187,7 +187,7 @@ public class CLDateFragment extends CLFragment {
 
         if(dateFrom!=null && dateTo!=null){
             if(dateFrom.after(dateTo))
-                return "Date from must be earlier than date to";
+                return getString(R.string.info_wrond_date);
         }
 
         return "OK";

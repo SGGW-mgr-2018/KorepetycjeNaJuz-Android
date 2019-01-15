@@ -50,6 +50,8 @@
     <string name="label_hour" translatable="false">h</string>
     <string name="label_from">from</string>
     <string name="label_to">to</string>
+    <string name="label_create_lesson">Create lesson</string>
+    <string name="label_date_time_picker"> Date/Time Picker</string>
 
     <!-- Hints -->
     <string name="hint_email">Your e-mail</string>
@@ -63,6 +65,7 @@
     <string name="hint_min">Min</string>
     <string name="hint_day">Day</string>
     <string name="hint_month">Month</string>
+    <string name="hint_enter_here">Enter here</string>
 
     <!-- Button labels -->
     <string name="button_login">Login</string>
@@ -88,10 +91,20 @@
     <string name="info_success_signin">Successful sign in. Look at your email account :)</string>
     <string name="info_failed_signin">Sign in failed</string>
     <string name="info_select_address">Select lesson address</string>
-    <string name="info_select_subject">Select lesson subject, levels and rate</string>
+    <string name="info_select_subject">Select lesson subject and levels</string>
     <string name="info_select_date">Select from-to date</string>
     <string name="info_server_error">Server error :(</string>
     <string name="info_lesson_signin_success">Successfully signed in for this lesson</string>
     <string name="info_lesson_already_signin">You are already signed in for this lesson</string>
+    <string name="info_no_time">Enter time</string>
+    <string name="info_wrong_time">Time must be between 30min - 180min</string>
+    <string name="info_no_rate">Enter rate per hour</string>
+    <string name="info_no_levels">Select at least on level</string>
+    <string name="info_wrond_date">Date from must be earlier than date to</string>
+    <string name="info_no_city">Enter city</string>
+    <string name="info_no_street">Enter street</string>
+    <string name="info_select_time_rate">Select lesson\'s time and rate</string>
+    <string name="info_enter_description">Now it\'s time for description</string>
+
 
 </resources>

@@ -63,8 +63,8 @@
     <string name="button_back">Powrót</string>
     <string name="button_create">Utwórz</string>
     <string name="info_select_address">Wybierz miejsce lekcji</string>
-    <string name="info_select_subject">Wybierz przedmiot, poziomy i cenę</string>
-    <string name="info_select_date">Wybierz daty od do</string>
+    <string name="info_select_subject">Zacznijmy od przedmiotu i poziomów lekcji</string>
+    <string name="info_select_date">Od kiedy do kiedy możesz się umówić?</string>
     <string name="hint_hour">Godź</string>
     <string name="hint_min">Min</string>
     <string name="hint_day">Dzień</string>
@@ -75,4 +75,16 @@
     <string name="info_lesson_already_signin">Już jesteś zapisany na tą lekcję</string>
     <string name="menu_messages">Wiadomości</string>
     <string name="button_send_message">Wyślij wiadomość</string>
+    <string name="info_no_time">Podaj czas trwania lekcji</string>
+    <string name="info_wrong_time">Czas musi być z zakresu 30min - 180min</string>
+    <string name="info_no_rate">Podaj cenę za lekcję</string>
+    <string name="info_no_levels">Wybierz przynajmniej jeden poziom</string>
+    <string name="info_wrond_date">Data \"od\" musi być wcześniej niż data \"do\"</string>
+    <string name="info_no_city">Podaj miasto</string>
+    <string name="info_no_street">Podaj ulicę</string>
+    <string name="label_create_lesson">Utwórz lekcję</string>
+    <string name="label_date_time_picker">Data/Czas</string>
+    <string name="hint_enter_here">Wpisz je tutaj</string>
+    <string name="info_select_time_rate">Teraz wybierz czas i cenę lekcji</string>
+    <string name="info_enter_description">Jeśli masz jakieś uwagi</string>
 </resources>

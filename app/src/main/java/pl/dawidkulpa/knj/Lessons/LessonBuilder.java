@@ -17,8 +17,6 @@ public class LessonBuilder extends Lesson {
 
     public LessonBuilder(){
         levelIds= new ArrayList<>();
-        description="a";
-        time=60;
     }
 
 }

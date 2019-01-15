@@ -20,7 +20,6 @@
             android:id="@+id/fragment_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:text="@string/label_history"
             android:textSize="32sp"
             android:textStyle="bold"
