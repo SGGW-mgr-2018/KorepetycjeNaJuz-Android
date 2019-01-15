@@ -44,7 +44,7 @@ public class FilterDialog {
         AlertDialog.Builder adbuilder= new AlertDialog.Builder(context, R.style.AppTheme_CustomDialog);
         LayoutInflater inflater = ((Activity)context).getLayoutInflater();
 
-        adbuilder.setTitle("Filtry");
+        adbuilder.setTitle(R.string.label_filters);
         adbuilder.setPositiveButton(R.string.button_ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

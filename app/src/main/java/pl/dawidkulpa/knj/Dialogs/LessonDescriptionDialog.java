@@ -113,7 +113,6 @@ public class LessonDescriptionDialog {
     }
 
     private void onSignInFinished(int rCode){
-        Log.e("LessonDescriptionDialog", "Response code: "+rCode);
         if(rCode==201){
             Snackbar.make(((Activity)context).findViewById(R.id.fab),R.string.info_lesson_signin_success, Snackbar.LENGTH_SHORT).show();
         } else if(rCode==400) {

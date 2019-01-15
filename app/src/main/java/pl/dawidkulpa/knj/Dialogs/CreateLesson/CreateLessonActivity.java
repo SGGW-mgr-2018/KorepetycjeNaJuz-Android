@@ -166,7 +166,7 @@ public class CreateLessonActivity extends AppCompatActivity {
             scm.addHeaderEntry("Authorization", "Bearer "+userLoginToken);
             scm.start(HomeActivity.SERVER_NAME+"/CoachLesson/Create");
         } else {
-            Toast.makeText(this, "Wrong address passed. Correct lesson address",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.info_wrong_address,Toast.LENGTH_SHORT).show();
         }
 
     }

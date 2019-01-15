@@ -123,12 +123,11 @@ public class LoginFragment extends Fragment {
 
     private void onGetDataFinished(int rCode, JSONObject jObj){
         getView().findViewById(R.id.progressbar).setVisibility(View.INVISIBLE);
-        Log.e("Error code", String.valueOf(rCode));
         if(rCode==200){
             user.onGetDataSuccessful(jObj);
             onLoginListener.onLoginAcquired(user);
         } else {
-            Toast.makeText(getContext(), "Server error!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.info_server_error, Toast.LENGTH_SHORT).show();
         }
     }
 

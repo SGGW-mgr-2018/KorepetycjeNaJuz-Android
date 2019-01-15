@@ -55,7 +55,6 @@ public class ConversationsListAdapter extends ArrayAdapter<Conversation> {
         row.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("Click on", "User id: "+obj.getWithId());
                 itemClickListener.onItemClickListener(obj.getWithId(), obj.getWithName());
             }
         });

@@ -131,7 +131,7 @@ public class AccountFragment extends Fragment {
             v.setVisibility(View.GONE);
             saveClickListener.onDataSaveSuccessful(null);
         } else {
-            Toast.makeText(getContext(), "Server connection error", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), R.string.info_server_error, Toast.LENGTH_SHORT).show();
         }
     }
 

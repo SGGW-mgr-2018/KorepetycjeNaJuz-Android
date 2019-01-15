@@ -102,14 +102,10 @@ public class ConversationFragment extends Fragment {
 
         if(listView!=null) {
             if (messages.size() > this.messages.size()) {
-                Log.e("Cf", "this.ms: "+this.messages.size()+", ms: "+messages.size());
-                Log.e("CF", "Add just new");
                 for (int i = this.messages.size(); i < messages.size(); i++) {
                     this.messages.add(messages.get(i));
                 }
             } else {
-                Log.e("Cf", "this.ms: "+this.messages.size()+", ms: "+messages.size());
-                Log.e("CF", "Add all");
                 this.messages.clear();
                 this.messages.addAll(messages);
             }

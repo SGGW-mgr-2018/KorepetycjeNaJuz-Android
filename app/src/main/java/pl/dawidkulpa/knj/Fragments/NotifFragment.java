@@ -119,11 +119,11 @@ public class NotifFragment extends Fragment {
     public void confirmFinished(int rCode){
         switch (rCode){
             case 200:
-                ((HomeActivity)getContext()).putSnackbar("Poprawnie potwierdzono lekcje");
+                ((HomeActivity)getContext()).putSnackbar(getString(R.string.info_aprove_success));
                 refreshLessonEntries();
                 break;
             default:
-                ((HomeActivity)getContext()).putSnackbar("Błąd nr: "+rCode);
+                ((HomeActivity)getContext()).putSnackbar(getString(R.string.info_server_error));
         }
 
 
@@ -132,11 +132,11 @@ public class NotifFragment extends Fragment {
     public void declineFinished(int rCode){
         switch (rCode){
             case 200:
-                ((HomeActivity)getContext()).putSnackbar("Poprawnie odrzucono prośbę o lekcje");
+                ((HomeActivity)getContext()).putSnackbar(getString(R.string.info_reject_success));
                 refreshLessonEntries();
                 break;
             default:
-                ((HomeActivity)getContext()).putSnackbar("Błąd nr: "+rCode);
+                ((HomeActivity)getContext()).putSnackbar(getString(R.string.info_server_error));
         }
     }
 

@@ -104,8 +104,6 @@ public class SigninFragment extends Fragment {
         } else if(rCode==400){
             Toast.makeText(getContext(),R.string.info_failed_signin,Toast.LENGTH_SHORT).show();
         }
-        Log.e("JSON", jObj.toString());
-
     }
 
     public interface OnSignInListener {

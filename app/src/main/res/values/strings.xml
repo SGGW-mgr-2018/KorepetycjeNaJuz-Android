@@ -52,6 +52,7 @@
     <string name="label_to">to</string>
     <string name="label_create_lesson">Create lesson</string>
     <string name="label_date_time_picker"> Date/Time Picker</string>
+    <string name="label_filters">Filters</string>
 
     <!-- Hints -->
     <string name="hint_email">Your e-mail</string>
@@ -81,6 +82,9 @@
     <string name="button_create">Create</string>
     <string name="button_lesson_signin">Sign in</string>
     <string name="button_send_message">Send message</string>
+    <string name="button_date">Date</string>
+    <string name="button_time">Time</string>
+    <string name="button_select">Select</string>
 
     <!-- Info -->
     <string name="info_register_claim">Reg claim</string>
@@ -105,6 +109,9 @@
     <string name="info_no_street">Enter street</string>
     <string name="info_select_time_rate">Select lesson\'s time and rate</string>
     <string name="info_enter_description">Now it\'s time for description</string>
+    <string name="info_wrong_address">Wrong address passed. Correct lesson address</string>
+    <string name="info_aprove_success">You have accepted lesson</string>
+    <string name="info_reject_success">You have rejected lesson</string>
 
 
 </resources>

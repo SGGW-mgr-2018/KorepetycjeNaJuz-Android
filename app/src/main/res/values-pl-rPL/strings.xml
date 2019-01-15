@@ -87,4 +87,11 @@
     <string name="hint_enter_here">Wpisz je tutaj</string>
     <string name="info_select_time_rate">Teraz wybierz czas i cenę lekcji</string>
     <string name="info_enter_description">Jeśli masz jakieś uwagi</string>
+    <string name="label_filters">Filtry</string>
+    <string name="button_date">Data</string>
+    <string name="button_time">Godzina</string>
+    <string name="button_select">Wybierz</string>
+    <string name="info_wrong_address">Podałeś błędny adres :(</string>
+    <string name="info_aprove_success">Poprawnie zaakceptowano lekcje</string>
+    <string name="info_reject_success">Poprawnie odrzucono lekcję</string>
 </resources>
