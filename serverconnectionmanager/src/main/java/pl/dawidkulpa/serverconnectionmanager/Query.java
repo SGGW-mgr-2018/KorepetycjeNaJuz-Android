@@ -98,7 +98,7 @@ public class Query {
                 }
 
                 //If value first char is not { and [ start with "
-                if(values.get(i).charAt(0)!='{' && values.get(i).charAt(0)!='['){
+                if(values.get(i).isEmpty() || ( values.get(i).charAt(0)!='{' && values.get(i).charAt(0)!='[')){
                     sb.append("\"");
                 }
 
@@ -106,7 +106,7 @@ public class Query {
                 sb.append(values.get(i));
 
                 //If value first char is { and [ end with "
-                if(values.get(i).charAt(0)!='{' && values.get(i).charAt(0)!='['){
+                if(values.get(i).isEmpty() || (values.get(i).charAt(0)!='{' && values.get(i).charAt(0)!='[')){
                     sb.append("\"");
                 }
 

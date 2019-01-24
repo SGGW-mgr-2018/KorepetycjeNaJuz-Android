@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -153,7 +154,6 @@ public class FilterDialog {
     }
 
     private void onTimeSelectResult(View v, int d, int M, int y, int h, int m){
-        String date= d+"/"+M+"/"+y+" - "+h+":";
         Calendar calendar= Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, d);
         calendar.set(Calendar.MONTH, M);
@@ -161,17 +161,18 @@ public class FilterDialog {
         calendar.set(Calendar.HOUR_OF_DAY, h);
         calendar.set(Calendar.MINUTE, m);
 
+        SimpleDateFormat sdf= new SimpleDateFormat("dd/MM/yyyy HH:mm");
+
         if(v.getId()==R.id.date_from_edit){
             dateFrom= new Date(calendar.getTimeInMillis());
+            ((EditText)v).setText(sdf.format(dateFrom));
         } else {
             dateTo= new Date(calendar.getTimeInMillis());
+            ((EditText)v).setText(sdf.format(dateTo));
         }
 
-        if(m<10)
-            date+="0"+m;
-        else
-            date+=m;
 
-        ((EditText)v).setText(date);
+
+
     }
 }

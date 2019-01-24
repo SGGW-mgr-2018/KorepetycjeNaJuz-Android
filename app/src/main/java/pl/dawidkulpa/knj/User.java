@@ -27,6 +27,8 @@ public class User {
     private String loginToken;
     private int id;
 
+    private boolean loggedin;
+
     private ArrayList<LessonEntry> myLessonsEntries;
 
     private ArrayList<Conversation> conversations;
@@ -58,6 +60,7 @@ public class User {
 
     public User() {
         myLessonsEntries= new ArrayList<>();
+        loggedin=false;
     }
 
     // ########## Getters ##########
@@ -85,6 +88,13 @@ public class User {
     public String getPassword(){return password;}
     public String getLoginToken(){return loginToken;}
     public int getId(){return id;}
+    public boolean isLoggedin(){
+        return loggedin;
+    }
+
+    public void logout(){
+        loggedin= false;
+    }
 
     public ArrayList<LessonEntry> getLessonsEntries() {
         return myLessonsEntries;
@@ -207,7 +217,7 @@ public class User {
             JSONObject tokenJObj= new JSONObject(new String(decoded));
 
             id= tokenJObj.getInt("UserId");
-            Log.e("User", "User id: "+id);
+            loggedin=true;
         } catch (JSONException je){
             Log.e("User", je.getMessage());
         }

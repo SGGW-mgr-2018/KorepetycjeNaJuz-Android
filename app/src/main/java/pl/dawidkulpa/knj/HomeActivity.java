@@ -81,6 +81,13 @@ public class HomeActivity extends AppCompatActivity
                                                 "Liceum podstawa",
                                                 "Liceum rozszerzenie",
                                                 "Studia"};
+    public static final String[] STATUS_NAME_LIST={
+            "Czeka na studenta",
+            "Czeka na potwierdzenie",
+            "Potwierdzona",
+            "Odrzucona",
+            "Anulowana"
+    };
 
 
     private FragmentManager fragmentManager;
@@ -243,10 +250,14 @@ public class HomeActivity extends AppCompatActivity
                 switchFragment(MESSAGES_FRAGMENT_ID);
                 break;
             case R.id.nav_create:
-                Intent intent= new Intent(this, CreateLessonActivity.class);
-                intent.putExtra("subjects", subjectLabels);
-                intent.putExtra("userLoginToken", logedInUser.getLoginToken());
-                startActivity(intent);
+                if(logedInUser!=null && logedInUser.isLoggedin()) {
+                    Intent intent = new Intent(this, CreateLessonActivity.class);
+                    intent.putExtra("subjects", subjectLabels);
+                    intent.putExtra("userLoginToken", logedInUser.getLoginToken());
+                    startActivity(intent);
+                } else {
+                    putSnackbar(getString(R.string.info_first_login));
+                }
                 break;
             case R.id.nav_logout:
                 onLogoutClick();

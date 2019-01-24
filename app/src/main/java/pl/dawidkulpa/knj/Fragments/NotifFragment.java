@@ -25,6 +25,7 @@ import pl.dawidkulpa.serverconnectionmanager.ServerConnectionManager;
 public class NotifFragment extends Fragment {
 
     private NotifsListAdapter notifsListAdapter;
+    private ArrayList<LessonEntry> lessonEntries;
 
 
     public NotifFragment() {
@@ -52,7 +53,8 @@ public class NotifFragment extends Fragment {
 
         User user= ((HomeActivity)getContext()).getLogedInUser();
 
-        notifsListAdapter= new NotifsListAdapter(getContext(), user.getLessonsEntries(), new NotifsListAdapter.ControlButtonsClickListener() {
+        lessonEntries= user.getLessonsEntries();
+        notifsListAdapter= new NotifsListAdapter(getContext(), lessonEntries, new NotifsListAdapter.ControlButtonsClickListener() {
             @Override
             public void onSendMessageClick(LessonEntry lessonEntry) {
                 sendMessageButtonClick(lessonEntry);
@@ -70,9 +72,27 @@ public class NotifFragment extends Fragment {
         });
         ListView listView= rootView.findViewById(R.id.notifs_list);
         listView.setAdapter(notifsListAdapter);
-        notifsListAdapter.notifyDataSetChanged();
+        filterNotifs();
+
+        if(lessonEntries.isEmpty()){
+            rootView.findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
+        } else {
+            rootView.findViewById(R.id.empty_text).setVisibility(View.GONE);
+        }
 
         return rootView;
+    }
+
+    public void filterNotifs(){
+        for(int i=0; i<lessonEntries.size(); i++){
+            if(lessonEntries.get(i).getStatusName().equals("Odrzucona")) {
+                lessonEntries.remove(i);
+                i--;
+            }
+
+        }
+
+        notifsListAdapter.notifyDataSetChanged();
     }
 
     public void sendMessageButtonClick(LessonEntry lessonEntry){

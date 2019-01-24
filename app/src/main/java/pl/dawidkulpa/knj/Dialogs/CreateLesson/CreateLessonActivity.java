@@ -172,10 +172,12 @@ public class CreateLessonActivity extends AppCompatActivity {
     }
 
     public void onCreateLessonFinished(int rCode, JSONObject jObj){
-        Log.e("CreateLessonActivity", String.valueOf(rCode));
-
         if(rCode==201){
             finish();
+        } else if(rCode==400) {
+            Toast.makeText(this, R.string.info_wrong_parameters,Toast.LENGTH_SHORT).show();
+        } else if(rCode==409){
+            Toast.makeText(this, R.string.info_time_used,Toast.LENGTH_SHORT).show();
         }
     }
 

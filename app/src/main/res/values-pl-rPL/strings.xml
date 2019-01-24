@@ -47,7 +47,7 @@
     <string name="info_failed_logout">Błąd wylogowania</string>
     <string name="menu_tag_login">Zaloguj się</string>
     <string name="menu_tag_signin">Zarejestruj się</string>
-    <string name="info_success_signin">Pomyślnie utworzono konto. Teraz zajrzyj na swojego maila :)</string>
+    <string name="info_success_signin">Pomyślnie utworzono konto.</string>
     <string name="info_failed_signin">Błąd rejestracji</string>
     <string name="label_level">Poziom</string>
     <string name="label_subject">Przedmiot</string>
@@ -84,9 +84,9 @@
     <string name="info_no_street">Podaj ulicę</string>
     <string name="label_create_lesson">Utwórz lekcję</string>
     <string name="label_date_time_picker">Data/Czas</string>
-    <string name="hint_enter_here">Wpisz je tutaj</string>
+    <string name="hint_enter_here">...</string>
     <string name="info_select_time_rate">Teraz wybierz czas i cenę lekcji</string>
-    <string name="info_enter_description">Jeśli masz jakieś uwagi</string>
+    <string name="info_enter_description">Dodatkowy opis lekcji</string>
     <string name="label_filters">Filtry</string>
     <string name="button_date">Data</string>
     <string name="button_time">Godzina</string>
@@ -94,4 +94,12 @@
     <string name="info_wrong_address">Podałeś błędny adres :(</string>
     <string name="info_aprove_success">Poprawnie zaakceptowano lekcje</string>
     <string name="info_reject_success">Poprawnie odrzucono lekcję</string>
+    <string name="info_first_login">Najpierw się zaloguj</string>
+    <string name="info_enter_email_pass">Wpisz email i hasło</string>
+    <string name="info_no_messages">Brak wiadomości</string>
+    <string name="info_no_notifs">Brak powiadomień</string>
+    <string name="info_no_history">Brak historii</string>
+    <string name="info_wrong_parameters">Błędne parametry lekcji. Sprawdź wszystko jeszcze raz.</string>
+    <string name="info_time_used">Masz już inną lekcję w tym czasie</string>
+    <string name="info_its_your_lesson">Nie możesz zapisać się na własną lekcję</string>
 </resources>

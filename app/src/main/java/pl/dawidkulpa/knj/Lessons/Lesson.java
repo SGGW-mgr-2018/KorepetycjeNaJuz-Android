@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.Random;
 
 import pl.dawidkulpa.knj.Address;
+import pl.dawidkulpa.knj.HomeActivity;
 
 public class Lesson {
     private int id;
@@ -57,8 +58,9 @@ public class Lesson {
             lesson.address= Address.create(jObj.getJSONObject("address"));
             lesson.time= jObj.getInt("time");
 
+            //TODO: Get real coach rating
             Random r= new Random();
-            lesson.coachRating= jObj.optInt("", r.nextInt(5)+1);
+            lesson.coachRating= jObj.optInt("coachRating", r.nextInt(5)+1);
             lesson.description= jObj.getString("description");
         } catch (JSONException je){
             Log.e("Lesson parser", je.getMessage());

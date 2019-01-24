@@ -22,13 +22,13 @@ public class HistoryLessonEntry {
         HistoryLessonEntry hle= new HistoryLessonEntry();
 
         try{
-            hle.id= jObj.getInt("id");
+            hle.id= jObj.getInt("lessonId");
             hle.subjectName= jObj.getString("subjectName");
             hle.coachName= jObj.getString("coachFirstName");
             hle.coachSName= jObj.getString("coachLastName");
             hle.dateStart= Lesson.parseDate(jObj.getString("dateStart"));
             hle.time= jObj.getInt("time");
-            hle.coachRating= jObj.getInt("ratingOfCoach");
+            hle.coachRating= (int)Math.round(jObj.optDouble("ratingOfCoach", 0.0));
         } catch (JSONException je){
             Log.e("HistoryLessonEntry", je.getMessage());
             hle= null;

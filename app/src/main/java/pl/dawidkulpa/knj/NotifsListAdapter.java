@@ -55,7 +55,41 @@ public class NotifsListAdapter extends ArrayAdapter<LessonEntry> {
             notifyHolder= (NotifyHolder) row.getTag();
         }
 
-        notifyHolder.titleText.setText(obj.getLesson().getSubject()+" - "+obj.getLesson().getStatusName());
+        notifyHolder.titleText.setText(obj.getLesson().getSubject()+" - "+obj.getStatusName());
+
+        if(obj.getRole()==LessonEntry.ROLE_STUDENT){
+
+        } else {
+            notifyHolder.sendMessageButton.setVisibility(View.VISIBLE);
+            notifyHolder.confirmButton.setVisibility(View.GONE);
+            notifyHolder.declineButton.setVisibility(View.GONE);
+
+            notifyHolder.sendMessageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    cbcl.onSendMessageClick(obj);
+                }
+            });
+
+
+            if(obj.getStatusName().equals("Czeka na potwierdzenie")){
+                notifyHolder.confirmButton.setVisibility(View.VISIBLE);
+                notifyHolder.declineButton.setVisibility(View.VISIBLE);
+
+                notifyHolder.confirmButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cbcl.onConfirmLessonClick(obj);
+                    }
+                });
+                notifyHolder.declineButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cbcl.onDeclineLessonClick(obj);
+                    }
+                });
+            }
+        }
 
         if(obj.getRole()==LessonEntry.ROLE_STUDENT){
             notifyHolder.sendMessageButton.setVisibility(View.GONE);
@@ -64,28 +98,7 @@ public class NotifsListAdapter extends ArrayAdapter<LessonEntry> {
 
             notifyHolder.descriptionText.setText(obj.getLesson().getDateStartString());
         } else if(obj.getLesson().getStatusName().equals("Reserved")) {
-            notifyHolder.sendMessageButton.setVisibility(View.VISIBLE);
-            notifyHolder.confirmButton.setVisibility(View.VISIBLE);
-            notifyHolder.declineButton.setVisibility(View.VISIBLE);
 
-            notifyHolder.sendMessageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cbcl.onSendMessageClick(obj);
-                }
-            });
-            notifyHolder.confirmButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cbcl.onConfirmLessonClick(obj);
-                }
-            });
-            notifyHolder.declineButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    cbcl.onDeclineLessonClick(obj);
-                }
-            });
 
             notifyHolder.descriptionText.setText(obj.getStudentName()+" "+obj.getStudentSName());
         } else {

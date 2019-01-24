@@ -58,6 +58,12 @@ public class AccountFragment extends Fragment {
                 onSaveClick(view);
             }
         });
+        layout.findViewById(R.id.cancel_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCancelClick(view);
+            }
+        });
 
         User user= ((HomeActivity)getContext()).getLogedInUser();
         ((TextView) (layout.findViewById(R.id.name_value))).setText(user.getName());
@@ -103,7 +109,11 @@ public class AccountFragment extends Fragment {
 
         newPhoneNo= ((EditText)getView().findViewById(R.id.phone_no_edit)).getText().toString();
         newAboutMe= ((EditText)getView().findViewById(R.id.about_me_edit)).getText().toString();
-        newPass=    ((EditText)getView().findViewById(R.id.password_edit)).getText().toString();
+
+        if(((EditText)getView().findViewById(R.id.password_edit)).getText().toString().isEmpty())
+            newPass= ((HomeActivity)getContext()).getLogedInUser().getPassword();
+        else
+            newPass= ((EditText)getView().findViewById(R.id.password_edit)).getText().toString();
 
         ((HomeActivity)getContext()).getLogedInUser().updateMyData(newPhoneNo, newAboutMe, newPass, new User.UpdateFinishListener() {
             @Override
@@ -111,6 +121,13 @@ public class AccountFragment extends Fragment {
                 onUpdateDataFinished(rCode);
             }
         });
+    }
+
+    private void onCancelClick(View view){
+        View v= getView().findViewById(R.id.show_data_container);
+        v.setVisibility(View.VISIBLE);
+        v= getView().findViewById(R.id.edit_data_container);
+        v.setVisibility(View.GONE);
     }
 
     public void onUpdateDataFinished(int rCode){

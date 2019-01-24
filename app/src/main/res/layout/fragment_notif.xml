@@ -17,6 +17,16 @@
         android:textColor="@color/colorTextLabels"
         android:layout_marginBottom="@dimen/title_to_content_space"/>
 
+    <TextView
+        android:id="@+id/empty_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorTextVeryLight"
+        android:textSize="32sp"
+        android:layout_centerInParent="true"
+        android:text="@string/info_no_notifs"
+        android:visibility="gone"/>
+
     <ListView
         android:id="@+id/notifs_list"
         android:layout_width="match_parent"

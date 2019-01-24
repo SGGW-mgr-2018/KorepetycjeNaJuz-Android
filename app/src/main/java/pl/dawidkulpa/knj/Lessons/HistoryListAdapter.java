@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,16 +78,20 @@ public class HistoryListAdapter extends ArrayAdapter<HistoryLessonEntry> {
         lessonHolder.starButtonsBox.getChildAt(0).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setStartsOn(v, 1);
-                starButtonClickListener.onStarButtonClick(obj.getId(), 0);
+                if(obj.getCoachRating()==0) {
+                    setStartsOn(v, 1);
+                    starButtonClickListener.onStarButtonClick(obj.getId(), 0);
+                }
             }
         });
 
         lessonHolder.starButtonsBox.getChildAt(1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setStartsOn(v, 2);
-                starButtonClickListener.onStarButtonClick(obj.getId(), 1);
+                if(obj.getCoachRating()==0) {
+                    setStartsOn(v, 2);
+                    starButtonClickListener.onStarButtonClick(obj.getId(), 1);
+                }
             }
         });
 
@@ -94,8 +99,10 @@ public class HistoryListAdapter extends ArrayAdapter<HistoryLessonEntry> {
         lessonHolder.starButtonsBox.getChildAt(2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setStartsOn(v, 3);
-                starButtonClickListener.onStarButtonClick(obj.getId(), 2);
+                if(obj.getCoachRating()==0) {
+                    setStartsOn(v, 3);
+                    starButtonClickListener.onStarButtonClick(obj.getId(), 2);
+                }
             }
         });
 
@@ -103,16 +110,20 @@ public class HistoryListAdapter extends ArrayAdapter<HistoryLessonEntry> {
         lessonHolder.starButtonsBox.getChildAt(3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setStartsOn(v, 4);
-                starButtonClickListener.onStarButtonClick(obj.getId(), 3);
+                if(obj.getCoachRating()==0) {
+                    setStartsOn(v, 4);
+                    starButtonClickListener.onStarButtonClick(obj.getId(), 3);
+                }
             }
         });
 
         lessonHolder.starButtonsBox.getChildAt(4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setStartsOn(v, 5);
-                starButtonClickListener.onStarButtonClick(obj.getId(), 4);
+                if(obj.getCoachRating()==0) {
+                    setStartsOn(v, 5);
+                    starButtonClickListener.onStarButtonClick(obj.getId(), 4);
+                }
             }
         });
 

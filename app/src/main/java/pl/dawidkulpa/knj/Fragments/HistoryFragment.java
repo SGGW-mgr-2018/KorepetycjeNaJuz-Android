@@ -3,6 +3,7 @@ package pl.dawidkulpa.knj.Fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,12 @@ public class HistoryFragment extends Fragment {
         });
         historyListView.setAdapter(historyListAdapter);
 
+        if(historyLessonEntries.isEmpty()){
+            getView().findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
+        } else {
+            getView().findViewById(R.id.empty_text).setVisibility(View.GONE);
+        }
+
         getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
     }
 
@@ -77,19 +84,31 @@ public class HistoryFragment extends Fragment {
         ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
             @Override
             public void onFinish(int rCode, JSONObject jObject) {
-
+                if(rCode==200){
+                    refreshHistory();
+                }
             }
         }, Query.BuildType.JSONPatch);
 
         Query lessonRatingDto= new Query();
         lessonRatingDto.addPair("lessonId", String.valueOf(id));
-        lessonRatingDto.addPair("rating", String.valueOf(rating));
+        lessonRatingDto.addPair("rating", String.valueOf(rating+1));
         lessonRatingDto.addPair("opinion", "");
 
         scm.addPOSTPair("", lessonRatingDto);
+        scm.addHeaderEntry("Authorization", "Bearer "+((HomeActivity)getContext()).getLogedInUser().getLoginToken());
         scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
         scm.setMethod(ServerConnectionManager.METHOD_POST);
         scm.start(HomeActivity.SERVER_NAME+"/Lesson/Rating/Post");
+    }
+
+    public void refreshHistory(){
+        ((HomeActivity)getContext()).getLogedInUser().refreshHistory(new User.HistoryRefreshListener() {
+            @Override
+            public void onHistoryRefreshFinished(ArrayList<HistoryLessonEntry> historyEntries) {
+                onHistoryRefreshed(historyEntries);
+            }
+        });
     }
 
     @Override

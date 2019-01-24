@@ -61,17 +61,17 @@ public class LessonDescriptionDialog {
 
         adBuilder.setView(dialogView);
 
-        adBuilder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        adBuilder.setNeutralButton(R.string.button_send_message, new DialogInterface.OnClickListener() {
+        adBuilder.setNegativeButton(R.string.button_send_message, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 onSendMessageClick();
+            }
+        });
+
+        adBuilder.setNeutralButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
             }
         });
 
@@ -87,13 +87,20 @@ public class LessonDescriptionDialog {
     }
 
     private void onPositiveClick(){
-        if(user!=null){
-            ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
-                @Override
-                public void onFinish(int respCode, JSONObject jObject) {
-                    onSignInFinished(respCode);
-                }
-            }, Query.BuildType.JSONPatch);
+        if(user!=null && user.isLoggedin()){
+
+            if(user.getId()==lessonMarker.getLesson().getCoachId()){
+                ((HomeActivity)context).putSnackbar(context.getString(R.string.info_its_your_lesson));
+                return;
+            }
+
+            ServerConnectionManager scm= new ServerConnectionManager(Query.BuildType.JSONPatch,
+                    new ServerConnectionManager.OnFinishListener() {
+                        @Override
+                        public void onFinish(int respCode, JSONObject jObject) {
+                            onSignInFinished(respCode);
+                        }
+                    });
             scm.setMethod(ServerConnectionManager.METHOD_POST);
             scm.setContentType(ServerConnectionManager.CONTENTTYPE_JSONPATCH);
             scm.addHeaderEntry("Authorization", "Bearer "+user.getLoginToken());
@@ -104,12 +111,17 @@ public class LessonDescriptionDialog {
             scm.addPOSTPair("", lessonCreateDTO);
             scm.start(HomeActivity.SERVER_NAME+"/Lesson/Create");
         } else {
-            Toast.makeText(context, "First log in", Toast.LENGTH_SHORT).show();
+            ((HomeActivity)context).putSnackbar(context.getString(R.string.info_first_login));
         }
     }
 
     private void onSendMessageClick(){
-
+        if(user!=null && user.isLoggedin()) {
+            Lesson lesson = lessonMarker.getLesson();
+            ((HomeActivity) context).showConversation(lesson.getCoachId(), lesson.getCoachName());
+        }else {
+            ((HomeActivity)context).putSnackbar(context.getString(R.string.info_first_login));
+        }
     }
 
     private void onSignInFinished(int rCode){

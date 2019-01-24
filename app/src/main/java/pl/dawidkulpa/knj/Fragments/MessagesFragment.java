@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import pl.dawidkulpa.knj.HomeActivity;
 import pl.dawidkulpa.knj.Messages.Conversation;
@@ -54,6 +55,7 @@ public class MessagesFragment extends Fragment {
     }
 
     public void onConvRefreshFinished(ArrayList<Conversation> conversations){
+        Collections.reverse(conversations);
         conversationsListAdapter= new ConversationsListAdapter(getContext(), conversations, new ConversationsListAdapter.ItemClickListener() {
             @Override
             public void onItemClickListener(int withId, String withName) {
@@ -63,6 +65,11 @@ public class MessagesFragment extends Fragment {
         getView().findViewById(R.id.progressbar).setVisibility(View.GONE);
         ((ListView)getView().findViewById(R.id.conversation_list_view)).setAdapter(conversationsListAdapter);
 
+        if(conversations.isEmpty()){
+            getView().findViewById(R.id.empty_text).setVisibility(View.VISIBLE);
+        } else {
+            getView().findViewById(R.id.empty_text).setVisibility(View.GONE);
+        }
     }
 
     private void onConversationClick(int withId, String withName){

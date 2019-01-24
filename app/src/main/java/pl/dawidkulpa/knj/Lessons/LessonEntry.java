@@ -9,12 +9,14 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import pl.dawidkulpa.knj.HomeActivity;
+
 public class LessonEntry{
     public static final int ROLE_STUDENT=1;
     public static final int ROLE_COACH=2;
 
     private Lesson lesson;
-    private int status;
+    private String statusName;
     private int role;
 
     private int lessonId;
@@ -39,7 +41,7 @@ public class LessonEntry{
                 JSONObject jMyLesson= jObject.getJSONObject("myLesson");
 
                 lessonEntries.get(0).nuberOfHours= jMyLesson.optInt("numberOfHours", 1);
-                lessonEntries.get(0).status= jMyLesson.getInt("lessonStatusId");
+                lessonEntries.get(0).statusName= HomeActivity.STATUS_NAME_LIST[jMyLesson.getInt("lessonStatusId")-1];
                 lessonEntries.get(0).lessonId= jMyLesson.getInt("id");
             }
 
@@ -55,7 +57,7 @@ public class LessonEntry{
                     lessonEntries.add(new LessonEntry());
                     lessonEntries.get(lessonEntries.size()-1).lesson= lesson;
                     lessonEntries.get(lessonEntries.size()-1).role= LessonEntry.ROLE_COACH;
-                    lessonEntries.get(lessonEntries.size()-1).status= jLesson.getInt("lessonStatusId");
+                    lessonEntries.get(lessonEntries.size()-1).statusName= HomeActivity.STATUS_NAME_LIST[jLesson.getInt("lessonStatusId")-1];
 
                     lessonEntries.get(lessonEntries.size()-1).studentId= jStudent.getInt("id");
                     lessonEntries.get(lessonEntries.size()-1).studentName= jStudent.getString("firstName");
@@ -82,8 +84,8 @@ public class LessonEntry{
         return lesson;
     }
 
-    public int getStatus() {
-        return status;
+    public String getStatusName() {
+        return statusName;
     }
 
     public int getRole() {

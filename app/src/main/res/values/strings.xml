@@ -92,7 +92,7 @@
     <string name="info_failed_login">Login failed</string>
     <string name="info_successful_logout">Successful logout</string>
     <string name="info_failed_logout">Logout failed</string>
-    <string name="info_success_signin">Successful sign in. Look at your email account :)</string>
+    <string name="info_success_signin">Successful sign in.</string>
     <string name="info_failed_signin">Sign in failed</string>
     <string name="info_select_address">Select lesson address</string>
     <string name="info_select_subject">Select lesson subject and levels</string>
@@ -112,6 +112,14 @@
     <string name="info_wrong_address">Wrong address passed. Correct lesson address</string>
     <string name="info_aprove_success">You have accepted lesson</string>
     <string name="info_reject_success">You have rejected lesson</string>
+    <string name="info_first_login">Log in at first</string>
+    <string name="info_enter_email_pass">Enter email and password</string>
+    <string name="info_no_messages">No messages</string>
+    <string name="info_no_notifs">No notifs</string>
+    <string name="info_no_history">No history</string>
+    <string name="info_wrong_parameters">Wrong lesson parameters</string>
+    <string name="info_time_used">You have other lesson at this time</string>
+    <string name="info_its_your_lesson">It is your lesson</string>
 
 
 </resources>

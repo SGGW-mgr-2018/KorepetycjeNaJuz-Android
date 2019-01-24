@@ -79,6 +79,12 @@ public class LoginFragment extends Fragment {
         EditText emailEdit= getView().findViewById(R.id.email_edit);
         EditText passEdit= getView().findViewById(R.id.password_edit);
 
+        if(emailEdit.getText().toString().isEmpty() || passEdit.getText().toString().isEmpty()){
+            ((HomeActivity)getContext()).putSnackbar(getString(R.string.info_enter_email_pass));
+
+            return;
+        }
+
         user= new User();
         user.setEmail(emailEdit.getText().toString());
         user.setPassword(passEdit.getText().toString());
@@ -102,7 +108,6 @@ public class LoginFragment extends Fragment {
     }
 
     private void onLoginFinished(int rCode, JSONObject jObj){
-
         if(rCode==200){
             user.onLoginSuccessful(jObj);
             ServerConnectionManager scm= new ServerConnectionManager(new ServerConnectionManager.OnFinishListener() {
@@ -115,8 +120,10 @@ public class LoginFragment extends Fragment {
             scm.setMethod(ServerConnectionManager.METHOD_GET);
             scm.start(HomeActivity.SERVER_NAME+"/Users/Get/"+user.getId());
         } else if(rCode==400){
+            getView().findViewById(R.id.progressbar).setVisibility(View.INVISIBLE);
             Toast.makeText(getContext(),R.string.info_failed_login,Toast.LENGTH_SHORT).show();
         } else if(rCode==403){
+            getView().findViewById(R.id.progressbar).setVisibility(View.INVISIBLE);
             Toast.makeText(getContext(),R.string.info_failed_login,Toast.LENGTH_SHORT).show();
         }
     }
